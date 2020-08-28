@@ -1,0 +1,9 @@
+Team: Discord Dragon
+
+Members: Kevin Ayala, Swamik Lamichhane, Max Mingst, Dana Teves
+
+Project:
+    Product Plan: https://github.com/Kayala47/SDEV-KEKW/blob/master/management_1a.txt
+    Primary author(s): Kevin Ayala, Swamik Lamichhane, Dana Teves
+
+Link to Google spreadsheet: https://docs.google.com/spreadsheets/d/1djZECM9YmG4v_iY6tuq93KjQIizM13UpTdGbNNhM6wM/edit?usp=sharing
