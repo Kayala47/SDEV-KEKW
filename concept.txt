@@ -1,10 +1,11 @@
-  Our project goal is to design and develop a table top role play game (TTRPG) ‘bot’ for Discord, a multi-use free messaging and VoIP application. 
+Our project goal is to design and develop a table top role play game (TTRPG) ‘bot’ for Discord, a multi-use free messaging and VoIP application. 
 Discord supports the development of automated helpers (or ‘bots’) that assist users with a wide range of functionality. In this case, our bot would 
 facilitate character and map creation for major games such as Dungeons & Dragons and Pathfinder, as well as features such as randomized dice rolling 
 and macro assignments for players. This will require (mostly) Python as well as potentially Javascript. While modules such as character creation will 
 be achieved through dynamic programming methods, map creation may require basic natural language processing and interface with Discord requires API use 
 and web server plugins.
-	While similar bots already exist in the space, the most widely used implementation is closed-source and thus unmodifiable by players and other developers. 
+
+While similar bots already exist in the space, the most widely used implementation is closed-source and thus unmodifiable by players and other developers. 
 This means that changes for player-made content (homebrew) is not currently feasible. Additionally, no bots support map design, which is an essential 
 component for the game and by far the largest time sink for organizers. Our goal is to make an open-source solution that allows community members to easily
 and comprehensively modify for use at home. 
