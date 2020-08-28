@@ -1,3 +1,11 @@
+Team: Discord Dragon
+
+Members: Kevin Ayala, Swamik Lamichhane, Max Mingst, Dana Teves
+
+Project:
+    Product Proposal: https://github.com/Kayala47/SDEV-KEKW/blob/master/proposal_1a.txt
+    Primary author: Max Mingst
+
 Our project goal is to design and develop a table top role play game (TTRPG) ‘bot’ for Discord, a multi-use free messaging and VoIP application. 
 Discord supports the development of automated helpers (or ‘bots’) that assist users with a wide range of functionality. In this case, our bot would 
 facilitate character and map creation for major games such as Dungeons & Dragons and Pathfinder, as well as features such as randomized dice rolling 
