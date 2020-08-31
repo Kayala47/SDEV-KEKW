@@ -1,0 +1,20 @@
+Title: Help us make a Discord bot for YOU!
+
+Body:
+
+Adventurers! Our group searches for the components to build the legendary Discord Dragon and needs your help!
+
+//OR:
+
+Hey folks! A group of friends and I are working on a project for our software engineering class and we would love your feedback!
+
+//THEN:
+
+We're building a Discord bot for DM's and want to ask you all what kinds of features you'd like to see. So far, we've got: 
+- map generation using natural language processing (the idea is that you type what you want from a short list of features and the bot automatically makes a jpg)
+- NPC generation, lookup, and storage
+- Dice rolling (of course), [with/without the option for DM fudging?]
+- Initiative tracking with player prompts (so that the DM doesn't have to manually switch to the next player)
+
+We need your feedback to make sure that we create a bot that is the most useful for DMs and players alike. As well as listing features, information about what you like/dislike from other
+popular software would be invaluable to our group. Please feel free to list suggestions below!
