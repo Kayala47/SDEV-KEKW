@@ -1,3 +1,3 @@
 # TTRPG Discord Bot
 
-CS121 project to design discord bot for TTRPGs
+CS121 project to design a discord bot for TTRPGs
