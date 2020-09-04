@@ -1,0 +1,43 @@
+----------------------------------------------------------------------
+August 27, 2020
+----------------------------------------------------------------------
+Initial Idea: Discord Bot for RPGs that includes functionality for dice rolling, character generation, map generation, initiative tracking, and more.
+
+Accomplished:
+- Agreed on our initial idea.
+- Created Discord server for planning.
+- Created a When2Meet to determine future meeting times that work for everyone.
+
+Action Points:
+- Research Discord Bot documentation.
+- Create a Google Doc to begin Deliverable 1A.
+- Flesh out functionality for Discord Bot as a solid list of requirements.
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+August 28, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Solidified our concept, which included NPC generation, dice rolling, map generation, and initiative tracking.
+- Completed proposal.
+- Completed Management Plan.
+- Submitted documents to SAKAI.
+
+Action Points:
+- Create a Reddit post to gather requirements from our potential users.
+- Create a list of potential users. (TTRPG players)
+- Create Concept Presentation.
+- Find a list of competing products.
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+September 4, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Compiled a list of competitors
+- Begun typing up a first draft for competitors
+- Discussed the nitty gritty of dice fudging
+- Found a panel for elicitation of requirements
+
+Action Points:
+- Complete the competition research (Kevin)
+- Work out a meeting time for elicitation of requirements
+----------------------------------------------------------------------
