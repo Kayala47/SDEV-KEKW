@@ -3,10 +3,10 @@ Team: Discord Dragons
     Members: Dana, Kevin, Max, Swamik
 
     Project: 1B - Competitive Research
-       Product proposal: INSERT LINK HERE PLS
+       Github: https://github.com/Kayala47/SDEV-KEKW/edit/master/report_1b.txt
        primary author: Kevin
 
-    Slip Days: 0
+    Slip Days: 1 - Kevin
 
 Avrae Discord Bot
 -----------------
