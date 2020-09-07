@@ -33,3 +33,56 @@ Heavily dependent on other services, like DnDBeyond, which are paid
 Value:
 Geared toward DM, not players. Supplementary to Avrae
 New features like fudging, homebrew creation, etc
+
+
+Dash Delta
+-----------------------
+Features:
+Dice rolling commands
+Arithmetic calculator (+, -, *, /)
+Name generation monsters and locations
+Creation of macro commands
+Database lookup for items and monsters
+---------------------------
+
+Address user’s needs:
+Dice rolling is nice, but doesn’t allow for fake rolling
+No item creation, only macro creation
+Free to use, but limited in features
+---------------------------
+
+Not done well:
+Doesn’t delete commands after parsing
+--------------------------
+
+Done well:
+Macro feature is well formatted
+Doesn’t have cluttered and unnecessary features
+---------------------------
+
+D&D Bot
+------------------------
+Features:
+Character Creation 
+Has a feature in which you can choose the class as well as the background of your character 
+Dice rolling 
+Has features where you can add value to each roll or subtract value from each roll 
+Coin flipping 
+Generates an editable pdf of your currently selected character
+-----------------------
+
+Address user’s needs:
+Dice roller is nice, but doesn’t allow for DM Fudging of the dice rolls.
+Our app will allow users with certain permissions to fudge dice rolls
+Free to use, but has good features only available for premium members 
+---------------------
+
+Done well:
+LOTS of functionality - one stop shop
+--------------------
+
+Not Done well:
+Closed source 
+Users cannot personalize their bot 
+-------------------
+
