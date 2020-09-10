@@ -2,7 +2,7 @@
 
 CS121 project to design a discord bot for TTRPGs
 
-# Upcoming Deadlines
+## Upcoming Deadlines
 Final Proposal Due 9/20 - Project 1D
 
 Phase 2 coming up!
