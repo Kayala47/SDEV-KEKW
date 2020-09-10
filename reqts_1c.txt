@@ -1,0 +1,61 @@
+----------------------------------------------------------------------
+TTRPG Game Masters
+----------------------------------------------------------------------
+Goal: Run a TTRPG, such as D&D online on Discord.
+Needs & Expectations: A Discord bot that allows users to run a game of D&D without physical dice or a physical map.
+- a way to fudge (fake) dice rolls
+- a way to roll dice secretly
+- a way to roll dice in a way where everyone can see
+- a way to track combat turn order
+- a way to find relevant spells, monster stats, class traits, racial traits, and background traits
+- the Discord app (desktop / phone / browser)
+- in their native language
+- !help functionality
+- a way to generate random NPCs and store their information
+- a way to generate maps
+Abilities:
+- Basic use of Discord (chatting)
+- Basic understanding of D&D or another TTRPG
+Requirements:
+- Dice Rolling (fake, secret, normal)
+- Initiative Tracking
+- Compendium Look-up
+- !help function
+- NPC Generation
+- Map Generation
+
+----------------------------------------------------------------------
+TTRPG Players
+----------------------------------------------------------------------
+Goal: Play a TTRPG online on Discord.
+Needs & Expectations: A Discord bot that allows users to play a game of D&D without physical dice or a physical map.
+- a way to roll dice in a way where only the Dungeon Master can see
+- a way to roll dice in a way where everyone can see
+- the Discord app (desktop / phone / browser)
+- in their native language
+- !help functionality
+Abilities:
+- Basic use of Discord (chatting)
+- Basic understanding of D&D or another TTRPG
+Requirements:
+- Dice Rolling (normal, secret)
+- Compendium Look-up
+- !help function
+
+----------------------------------------------------------------------
+Potential Players or Game Masters
+----------------------------------------------------------------------
+Goal: Learn more about Dungeons and Dragons.
+Needs & Expectations: Information about Dungeons and Dragons spells, monster stats, class traits, racial traits, and background traits.
+- a way to roll dice
+- a way to look up rules
+- a way to look up spells, monster stats, class traits, racial traits, and background traits
+- !help functionality
+- in their native language
+- the Discord app (desktop / phone / browser)
+Abilities:
+- Basic use of Discord (chatting)
+Requirements:
+- Dice Rolling (normal)
+- Compendium Look-up
+- !help functionality
