@@ -57,6 +57,8 @@ OPEN-ENDED INFORMATION GATHERING
 - allows you to import battle maps
 - good for players, bad for dungeon masters
 - does math for you when rolling dice
+- Has the general functionality but has an out of date feel 
+- Good functionality is behind paywalls 
 
 "Avrae"
 - paywall for D&D Beyond content
@@ -67,6 +69,8 @@ OPEN-ENDED INFORMATION GATHERING
 - ability to add NPCs into combat order is good
 - compendium look-up is good for basic D&D content
 - lack of specialty features (Homebrew, Unearthed Arcana)
+- Lucas mentioned that this tool was difficult to use for those who did not have a coding background 
+
 
 ----------------------------------------------------------------------
 WHAT DO YOU WANT OUT OF OUR DISCORD BOT?
@@ -76,6 +80,7 @@ WHAT DO YOU WANT OUT OF OUR DISCORD BOT?
 - ability to generate monster stat blocks based on party level
 - dice rolling capabilities
 - track location for theater of the mind
+- Easy access to character sheets 
 
 ----------------------------------------------------------------------
 THOUGHTS ON PREVIOUSLY GATHERED REQUIREMENTS
