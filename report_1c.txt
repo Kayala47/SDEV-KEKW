@@ -1,3 +1,11 @@
+Team: Discord Dragons
+
+    Members: Dana, Kevin, Max, Swamik
+
+    Project: 1C - Elicitation Report
+       Product Proposal: https://github.com/Kayala47/SDEV-KEKW/blob/master/report_1c.txt
+       Primary Author: Dana
+       
 ----------------------------------------------------------------------
 PANEL INFORMATION
 ----------------------------------------------------------------------
