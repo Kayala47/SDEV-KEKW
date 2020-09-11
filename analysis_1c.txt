@@ -1,0 +1,88 @@
+Team: Discord Dragons
+
+    Members: Dana, Kevin, Max, Swamik
+
+    Project: 1C - Requirements Analysis
+       Product Proposal: https://github.com/Kayala47/SDEV-KEKW/blob/master/analysis_1c.txt
+       Primary Author: Dana
+
+----------------------------------------------------------------------
+
+We asked our panel to list the three features they would most like to see developed.
+I will denote their votes using a (*) beside the feature.
+
+----------------------------------------------------------------------
+DICE ROLLING							***
+----------------------------------------------------------------------
+- Value: High; Most widely requested feature by far
+- Confidence: High; Implementation requires no external platform, simple tools we already understand
+- Difficulty: Easy; Implementation requires no external platform, simple tools we already understand
+- Priority: Must-Have; Most widely requested, easiest to implement, basis of TTRPGs
+	- Roll X-sided dice + modifiers
+	- Macro support
+	- Allow dungeon master to specify a roll outcome discreetly
+	- Make sure manually inputted rolls look the same as normal rolls
+
+----------------------------------------------------------------------
+ENHANCED INITIATIVE TRACKING 					** 
+----------------------------------------------------------------------
+- Value: High; Widely requested feature
+- Confidence: High; Implementation requires no external platform, simple tools we already understand
+- Difficulty: Moderate; Implementation doesn’t seem to require external platform, simple tools we already understand
+- Priority: Must-Have; Very widely requested, fundamental mechanic of TTRPGs
+	- Keeps track of initiative order
+	- Prompt users when turn ends
+
+----------------------------------------------------------------------
+SPECIALTY FEATURES STORAGE + COMPENDIUM LOOK-UP			*
+----------------------------------------------------------------------
+- Value: High; Requested feature
+- Confidence: Medium; familiar with a bot with similar functionality (Avrae)
+- Difficulty: Hard; Implementation requires external platform, tools that are slightly difficult to get a grasp on
+- Priority: Must-Have; Frequently used feature, people are already familiar with it, caters to multiple user classes
+	- Ability to input specialty features (Homebrew, Unearthed Arcana)
+	- Ability to store specialty features server-wide
+	- Ability to search spells, monsters, character features (class, background, race)
+
+----------------------------------------------------------------------
+MAP GENERATOR							*
+----------------------------------------------------------------------
+- Value: Medium; Requested feature
+- Confidence: Low; Internally proposed, haven’t worked on it, not much feedback from panel
+- Difficulty: Hard; Difficult to implement, no solid prior experience with NLP
+- Priority: Nice-To-Have; It would set this bot apart from existing ones, but isn’t necessary to run a successful TTRPG
+	- Ability to translate user’s natural language into the format that Kevin’s existing map generator expects. 
+
+----------------------------------------------------------------------
+NPC GENERATION							*
+----------------------------------------------------------------------
+- Value: Medium; Requested feature
+- Confidence: Medium; General idea is clear, exact kinds of quirks and depth of description is unclear
+- Difficulty: Depends on implementation complexity; Simple implementation would be feasible
+- Priority: Nice-To-Have; Only benefits one of our user classes
+- Generate name
+- Basic stats (strength, dexterity, constitution, intelligence, wisdom, charisma)
+- Visual description
+- Quirks/alignment
+
+----------------------------------------------------------------------
+CHARACTER SHEET IMPORT
+----------------------------------------------------------------------	
+- Value: High; Highly requested feature from panel
+- Confidence: High; Very clear necessary features
+- Difficulty: Hard; We don’t know API availability and copyright restrictions
+- Priority: Nice-To-Have; Likely too much of a time sink to focus on initially			
+	- Pull player character details from 3rd party creation tools
+	- Possibly allow editing (Confidence: very low)
+
+----------------------------------------------------------------------
+LOCATION TRACKING (THEATER OF THE MIND)
+----------------------------------------------------------------------
+- Value: Low; Not a highly requested feature from panel
+- Confidence: Low; A vague idea thrown out, unsure of implementation
+- Difficulty: Unsure; Idea wasn’t developed, unsure of implementation
+- Priority: Low; Underdeveloped and not highly requested
+
+----------------------------------------------------------------------
+
+For release 1.0, we believe dice rolling, enhanced initiative tracking, and specialty features storage + compendium look-up serve as a reasonable cut-off point. This is because these features have a 'must-have' priority, and are integral to playing a successful TTRPG.
