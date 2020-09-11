@@ -2,7 +2,7 @@ Team: Discord Dragons
 
     Members: Dana, Kevin, Max, Swamik
 
-    Project: 1C - Elicitation Report
+    Project: 1C - Preliminary Requirements
        Product Proposal: https://github.com/Kayala47/SDEV-KEKW/blob/master/reqts_1c.txt
        Primary Author: Dana
 
