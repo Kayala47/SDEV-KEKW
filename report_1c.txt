@@ -49,6 +49,13 @@ Current Tools:
 ----------------------------------------------------------------------
 OPEN-ENDED INFORMATION GATHERING
 ----------------------------------------------------------------------
+Current experience" 
+- They use different platforms when they are playing with different groups 
+- Their current experience is clunky with a lot of tabs open 
+- Lots of tabs means that their computers are lagging 
+- Need a platform where one can share audio with their friends 
+
+
 "Roll20"
 - lack of specialty features (Homebrew, Unearthed Arcana)
 - importing character sheets isn't easy
@@ -59,6 +66,7 @@ OPEN-ENDED INFORMATION GATHERING
 - does math for you when rolling dice
 - Has the general functionality but has an out of date feel 
 - Good functionality is behind paywalls 
+- Did not like that there was a limited music collection 
 
 "Avrae"
 - paywall for D&D Beyond content
