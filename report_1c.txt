@@ -1,0 +1,120 @@
+----------------------------------------------------------------------
+PANEL INFORMATION
+----------------------------------------------------------------------
+TIME: September 10, 2020; 11:10 AM - 12:15PM PST
+
+LOCATION: Zoom Call (https://hmc-cs.zoom.us/j/93895586571)
+
+PANELISTS:
+"Liam MacDonald" - 5th Edition D&D
+Role:
+	- usually a player
+	- dungeon master (D&D) when he has time
+Current Tools:
+	- Discord
+	- Roll20
+	- Avrae
+	- Zoom
+Note: He isn't very technologically skilled.
+
+"Justin Sleppy" - 5th Edition D&D, other TTRPGs
+Role:
+	- usually a player
+	- dungeon master (D&D) when he has the time
+	- game master (other TTRPGs)
+Current Tools:
+	- Discord
+	- Roll20
+	- Avrae
+	- Zoom
+
+"Glen Skahill" - 4th Edition D&D, 5th Edition D&D, other TTRPGs
+Role:
+	- usually a player
+	- dungeon master (D&D) when he has the time
+Current Tools:
+	- Discord
+	- Roll20
+	- Avrae
+	- Zoom
+
+----------------------------------------------------------------------
+OPEN-ENDED INFORMATION GATHERING
+----------------------------------------------------------------------
+"Roll20"
+- lack of specialty features (Homebrew, Unearthed Arcana)
+- importing character sheets isn't easy
+- no way to keep track of monsters
+- clunky, outdated, cluttered
+- allows you to import battle maps
+- good for players, bad for dungeon masters
+- does math for you when rolling dice
+
+"Avrae"
+- paywall for D&D Beyond content
+- alias creation is confusing; people want to creatively engage with bots
+- importing character sheets isn't easy
+- dice rolling is good
+- initiative tracking for combat is good, could be better
+- ability to add NPCs into combat order is good
+- compendium look-up is good for basic D&D content
+- lack of specialty features (Homebrew, Unearthed Arcana)
+
+----------------------------------------------------------------------
+WHAT DO YOU WANT OUT OF OUR DISCORD BOT?
+----------------------------------------------------------------------
+- access to specialty features
+- ability to store specialty features (Homebrew, Unearthed Arcana)
+- ability to generate monster stat blocks based on party level
+- dice rolling capabilities
+- track location for theater of the mind
+
+----------------------------------------------------------------------
+THOUGHTS ON PREVIOUSLY GATHERED REQUIREMENTS
+----------------------------------------------------------------------
+"Dice Rolling with Dungeon Master Fudging"
+- affirmed by all panelists
+- don't fudge player rolls (Justin)
+- illusion of control is nice, so fudging player rolls could be interesting (Glen)
+- make sure to disable notifications to ensure fudging isn't revealed
+- delete command messages
+- potentially allow manual input of dice rolls
+
+"Enhanced Initiative Tracking"
+- affirmed by all panelists
+- allow manual input of dice rolls
+- beware too many commands, hard to remember
+
+"NPC Generation"
+- useful for dungeon masters
+- take NPCs from another source or online tool
+- make sure NPCs can be used for a general situation
+- potentially provide images of NPCs
+
+"Compendium Look-Up"
+- affirmed by all panelists
+- hope that specialized features can be added and stored
+
+"Map Generator"
+- affirmed by all panelists
+- interesting feature, helpful for dungeon masters
+- saves time for dungeon master planning, and for theater of the mind
+
+----------------------------------------------------------------------
+REQUIREMENTS GATHERED & PRIORITY RANKING
+----------------------------------------------------------------------
+We asked our panel to list the three features they would most like to see developed.
+I will denote their votes using a (*) beside the feature.
+
+- Dice Rolling (with fudging and manual inputs)		***
+- Enhanced Initiative Tracking				**
+- Specialty Features Storage + Compendium Look-up	*
+- Map Generator						*
+- NPC Generation					*
+- Character Sheet Import				*
+- Location Tracking (Theater of the Mind)
+
+Of these features, the following were new:
+- Manual Dice Inputs
+- Specialty Features Storage
+- Location Tracking (Theater of the Mind)
