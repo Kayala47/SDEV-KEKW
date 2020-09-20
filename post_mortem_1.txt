@@ -1,0 +1,12 @@
+Team: Discord Dragons
+
+    Members: Dana, Kevin, Max, Swamik
+
+    Project: 1D - Post-Mortem
+       Github: https://github.com/Kayala47/SDEV-KEKW/edit/master/report_1b.txt
+       Minutes: https://github.com/Kayala47/SDEV-KEKW/blob/master/minutes.txt
+       Management Plan: https://github.com/Kayala47/SDEV-KEKW/blob/master/management_1a.txt
+
+       primary author: Kevin
+
+    
