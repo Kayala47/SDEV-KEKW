@@ -41,3 +41,63 @@ Action Points:
 - Complete the competition research (Kevin)
 - Work out a meeting time for elicitation of requirements
 ----------------------------------------------------------------------
+----------------------------------------------------------------------
+September 8, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Created a UML Use Case Diagram
+- Discussed possible user classes
+- Organized requirements elicitation (panel, time)
+
+Action Points:
+- Create concept presentation for requirements elicitation
+- Assign roles for requirements elicitation
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+September 10, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Concept Presentation
+- Requirements Elicitation
+
+Action Points:
+- Create Elicitation Report (Dana)
+- Create Requirements Analysis (Dana)
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+September 12, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Reviewed and submitted preliminary requirements
+- Submitted concept presentation
+- Reviewed and submitted elicitation report
+- Created, reviewed, and submitted requirements analysis
+
+Action Points:
+- Solidify list of requirements for final proposal
+- Think about post mortem
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+September 18, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Completed, reviewed, and submitted final proposal
+- Drafted post-mortem
+
+Action Points:
+- Continue drafting post-mortem
+- Transfer minutes into GitHub document
+- Review and submit post-mortem
+- Complete and submit work share estimates
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+September 20, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Completed, reviewed, and submitted post-mortem
+- Completed and submitted work share estimates
+- Transfered minutes into GitHub document
+
+Action Points:
+N/A (Phase 1 Completed)
+----------------------------------------------------------------------
