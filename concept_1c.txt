@@ -1,0 +1,10 @@
+Team: Discord Dragons
+
+    Members: Dana, Kevin, Max, Swamik
+
+    Project: 1C - Preliminary Requirements
+       Product Proposal: https://github.com/Kayala47/SDEV-KEKW/blob/master/reqts_1c.txt
+       Primary Author: Max, Swamik
+
+
+https://docs.google.com/presentation/d/17OysuJiTz9eubUzQiDAqoh0zwknDb6RzQdJXMofw2Og/edit?usp=sharing
