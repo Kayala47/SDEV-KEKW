@@ -4,6 +4,7 @@ CS121 project to design a discord bot for TTRPGs
 
 ## Upcoming Deadlines
 Phase 2: Architecture and Review
+
 Sun 09/27	2a. Plan and Prelimnary Architecture	
 1. Develop a plan for this project, dividing the work over your team members and the available time.
 2. Develop and document an architecture and high-level component specifications for your project. This includes doing any required research and prototyping to address critical questions.
