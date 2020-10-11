@@ -5,6 +5,8 @@ Members: Kevin Ayala, Swamik Lamichhane, Max Mingst, Dana Teves
 Project:
     Post Mortem: https://github.com/Kayala47/SDEV-KEKW/blob/master/post_mortem2.txt
     Primary author(s): Kevin Ayala, Swamik Lamichhane, Dana Teves
+    Minutes: https://github.com/Kayala47/SDEV-KEKW/blob/master/minutes_2.txt
+    Planning: https://github.com/Kayala47/SDEV-KEKW/blob/master/management_2a
 
 Slip Days: 0
 
