@@ -1,0 +1,123 @@
+----------------------------------------------------------------------
+September 25, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Worked on Management Plan
+- Completed Functionality Delivery Specification
+- Completed Runtime Components Specification
+- Worked on Major Persistent Data Objects
+- Begun compiling diagrams for prototypes (tested rolling and output to Discord)
+- Completed Outstanding Issues
+- Settled on Architecture
+
+Action Points:
+- Complete Major Persistent Data Objects
+- Complete Management Plan (review comments on Phase 1 Management Plan, edit accordingly)
+- Complete Prototypes + Compile Diagrams
+- Decide on meeting time for this weekend
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+September 27, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Completed Major Persistent Data Objects
+- Completed Prototypes
+- Completed and Submitted Management Plan
+- Completed, Reviewed, and Submitted Preliminary Architecture
+
+Action Points:
+N/A (Awaiting other team's preliminary architecture.)
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+September 29, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Contacted Team Dewbed about partnering for review meeting
+
+Action Points:
+- Confirm about review meeting time
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+September 30, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Created a "when2meet" to determine review meeting time
+- Confirmed with Team TiltyBall about joining our group for the review meeting
+
+Action Points:
+- Confirm about review meeting time with Prof. Kampe
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+October 1, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Swapped architecture with Team Dewbed
+
+Action Points:
+- Confirm about review meeting time with Prof. Kampe
+- Complete individual review notes; submit 24 hours before meeting
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+October 2, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Submitted individual review notes
+- Confirm review meeting time (Sunday, Oct 4 from 12-2)
+
+Action Points:
+- Prepare roles for review meeting
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+October 4, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Review meeting with Team Dewbed
+- Completed and submitted review report
+
+Action Points:
+- Swap review reports with Team Dewbed
+- Revise architecture according to Team Dewbed's review report
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+October 6, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Read through review report
+- Assigned tasks based on feedback
+- Came to consensus about search compendium look-up
+
+Action Points:
+- Create prototype for web scraper (@elcadete)
+- Create prototype for "code" output (@Swamdoge )
+- Edit current UML diagram (@Max )
+- Add a section on search for compendium look-up (@lonewriter7 )
+- Edit necessary sections based on prototype additions and changes ( @lonewriter7)
+- Discuss how to deal with CSVs
+- Add !help as an additional function for release 1.0
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+October 9, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Edited current UML diagram
+- Added section on search for compendium look-up
+- Discussed and added command list
+- Added section on emoji reaction
+- Discussed CSV
+- Tested web scraper functionality
+
+Action Points:
+- Create prototype for web scraper (@elcadete)
+- Test embeds and create prototype (@Swamdoge )
+- Add section on CSVs, including how the CSVs will interact with the bot. (Interactions between interfaces)
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+October 11, 2020
+----------------------------------------------------------------------
+Accomplished:
+- Completed and submitted Finished Architecture
+- Completed and submitted Post Mortem
+
+Action Points:
+- N/A (Phase 2 Completed)
+----------------------------------------------------------------------
