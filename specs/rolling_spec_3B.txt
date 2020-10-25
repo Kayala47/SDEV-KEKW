@@ -1,0 +1,77 @@
+Component Design Specification - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3B: Specifications 
+    Primary Author: Max
+    Slip Days: 0
+
+PURPOSE: 
+
+The purpose of this module is to cover rolling requirements
+for common TTRPG games. The module will be able to use this 
+module to randomize custom dice rolls, specify manual input 
+rolls, and store player items in the database.
+
+Function ROLL(a)
+    possible returns: INT
+    inputs: a : INT
+    logic: rolls a random number 
+            from 1 to a, inclusive.
+    error handling: call ERR if input is non int
+
+Function ROLLADV(bool)
+    possible returns: INT
+    inputs: bool : BOOLEAN
+    logic: call ROLL(20) twice, returns
+            the greater if bool = TRUE, 
+            else returns the lesser
+    error handling: call ERR if input is nonbool
+
+Function MULTIROLL(q, die, mod, fudge?)
+    possible returns: INT
+    inputs: q, die, mod, fudge : INT
+    logic: call ROLL(die) q times,
+            return result + mod
+            if fudge is passed as an
+            arg, replace output with fudge
+    output:
+    ------------------------------------------
+    | user rolled 'q' d 'die' + 'mod' for x! |
+    ------------------------------------------
+    error handling: call ERR if q,die,mod,fudge nonint
+    
+Function ADDMACRO(q, die, mod, name)
+    possible returns: none
+    inputs: q, die, mod : INT, name : STR
+    logic: add DB item represented by a 
+            list of components. can be sent 
+            to MULTIROLL().
+    output:
+    ----------------------------
+    | user stored item 'name'. |
+    ----------------------------
+    error handling: call ERR if name in DB
+
+Function DELETEMACRO(name)
+    possible returns: none
+    inputs: name : STR
+    logic: removes item of name 'name' from DB
+    error handling: call ERR if name not in DB
+    output:
+    -----------------------------
+    | user removed item 'name'. |
+    -----------------------------
+    error handling: call ERR if name not in DB
+
+Function MANUALIN(q, die, mod, roll)
+    possible returns: STR
+    inputs: q, die, mod, roll : INT
+    logic: Expresses combination of inputs in
+            similarly to synthetic roll, but
+            specifically outputs 'roll'
+    output:
+    -----------------------------------------------
+    | user rolled 'q' d 'die' + 'mod' for 'roll'! |
+    -----------------------------------------------
+    error handling: call ERR if missing/incorrect args 
