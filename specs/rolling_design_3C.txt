@@ -1,0 +1,76 @@
+Component Design - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3C: Component Design
+    Primary Author: Max
+    Slip Days: 0
+
+PURPOSE: 
+
+The purpose of this module is to cover rolling requirements
+for common TTRPG games. The module will be able to use this 
+module to randomize custom dice rolls, specify manual input 
+rolls, and store player items in the database.
+
+def roll(int num):
+    if num != int:
+        inputError()
+    res = random number 1 <= res <= num
+    return res as int
+
+def rollAdv(bool adv):
+    if adv != bool:
+        inputError()
+    roll1 = roll(20)
+    roll2 = roll(20)
+    res = ''
+    if adv == True;
+        res = 'rolled' roll1 'and' roll2 'for' max(roll1,roll2)
+    else:
+        res = 'rolled' roll1 'and' roll2 'for' min(roll1,roll2)
+    return res
+
+
+def multiroll(int q, int die, int mod, int fudge = 0):
+    if q, die, mod, fudge != int:
+        return inputError()
+    list = []
+    res = ''
+    add a call to roll(die) to list q times
+    if fudge != 0:
+        res = 'rolled' q 'd' die '+' mod 'for' sum(list)+mod '!'
+    else:
+        res = 'rolled' q 'd' die '+' mod 'for' fudge '!'
+    return res
+    
+
+def addMacro(int q, int die, int mod, str itemname);
+    with open(file in database as WRITE):
+        if itemname in Database:
+            return dbError(True):
+        else write new row under key itemname
+    return
+    
+def delMacro(str itemname)
+    with open(file in database as WRITE):
+        if itemname not in Database:
+            return dbError(False):
+        else remove all data under key itemname
+    return
+
+def manualRoll(int q, int die, int mod, int roll):
+    if q, die, mod, fudge != int:
+        return inputError()
+    res = 'rolled' q 'd' die '+' mod 'for' roll)
+    return res
+
+def inputError():
+    res = 'double check your input arguments!'
+    return res
+
+def dbError(bool key):
+    if key == True:
+        return 'item already exists. Please remove item if attempting to add item of same name'
+    elif key == False:
+        return 'item does not exist. Check your item name.'
