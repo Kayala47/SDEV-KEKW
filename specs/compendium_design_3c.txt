@@ -1,0 +1,205 @@
+Component Design Specification - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3B: Specifications 
+    Primary Author: Kevin
+    Slip Days: 1
+
+PURPOSE: 
+
+The purpose of this module is to allow our users to access a wider variety of 
+information about the game. They will be able to use this feature to look up 
+salient facts about the game rules and mechanics without having to pay for 
+the extra features. 
+
+We'll be making use of the fact that the Dungeons and Dragons community is 
+full of extremely prolific writers and content creators. There is a very 
+complete wiki at: http://dnd5e.wikidot.com/ that we can leverage. It is full
+of all the published rules and even lots of user-created content. 
+
+CONSTANTS:
+
+    URL_STARTER =  "http://dnd5e.wikidot.com/" #we'll add keywords and search types to this
+
+LIBRARIES:
+    Beautiful Soup: a library for parsing HTML and XML files. https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+        imported as bs 
+    
+    Requests: an HTTP library "for humans". Bult to be extremely human readable. 
+        https://requests.readthedocs.io/en/master/
+
+    Imgkit: a python library that uses wkhtmltopdf infrastructure to convert a webpage into an image, using the URL. 
+        This will be useful for our "nice to have" feature of returning the image of the webpage instead of a 
+        string representation. https://pypi.org/project/imgkit/
+
+
+PUBLIC METHODS:
+
+    def search(String input):
+        arr = input.split(" ")
+
+        keywords = "-".join(arr[1:])
+
+        if (arr[0] is exactly one of ["spell", "race", "background", "feat"]):
+            result = call the appropriate helper function. Spell -> spellSearch(keywords) etc.
+        elif (arr[0].stepDist(x) < 3 where x = one of ["spell", "race", "background", "feat"]):
+            result = choose the helper function with the keyword that's fewest steps away from the input word. "Spel" -> spellSearch(keywords)
+        else:
+            result = "Invalid Input. Please try again"
+
+        return result
+
+PRIVATE METHODS: 
+
+    def editDistance(String s1, String s2):
+        # as described in https://www.geeksforgeeks.org/edit-distance-dp-5/
+
+                # If first string is empty, the only option is to 
+            # insert all characters of second string into first 
+            if m == 0: 
+                return n 
+        
+            # If second string is empty, the only option is to 
+            # remove all characters of first string 
+            if n == 0: 
+                return m 
+        
+            # If last characters of two strings are same, nothing 
+            # much to do. Ignore last characters and get count for 
+            # remaining strings. 
+            if str1[m-1]== str2[n-1]: 
+                return editDistance(str1, str2, m-1, n-1) 
+        
+            # If last characters are not same, consider all three 
+            # operations on last character of first string, recursively 
+            # compute minimum cost for all three operations and take 
+            # minimum of three values. 
+            return 1 + min(editDistance(str1, str2, m, n-1),    # Insert 
+                        editDistance(str1, str2, m-1, n),    # Remove 
+                        editDistance(str1, str2, m-1, n-1)    # Replace 
+                        ) 
+        
+            # This code is contributed by Bhavya Jain 
+
+    def classSearch(String keywords):
+
+        url = URL_STARTER + keywords
+
+        try:
+            page = requests.get(url)
+            soup = bs(page.content, 'html.parser')
+
+            results = soup.find(id='wiki-content-table')
+
+            return contents of table as string, with "\n" at the end of each row
+
+        except:
+            return "Something went wrong. Try again. \n"
+
+
+    
+    def spellSearch(String keywords):
+
+        url = URL_STARTER + "spell:" + keywords
+
+        try:
+            page = requests.get(url)
+            soup = bs(page.content, 'html.parser')
+
+            results = soup.find(class="main-content")
+
+            ret = ""
+
+            for paragraph in results:
+
+                strip out html tags (regex on "<" and ">")
+
+                ret += (contents of paragraph) + "\n"
+
+
+            return ret
+
+
+
+        except:
+            return "Something went wrong. Try again. \n"
+
+
+    def raceSearch(String keywords):
+
+
+        url = URL_STARTER + keywords
+
+        try:
+            page = requests.get(url)
+            soup = bs(page.content, 'html.parser')
+
+            results = soup.find(class="feature")
+
+            ret = ""
+
+            for div in results:
+
+                strip out html tags (regex on "<" and ">")
+                add headers to ret with two "\n" markers
+                for paragraph in div:
+                    strip out html tags
+                    add each line to ret with one "\n"
+
+
+
+            return ret
+
+        except:
+            return "Something went wrong. Try again. \n"
+
+    def backgroundSearch(String keyword):
+
+        #quick note: background pages always have the relevant features in the second paragraph
+
+        url = URL_STARTER + "background:" + keywords
+
+        try:
+            page = requests.get(url)
+            soup = bs(page.content, 'html.parser')
+
+            results = soup.find(class="feature")
+
+            ret = ""
+
+            arr = split text in secondParagraph by <br> tags
+            strip out other html elements
+
+            for line in arr:
+                ret += line
+
+
+            return ret
+
+        except:
+            return "Something went wrong. Try again. \n"
+
+    def featSearch(String keywords):
+
+        #quick note: background pages always have the relevant features in the second paragraph
+
+        url = URL_STARTER + "feat:" + keywords
+
+        try:
+            page = requests.get(url)
+            soup = bs(page.content, 'html.parser')
+
+            results = soup.find(id="page-content") # a div of paragraphs
+
+            ret = ""
+
+            for paragraph in results:
+                strip out html
+                ret += paragraph + "\n"
+
+
+            return ret
+
+        except:
+            return "Something went wrong. Try again. \n"
