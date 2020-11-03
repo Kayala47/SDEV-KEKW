@@ -1,0 +1,20 @@
+Testing Plan - Compendium Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3C: Component Design
+    Primary Author: Kevin Ayala
+    Slip Days: 1
+
+SPECIFICATIONS TO COVER:
+- users will receive results in <20 seconds
+- users can make up to 3 typos and still
+expect results
+- users will receive content identical to
+what is on the webpage
+- format will be acceptable for the bot
+(integration testing - will not be done here)
+
+
+BLACK BOX
+
