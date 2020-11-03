@@ -12,9 +12,88 @@ SPECIFICATIONS TO COVER:
 expect results
 - users will receive content identical to
 what is on the webpage
+- user should be able to submit potentially 
+100s of requests without issue
 - format will be acceptable for the bot
 (integration testing - will not be done here)
 
 
 BLACK BOX
+
+    - tests found at: https://github.com/Kayala47/SDEV-KEKW/blob/master/specs/comp_test.py
+    - tests will perform automatically after running the file
+
+    Tests:
+        General Setup: We create various lists containing possible search queries, and then mirror those
+        similar lists that are common mispellings.
+
+        time
+            - Justification: need to provide speedy lookup to users
+            - Setup: will need to import timeit in order to clock our runtimes. Also import random to help without
+            our setup
+            - Generation: we will randomly choose elements to test using the random package 
+            - Correctness: We will call an assert that makes sure elapsed time is < 20 seconds. 
+            - Cleanup: none
+
+        typos
+            - Justification: need to account for small errors when users use the compendium function
+            - Setup: none besides General
+            - Generation: We have already created some example scenarios, will test on those
+            - Correctness: Since we have verified the number of typos in our data, we know that if 
+            it runs without errors, it was able to handle that number of errors. 
+            - Cleanup: none
+
+        stepDist
+            - Justification: need to make sure algorithm is properly applied
+            - Setup: we have created phrases with some mispellings for it to check against
+            - Generation: generate manually, once.  
+            - Correctness: We will compare its results with our own to test for correctness. It 
+            should have 100% match
+            - Cleanup: none
+
+        overload
+            - Justification: our bot needs to be able to handle lots of requests close together, especially if 
+            deployed to multiple users
+            - Setup: none except General
+            - Generation: we will loop through all of our examples multiple times
+            - Correctness: It is correct if we experienced no errors in 1000 calls
+            - Cleanup: none
+
+WHITE BOX
+
+Misbehaviors:
+    - extra phrase when user enters extra space
+        could occur when a user presses an extra space, causing our program
+        to 'detect' another word during the split operation. 
+
+        extra test:
+            - make sure that extra spaces do not cause another word to be added to the keyword
+            - Justification: our bot need not be derailed by something as small as an extra space
+            - Setup: define some keywords where extra spaces are added, such as "class   barbarian" and 
+            "class barbarian   "
+            - Generation: by hand, as above
+            - Correctness: It is correct if the length of the generated list from a split(" ") operation
+            is the same on inputs with extra spaces as it is on inputs with correct spaces
+            - Cleanup: none
+            
+    - tags not correctly stripped
+        our regex could fail to catch all tags. This may occur because tags may take on different shapes and sizes,
+        such as <strong> </strong> tags and <br> tags. In the former, we have a close and end, where the latter 
+        self-closes. 
+        
+        - Justification: this is part of creating a good experience for the user; they should not have to 
+        see these tags. It may also interfer with our discord interface
+        - Setup: test on all of the search cases defined in black box testing and make sure no tags are present. 
+        The easiest way is to make sure that there are no remaining "<" or ">" characters, and everything that would
+        have been between them has been deleted also.
+        - Generation: done in General Setup
+        - Correctness: It is correct ifno "<" or ">" characters remain in a treated string.
+        - Cleanup: none
+
+    - wrong url (because of inconsistencies in webpage)
+    - no such element found
+        both of these errors may occur if the website layout changes in the future. We can design tests to check whether
+        this has occured simply by continually checking if the same inputs continue to yield a response every few months,
+        but we will have to correct by hand. We also won't be able to tell what /should/ be there programmatically, Since
+        if the structure changed, our scraper will not work.
 
