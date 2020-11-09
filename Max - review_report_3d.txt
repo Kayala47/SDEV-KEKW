@@ -1,0 +1,66 @@
+Review Writeup - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3D: Review Report  
+    Primary Author: Max
+    Slip Days: 0
+
+November 8th 6:45pm
+Participants: Dana, Kevin, Max, Swamik
+
+The component being reviewed during this session was the rolling module,
+which details the specification, design, and testing procedures for the
+system responsible for handling user rolls and outputing results emulating
+physical dice in a table top game.
+
+Must Fix
+- Issue: No way to actually use macros
+    - There is no clear method of using a stored player macros
+
+- Defect: User may want to roll different sized die (ex: 2d4 + 1d6 for a magic blade)
+    - multiRoll() does not currently have the design that would allow for this flexibility
+
+- Question: Calling roll() without parameters
+    - Should default to rolling a d20, as is standard in TTRPGs
+
+- Issue: Lack of testing clarity
+    - We have the capability to provide users better error handling
+    - should try to suggest which parameters resulted in failure
+    - more specific info is more helpful to newer users and players
+
+- Issue: No white box tests
+    - insufficient algorithmic intensity is not conducive for white box tests
+    - revised error handling structure will better justify white box tests
+
+Should Fix
+- Issue: Specs should outline error handling
+    - specific error handling features should be better outlined
+
+- Question: Want more detail regarding macro storage
+    - Macros will be stored in a csv in the same location as the bot (For now)
+    - This should allow for a party to be able to access information about each others items
+        - This should not be a privacy concern
+
+Comments
+- Issue: Lack of explicit testing structure
+    - Will use py unittest
+
+- Question: Item collisions with macros
+    - Will return a dberror() and return the info about the collision
+
+- Question: Method names all caps in specification
+    - Will not be the case in actual design
+
+- Question: How does multiroll store results
+    - results are stored in a list in case we decide to print all rolls later
+
+- Question: Will manual rolls be distinct from fudge rolls?
+    - It will be clear to users that a manual input roll is done so manually, fudging should be concealed.
+
+Based on the  report and the issues and defects raised during the meeting,
+we decided to approve the project with the required changes. The largest issue
+requiring an immediate fix is the absence of architecture regarding macro handling.
+The other issue lies in the lack of detail regarding how macros are stored. In the 
+meeting, the team had clear plans for both of these, and so we believe that the
+project will be ready after handling those shortcomings. 
