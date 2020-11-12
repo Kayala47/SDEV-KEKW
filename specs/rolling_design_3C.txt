@@ -65,6 +65,14 @@ def manualRoll(int q, int die, int mod, int roll):
     res = 'rolled' q 'd' die '+' mod 'for' roll)
     return res
 
+def callMacro(str name):
+    if name in Database:
+        roll = multiroll(draw params from DB)
+    else:
+        return dbError()
+    res = 'used item' name ',' roll
+    return res
+        
 def inputError():
     res = 'double check your input arguments!'
     return res
