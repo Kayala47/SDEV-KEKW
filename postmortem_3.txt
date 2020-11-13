@@ -1,0 +1,9 @@
+Team: Discord Dragons
+
+    Members: Dana, Kevin, Max, Swamik
+
+    Project: 3E - Postmortem
+       Product Proposal: https://github.com/Kayala47/SDEV-KEKW/blob/master/management_3a.txt
+       Primary Author: All
+       
+https://docs.google.com/document/d/1gZ3tPzJDrALMw-BHoXtuedr8PV86a_R4XTkOlRUWwU8/edit?usp=sharing
