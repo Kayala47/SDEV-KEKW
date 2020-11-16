@@ -1,0 +1,205 @@
+Component Design - Bot Interface Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3C: Component Design
+    Primary Author: Swamik Lamichhane
+    Slip Days: 0
+
+PURPOSE: 
+
+The purpose of this module is to handel the user inputs and to act as the user interface. As such, the purpose of 
+most of the functions in this module will be getting the user input ready for calls to other modules, and how to 
+handel invalid inputs. The functions described are public methods and the only way for users to interact with out bot. 
+
+All of the functions below listen to user input using discord's built in methods. The primary listening mechanism 
+will be the bot.on('message', ...). What this built in function does is listen to all of the messages written by all 
+of the users in the text chanel. Then if the message starts with the chosen prefix, it will know that it is a command. Then 
+depending on what the command is it will do a different functon. 
+
+// Pseudocode 
+
+// Global  
+PREFIX_LIST = [!, $, -, ?, /]
+PREFIX = one value in PREFIX_LIST
+
+initive = a reference to an initive tracker object from the initive tracker module 
+
+bot.on('message', function (user, userID, channelID, message, evt) {
+
+    // this is how we tell if the user is asking the bot to do a command 
+    // if the user does not start a message with the given prefix, the bot will not respond to the user or return anything 
+    if (message.substring(0,1) == 'PREFIX'){
+        args = message.substring(1).split (' ') // splitting the message by a space 
+        cmd = args [0] // cmd is the name of the command that the user wants to do 
+        // Now we have the cmd so we will have different functions depending on the cmd  
+
+    if cmd == help: 
+            return a message to the text channel with basic information about how to use the bot funcitons 
+    
+    // normal roll 
+    // inputs for roll should be in the format [number of dice]d[sides of dice] + [modifier] [fudge roll if aplicable] or just roll with nothing after it 
+    if cmd == multiroll:
+                inputs = message[6:] // this will get the string of charecters the user inputted after !roll 
+
+                // if the user wants to call with no inputs to roll
+                if inputs == "": 
+                    result = call to the roll function in the rolling module with no inputs 
+                    return result as a message to the chat 
+
+                // cases where the inputs are not empty and thus need to be in the correct format 
+
+                rollInputs = inputs.split("d") // this will separate the input into a list of inputs where the first item in list is the number of dice to roll 
+                // note the second item in the roll input list will be a list in the form "numberOfDice+modifier fudgeroll"
+                fudgeRoll = rollInputs[1].split(" ")[1] // if the user did put a fudge roll we will see it here, empty if there is none 
+                sideDiceAndModifier = rollInputs[1].split(" ")[0].split("+") // a list where first item is side of the dice and next item is the modifier 
+                num_dice = rollInputs[0] 
+                sideDice = sideDiceAndModifier[0]
+                modifier = sideDiceAndModifier[1]
+
+                if num_dice == "": 
+                    return error message saying they need to input a value for the number of dice 
+                else if sideDice == "": 
+                    return error message saying they need to input a value for the side of dice 
+                // do not need to check for modifier or fudge because they are not mandatory for roll 
+                // if the message passes the two checks, we can call the roll function 
+                else: 
+                    result = call to the roll module with the above inputs 
+                    return result as imbedded message to the chat 
+
+    // advantage roll 
+    // inputs for advantage roll should be either a true or a false 
+    if cmd == rollAdv:
+        input = message.split(" ")[1]
+        if input == "": 
+            return a message saying that the inputs of rollAdv need to be in the format rollAdv with either true or false 
+        else: 
+            // note I am not checking if the user inputs a true or false, just checking that it has an input 
+            // rolling module coder was adiment that he will handle the input checks in his own function 
+
+            result = call to the rollAdv function in rolling module with input 
+            return result as a message to chat 
+
+    // manual roll 
+    // the inputs should be in format: [number of dice]d[sides of dice] + [modifier] [result of manual roll]
+    if cmd == mroll: 
+        inputs = message[6:] // this will get the string of charecters the user inputted after !roll 
+
+                if inputs == "": // manual roll needs to have inputs so its an error 
+                    return error message to chat saying that manual roll needs inputs in a certain format and explain format 
+
+                // cases where the inputs are not empty and thus need to be in the correct format 
+
+                rollInputs = inputs.split("d") // this will separate the input into a list of inputs where the first item in list is the number of dice to roll 
+                // note the second item in the roll input list will be a list in the form "numberOfDice+modifier rollResult"
+                rollResult = rollInputs[1].split(" ")[1] // if the user did put the roll result we will see it here, empty if there is none 
+                sideDiceAndModifier = rollInputs[1].split(" ")[0].split("+") // a list where first item is side of the dice and next item is the modifier 
+                num_dice = rollInputs[0] 
+                sideDice = sideDiceAndModifier[0]
+                modifier = sideDiceAndModifier[1]
+
+                if num_dice == "": 
+                    return error message saying they need to input a value for the number of dice 
+                else if sideDice == "": 
+                    return error message saying they need to input a value for the side of dice 
+                else if modifier == "": 
+                    return error message saying they need to input a value for the modifier
+                else if rollResult == "": 
+                    return error message saying they need to input a value for the roll result 
+                // if the message passes the four checks, we can call the manual roll function 
+                else: 
+                    result = call to the roll module with the above inputs 
+                    return result as imbedded message to the chat 
+
+    // adding a macro 
+    // inputs should be in format die q mod name 
+    // this is spacing sensative so spacing is required for the inputs from the user 
+    if cmd == addMacro: 
+        inputs = message.split(" ")[1:] // this will make a list of all the inputs to the function 
+        die = inputs [0]
+        q = inputs [1]
+        mod = inputs [2]
+        name = inputs [3]
+
+        if die == "": 
+            return error message saying they need to input a value for the number of die 
+        else if q == "": 
+            return error message saying they need to input a value for q
+        else if mod == "": 
+            return error message saying they need to input a value for the mod 
+        else if name == "": 
+            return error message saying they need to input a value for name 
+        else: 
+            return the call to the add macro function in the rolling module 
+
+    // deleting macro 
+    // input should be name 
+    if cmd == delMacro: 
+        input = message.split(" ")
+        // the name should be in the second position in the list 
+        name = input[1]
+        if name == "": 
+            return an error message saying that you need to input a name of an macro 
+        else: 
+            call the delete macro function from the rolling module 
+
+    // calling macro 
+    // input should be name 
+    if cmd == callMacro: 
+        input = message.split(" ")
+        // the name should be in the second position in the list 
+        name = input[1]
+        if name == "": 
+            return an error message saying that you need to input a name of an macro 
+        else: 
+            call the call macro function from the rolling module 
+
+    // joining the initive tracker 
+    // inputs should be: username name init 
+    // this is spacing sensative so spacing is required for the inputs from the user 
+    if cmd == join: 
+       username = {member.username} // built in function for discord bots that allows you to get the username of the user that inputted that username 
+       inputs = message.split(" ")
+        // the name should be in the second position in the list and the init should follow the name 
+        name = input[1]
+        init = input[2]
+        if name == "": 
+            return an error message saying that you need to input a name 
+        else if init == "": 
+            return an error message saying we need a value for init 
+        else: 
+            call initive.join with the inputs of name and init 
+
+    // starting the initive tracker 
+    if cmd == begin: 
+        call initive.begin()
+        // we will also have an emoji reaction functinality: Users can give emoji reactions to the message returned by the bot and do an action
+        message.awaitReact("EMOJI"): 
+            // call the logic for each specific emoji case from the inititve tracker module 
+            if emoji == next: 
+                initive.next()
+            if emoji == previous: 
+                initive.previous()
+
+    if cmd == end: 
+        call initive.end()
+
+    // the search funciton 
+    // inputs should be [spell/background/feat/class/race/monster/item] [keyword]
+    // this is spacing sensative so spacing is required for the inputs from the user 
+    if cmd == search: 
+
+        inputs = message.split(" ")
+        // the keywords should be in the second and third position in the list 
+
+        searchWord1 = inputs[1]
+        searchWord2 = inputs[2]
+
+        if searchWord1 == "" or searchWord2 == "": 
+            return an error message saying that the inputs were not in correct format 
+        else: 
+            result = call to the search module with searchWord1 and searchWord2 as inputs
+            return the result as imbedded message in the chat 
+    }
+})
+
