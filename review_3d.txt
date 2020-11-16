@@ -1,0 +1,96 @@
+Review Write Up: Bot Interface Module 
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3D.1: Review Notes 
+    Primary Author: Swamik 
+    Slip Days: 0
+
+November 8th 10:00pm
+Participants: Dana, Kevin, Max, Swamik
+
+The component being reviewed during this session was the bot interface 
+module, which details the specification, design, and testing procedures 
+for the system responsible for handling user inputs and passing back messages to 
+the user. 
+
+Must Fix: 
+
+- Defect: The bot cannot handle the case when the call to the roll function is not spaced 
+    - The user should not be expected to put spaces: 1d20 + 5 should be the same as 1d20+5
+    - the code structure cannot handle that
+
+-Defect: The bot cannot handel negative modifiers 
+    - it was brought up that negative modifiers are used in most TTRPGs 
+    - The current logic for the reading the inputs for the roll command cannot handel this
+
+-Defect: Cannot test the bot interface indipendently 
+    - this module is relient on the other modules for its testing 
+    - A revised testing plan was suggested to allow for more individual testing 
+    - creating a log of the results from the tests was suggested 
+    - logging a message such as "call to multiroll was successful" would allow for more individual testing 
+
+-Defect: No advantage or disadvantage rolling option 
+    - This method was not present in the original architecture and got added 
+    - Need to add another command in the bot interface design to impliment this funciton 
+
+- Issue: No white box tests
+    - There was not enough algorithmic intensity to warrent white box tests
+    - A revised error handling structure for user inputs will justify white box testing 
+
+- Issue: Need more testing clarity/ error handeling 
+    - there needs to be more checks to the user inputs 
+    - can give the users more specific feedback on what param of their input is wrong 
+    - the specific error messages should be better outlined 
+ 
+ -Issue: The initive tracker also needs to be passed the username of the user for the initive tracker 
+    - currently the username is recognized but not passed 
+
+-Issue: The prefixes are limited to the list provided
+    - The issues arise if there are multiple bots that use the same prefix 
+    - SHould not limit the user to predefined prefix list: allow users to make anything their prefix 
+
+-Question: Does the emoji reaction for the initive tracker need to be a different function?
+    - No, the emoji reaction is a part of the same function that initially returns the message to the user 
+    - the emoji reaction feature, much like the bot listeing to the chat for specific commands, will only 
+        listen to reactions made on the message that was sent. It is not a seperate function, just a part 
+        of the original 
+
+- Question: What is the default call to roll with no params
+    - it will just call the default roll fucntion from the rolling module 
+
+
+Should Fix: 
+
+-Issue: Manual Roll Formatting 
+    - The manual roll should be formatted the same way as the regualr roll for consistency 
+
+-Issue: The output for a messed up fudge roll attempt 
+    - currently the bot does not return anything for a messed up fudge roll attempt 
+        - done to not notifuy the other users that a fudge roll was attempted 
+    - need to handel error cases better to better notify the user on the instructions for how to fudge roll 
+        - possibly send a direct message to the user 
+
+-Question: How are you spliting up the user message or passing the params to the other modules?
+    - The creators of the other modules made it clear that they want the user inputs as is (meaning not split or tampered with)
+    - the bot interface will only check that the inputs are in the correct format (ex: xdy + z)
+        - will not check that x,y,z are ints, that check is handeled by the rolling module 
+
+
+
+Comments: 
+
+- Issue: Not readable formatting the result to the user 
+    - the bot will only return the result from the other modules as is 
+    - there needs to better formatting to make it easier for the user to read 
+
+- Issue: Lack of explicit testing structure
+    - Will use py unittest 
+
+Based on the  report and the issues and defects raised during the meeting,
+we decided to approve the project with the required changes. The largest issue
+requiring an immediate fix is the handeling of user inputs. There needs to be more checks 
+on the format of the command that the user is sending and error handeling for each case 
+needs to be more specific. There are some commands missing from the bot interface as well. 
+In the meeting, reasonable solutions for these issues were suggested, and so we believe that the
+project will be ready after handling those shortcomings. 
