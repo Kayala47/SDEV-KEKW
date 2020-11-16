@@ -1,4 +1,4 @@
-Testing Plan - Compendium Module
+Testing Plan - Initiative Tracker Module
 
 Team: Discord Dragons
     Members: Dana, Kevin, Max, Swamik
