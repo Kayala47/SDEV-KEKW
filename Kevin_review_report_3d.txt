@@ -1,0 +1,78 @@
+Review Writeup - Compendium Lookup
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3D: Review Report  
+    Primary Author: Kevin
+    Slip Days: 0
+
+Participants: Dana, Kevin, Max, Swamik
+
+The component being reviewed during this session was the 
+compendium search, which details the specification, design, and testing
+procedures for the module responsible for handling user lookup of critical
+information. This system will alternatively call from an API or scrape 
+the web for the necessary information. 
+
+MUST FIX
+
+- Issue: No call to API; unnecessary work
+    - Explanation: The current schema does not account for using the
+    API at all. It only uses the web scraper to get the information online.
+    This may be extra work, since the API does have some of that information
+    in a more easily retrievable way, and also could be a little less 
+    correct, since we want to use the official sources whenever possible.
+    - Author Comment: Will correct. Initial thought was that it was more
+    efficient to automatically use the web scraper for everything, but
+    that may not be the case. It should be a fairly easy addition to make.
+- Issue: Inadequate error handling 
+    - Explanation: The current schema does not handle errors very well. We 
+    need more solid responses than "that didn't work, please try again". At 
+    the very least, we need to show our users what is wrong with the query. 
+    - Author Comment: Will do. I'll get to work on separating out the breakpoints
+    so that we can more adequately respond to errors. The system should know what 
+    went wrong at which point. 
+- Issue: better code documentation. 
+    - Explanation: There were very few comments in the code, and that makes it 
+    hard for non-original authors to implement this piece. Please add more and 
+    better comments so that anyone could take over the module if necessary.
+    - Author Comment: That's a good point, I'll add more explanation of the concepts
+    into the code itself. I thought the spec and design might each do that, but it 
+    is hard to be piecing all that together as you're trying to code. 
+
+
+SHOULD FIX
+
+- Issue: Unclear on purpose for editDistance
+    - Explanation: the entire editDistance function seems hard to implement and 
+    we're unsure what the value of adding it is. 
+    - Author Comment: Ok. I initally added it so that we could have a slightly more
+    robust module and be a little more responsive, but I'm happy to remove it
+    if it removes clutter. It is pretty easy to implement however, since the 
+    algorithm is readily available online. 
+
+- Question: Mobile/Desktop changes
+    - Full: Will the web scraper be a problem for users using a desktop or Mobile 
+    version of the app? 
+    - Author Response: It shouldn't be. The framework that I'm using with python 
+    doesn't actually use the user's browser or anything, so they'll always be 
+    looking at information scraped from the desktop version of Chrome, which 
+    is generally very reliable. The only way we might run into errors is if we 
+    implement the "icing on the cake" feature of giving them a picture of the webpage,
+    in which case, yes, we'll have to worry about formatting. In that case, however,
+    it's more about formatting of the webpage itself, and will still be using one 
+    standard way of seeing it, not whatever the user is using. 
+
+
+COMMENTS
+
+- Issue: Need a better outlining of the packages used in documentation.
+    - Response: Will do. There is only one I didn't list, but I will expand the
+    explanation for each. 
+
+Based on discussion with the rest of my group members, we believe this module should
+be ready to go with some small changes. The big changes to be made are to add an initial 
+path that checks the API first before resorting to using the web scraper, and several 
+tweaks to the error messages to provide the user with more info in the case of a crash. 
+The former should be a quick fix, while the latter might take a couple more hours to 
+implement. 
