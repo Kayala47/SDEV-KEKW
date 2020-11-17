@@ -1,7 +1,7 @@
 import unittest
 import timeit
 import random
-#from ourfile import search, stepDIst
+#from ourfile import search, stepDIst, stripHTML
 
 
 class BlackBoxTesting(unittest.TestCase):

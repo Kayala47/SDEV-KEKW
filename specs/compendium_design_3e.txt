@@ -33,14 +33,24 @@ LIBRARIES:
         This will be useful for our "nice to have" feature of returning the image of the webpage instead of a 
         string representation. https://pypi.org/project/imgkit/
 
+    Pyunittest: a python library for creating unit tests. https://docs.python.org/3/library/unittest.html
+
 
 PUBLIC METHODS:
 
     def search(String input):
-        arr = input.split(" ")
+        arr = input.split(" ") #get the distinct inputs
 
-        keywords = "-".join(arr[1:])
+        keywords = "-".join(arr[1:]) #all words after the type descriptor are assumed 
+        #to be the keywords we're searching for
 
+        #first, we're trying to get the answer from the api 
+        api_response_url = "https://www.dnd5eapi.co/api/" + arr[0] + "/" + arr[1:]
+
+        if (response from api_response_url) != {"error":"Not found"}:
+            return the response
+
+        #otherwise we move on to get it from the web scraper
         if (arr[0] is exactly one of ["spell", "race", "background", "feat"]):
             result = call the appropriate helper function. Spell -> spellSearch(keywords) etc.
         elif (arr[0].stepDist(x) < 3 where x = one of ["spell", "race", "background", "feat"]):
@@ -85,17 +95,32 @@ PRIVATE METHODS:
     def classSearch(String keywords):
 
         url = URL_STARTER + keywords
+        #the keywords are in the form "barbarian"
+        #a sample url looks like "http://dnd5e.wikidot.com/class/barbarian"
 
         try:
-            page = requests.get(url)
-            soup = bs(page.content, 'html.parser')
+            page = requests.get(url) #grab all info from this page
 
-            results = soup.find(id='wiki-content-table')
+            soup = bs(page.content, 'html.parser') #grabs the text, including html
+
+            results = soup.find(id='wiki-content-table') #finds the specific element 
+            #with this id
+
+            #the specific form here is a table with class information, such as
+            # ---------------
+            #  level  |   num of rages / long rest | other features
+            #  1      |  2                         | Ability Score Improvement
+            # 20      |  Unlimited                 | Capstone Ability
+            # --------------
+
+            #all classes have a similar table, and we'll return a string representation 
+            #line by line 
 
             return contents of table as string, with "\n" at the end of each row
 
         except:
-            return "Something went wrong. Try again. \n"
+            return "We can't find this spell. We only have information from 
+            http://dnd5e.wikidot.com/ available \n"
 
 
     
@@ -108,6 +133,15 @@ PRIVATE METHODS:
             soup = bs(page.content, 'html.parser')
 
             results = soup.find(class="main-content")
+
+            #the specific form of the info here is 
+            # Casting time, range, components, duration on a separate line each
+            # single or multi paragraph description 
+            #at higher levels ...
+            # spell lists (which ones this spell is on)
+
+            #we'll copy out the casting time, range, components and durations as separate 
+            #lines, then print out the paragraph descriptors paragraph by paragraph a
 
             ret = ""
 
@@ -137,6 +171,11 @@ PRIVATE METHODS:
 
             results = soup.find(class="feature")
 
+            #the specific form of this information is a list of features, each with a 
+            #paragraph descriptions: abilitiy score increases, age, alignment, size, 
+            #speed, darkvision, languages, /special/, where special is that race's specific 
+            attribute. These are each denoted by a <strong> tag, so they will be easy to parse.
+
             ret = ""
 
             for div in results:
@@ -152,7 +191,8 @@ PRIVATE METHODS:
             return ret
 
         except:
-            return "Something went wrong. Try again. \n"
+            return "We can't find this race. We only have information from 
+            http://dnd5e.wikidot.com/ available \n"
 
     def backgroundSearch(String keyword):
 
@@ -171,6 +211,12 @@ PRIVATE METHODS:
             arr = split text in secondParagraph by <br> tags
             strip out other html elements
 
+            #the specific form of this information is 
+            # a list of elements such as skills, tools, languages, equipment, each in their 
+            # own lines. Afterwards, you have some small features, which aren't really useful 
+
+            #we'll only strip the important elements as denoted by their <strong> tag. 
+
             for line in arr:
                 ret += line
 
@@ -178,7 +224,8 @@ PRIVATE METHODS:
             return ret
 
         except:
-            return "Something went wrong. Try again. \n"
+            return "We can't find this background. We only have information from 
+            http://dnd5e.wikidot.com/ available  \n"
 
     def featSearch(String keywords):
 
@@ -192,6 +239,14 @@ PRIVATE METHODS:
 
             results = soup.find(id="page-content") # a div of paragraphs
 
+            # the specific form this information is in is as follows:
+            # a small paragraph describing the conditions under which you can apply 
+            # these benefits.
+            #followed by a list of benefits 
+
+            #we will take the entire list and the preceding paragraph, and present it as a string
+            # for each line. 
+
             ret = ""
 
             for paragraph in results:
@@ -202,4 +257,13 @@ PRIVATE METHODS:
             return ret
 
         except:
-            return "Something went wrong. Try again. \n"
+            return "We can't find this feat. We only have information from 
+            http://dnd5e.wikidot.com/ available  \n"
+
+    def stripHTML(string):
+
+        string.replace("x", "")
+        #where x is regex for any text surrounded by "< >" or "</ >", 
+        #including the "<", ">", and "/" symbols themselves
+
+        return string
