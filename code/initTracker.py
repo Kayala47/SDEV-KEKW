@@ -12,27 +12,50 @@ class InitTracker:
     def printTracker(self):
         if self.trackerInfo == []:
             self.channel.send("No combatants have joined initiative!")
+
+            print("No combatants have joined initiative!")
         else:
             current = 0
             self.channel.send("-----------------------------------")
             self.channel.send("Current Initiative:" + str(rounds))
             self.channel.send("-----------------------------------")
+
+            # print statements
+            print("-----------------------------------")
+            print("Current Initiative:" + str(rounds))
+            print("-----------------------------------")
+
             for data in self.trackerInfo:
                 if current == self.currentPlayer:
                     self.channel.send("**" + str(data[2]) + ": " + data[1] + "**")
+                    
+                    # print statements
+                    print("**" + str(data[2]) + ": " + data[1] + "**")
                 else:
                     self.channel.send(str(data[2]) + ": " + data[1])
+
+                    # print statements
+                    print(str(data[2]) + ": " + data[1])
                 current = current + 1
             self.channel.send("-----------------------------------")
+
+            # print statements
+            print("-----------------------------------")
     
     def join(self, username, name, initiative):
         for data in self.trackerInfo:
             if name == data[1]:
                 self.channel.send("That character already exists!")
+
+                # print statements
+                print("That character already exists!")
                 break
         
         if self.currentPlayer != 0:
             self.channel.send("Combat has already begun!")
+
+            # print statements
+            print("Combat has already begun!")
         else:
             # Add all relevant information to the arrays.
             self.trackerInfo.append([username, name, initiative])
@@ -42,6 +65,9 @@ class InitTracker:
     def begin(self):
         if self.currentPlayer != 0:
             self.channel.send("Combat has already begun!")
+
+            # print statements
+            print("Combat has already begun!")
         else:
             self.printTracker()
             # return self.usernames(currentPlayer)
