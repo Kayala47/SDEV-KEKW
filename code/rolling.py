@@ -54,14 +54,14 @@ def rollAdv(adv = True):
 
 def multiroll(die = 20, q = 1, mod = 0, fudge = 0):
     errorlist = []
-    if not isinstance(die, int):
-        errorlist.append(str(die))
-    if not isinstance(q, int):
-        errorlist.append(str(q))
-    if not isinstance(mod, int):
-        errorlist.append(str(mod))
-    if not isinstance(fudge, int):
-        errorlist.append(str(fudge))
+    try: int(q)
+    except ValueError: errorlist.append(str(q))
+    try: int(die)
+    except ValueError: errorlist.append(str(die))
+    try: int(mod)
+    except ValueError: errorlist.append(str(mod))
+    try: int(fudge)
+    except ValueError: errorlist.append(str(fudge))
     if errorlist:
         return inputError(errorlist)
     
@@ -74,14 +74,14 @@ def multiroll(die = 20, q = 1, mod = 0, fudge = 0):
 
 def manualRoll(roll, die = 20, q = 1, mod = 0):
     errorlist = []
-    if not isinstance(die, int):
-        errorlist.append(str(die))
-    if not isinstance(q, int):
-        errorlist.append(str(q))
-    if not isinstance(mod, int):
-        errorlist.append(str(mod))
-    if not isinstance(roll, int):
-        errorlist.append(str(roll))
+    try: int(q)
+    except ValueError: errorlist.append(str(q))
+    try: int(die)
+    except ValueError: errorlist.append(str(die))
+    try: int(mod)
+    except ValueError: errorlist.append(str(mod))
+    try: int(roll)
+    except ValueError: errorlist.append(str(roll))
     if errorlist:
         return inputError(errorlist)
     
@@ -95,14 +95,20 @@ def manualRoll(roll, die = 20, q = 1, mod = 0):
 
 def addMacro(q, die, mod, itemname):
     errorlist = []
-    if not isinstance(die, int):
-        errorlist.append(str(die))
-    if not isinstance(q, int):
-        errorlist.append(str(q))
-    if not isinstance(mod, int):
-        errorlist.append(str(mod))
-    if not isinstance(itemname, str):
-        errorlist.append(str(itemname))
+    try: int(q)
+    except ValueError: errorlist.append(str(q))
+    try: int(die)
+    except ValueError: errorlist.append(str(die))
+    try: int(mod)
+    except ValueError: errorlist.append(str(mod))
+    # if not isinstance(die, int):
+    #     errorlist.append(str(die))
+    # if not isinstance(q, int):
+    #     errorlist.append(str(q))
+    # if not isinstance(mod, int):
+    #     errorlist.append(str(mod))
+    # if not isinstance(itemname, str):
+    #     errorlist.append(str(itemname))
     if errorlist:
         return inputError(errorlist)
 
@@ -138,7 +144,7 @@ if __name__ == '__main__':
     q = input('q: ')
     die = input('die: ')
     mod = input('mod: ')
-    print(addMacro(int(q), int(die), int(mod), name))
+    print(addMacro(q,die,mod,name))
     # cond = input("New Item? (y/n)")
     # if cond == 'n':
     #     break
