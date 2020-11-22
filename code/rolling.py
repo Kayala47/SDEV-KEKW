@@ -1,4 +1,4 @@
-from random import *
+import random
 import csv
 
 # Component Design - Rolling Module
@@ -39,7 +39,7 @@ def dbError(keyfound, itemname):
 def roll(num = 20):
     if not isinstance(num, int):
         return inputError(['roll'])
-    res = randint(1,num)
+    res = random.randint(1,num)
     return res
 
 def rollAdv(adv = True):
@@ -101,14 +101,6 @@ def addMacro(q, die, mod, itemname):
     except ValueError: errorlist.append(str(die))
     try: int(mod)
     except ValueError: errorlist.append(str(mod))
-    # if not isinstance(die, int):
-    #     errorlist.append(str(die))
-    # if not isinstance(q, int):
-    #     errorlist.append(str(q))
-    # if not isinstance(mod, int):
-    #     errorlist.append(str(mod))
-    # if not isinstance(itemname, str):
-    #     errorlist.append(str(itemname))
     if errorlist:
         return inputError(errorlist)
 
@@ -119,18 +111,30 @@ def addMacro(q, die, mod, itemname):
 
     with open('macroset.csv', mode='a+', newline='') as macro_file:
         if itemname in build_set('macroset.csv'):
-            return print(dbError(True, itemname))
+            return dbError(True, itemname)
         macro_writer = csv.writer(macro_file, lineterminator='\r')
         item = [itemname, q, die, mod]
         macro_writer.writerow(item)
         return 'successfully added item %s with attributes %sd%s+(%s) to the game database!'%(itemname, q, die, mod)
         
 def delMacro(itemname):
-    with open('macroset.csv', mode='w') as macro_file:
-        macro_writer = csv.writer(macro_file)
-        for row in csv.reader(macro_file):
-            if row[0] == itemname:
-                macro_writer.writerow(row)
+    lines = list()
+    item = itemname
+    with open('macroset.csv', 'r') as readFile:
+        reader = csv.reader(readFile)
+        for row in reader:
+            lines.append(row)
+            for field in row:
+                if field == item:
+                    lines.remove(row)
+        if item not in lines:
+            return dbError(False, itemname)
+    with open('macroset.csv', 'w') as writeFile:
+        writer = csv.writer(writeFile)
+        writer.writerows(lines)
+    
+    return 'successfully deleted item %s from the game database!'%(itemname)
+
 
 def callMacro(itemname):
     pass
@@ -141,10 +145,10 @@ if __name__ == '__main__':
 
         
     name = input('name: ')
-    q = input('q: ')
-    die = input('die: ')
-    mod = input('mod: ')
-    print(addMacro(q,die,mod,name))
+    # q = input('q: ')
+    # die = input('die: ')
+    # mod = input('mod: ')
+    print(delMacro(name))
     # cond = input("New Item? (y/n)")
     # if cond == 'n':
     #     break
