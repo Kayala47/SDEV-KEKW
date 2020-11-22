@@ -54,18 +54,18 @@ def rollAdv(adv = True):
 
 def multiroll(die = 20, q = 1, mod = 0, fudge = 0):
     errorlist = []
-    try: int(q)
+    try: q = int(q)
     except ValueError: errorlist.append(str(q))
-    try: int(die)
+    try: die = int(die)
     except ValueError: errorlist.append(str(die))
-    try: int(mod)
+    try: mod = int(mod)
     except ValueError: errorlist.append(str(mod))
-    try: int(fudge)
+    try: fudge = int(fudge)
     except ValueError: errorlist.append(str(fudge))
     if errorlist:
         return inputError(errorlist)
     
-    rolls = [[roll(die)] for i in range(q)]
+    rolls = [roll(die) for i in range(q)]
     if fudge == 0:
         res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, sum(rolls))
     else:
@@ -115,7 +115,7 @@ def addMacro(q, die, mod, itemname):
         macro_writer = csv.writer(macro_file, lineterminator='\r')
         item = [itemname, q, die, mod]
         macro_writer.writerow(item)
-        return 'successfully added item %s with attributes %sd%s+(%s) to the game database!'%(itemname, q, die, mod)
+        return 'successfully added item %s with attributes %s d %s + (%s) to the game database!'%(itemname, q, die, mod)
         
 def delMacro(itemname):
     lines = list()
@@ -127,17 +127,21 @@ def delMacro(itemname):
             for field in row:
                 if field == item:
                     lines.remove(row)
-        if item not in lines:
-            return dbError(False, itemname)
     with open('macroset.csv', 'w') as writeFile:
         writer = csv.writer(writeFile)
         writer.writerows(lines)
-    
     return 'successfully deleted item %s from the game database!'%(itemname)
 
 
 def callMacro(itemname):
-    pass
+    lines = list()
+    with open('macroset.csv', 'r') as readFile:
+        reader = csv.reader(readFile)
+        for row in reader:
+            lines.append(row)
+    for item in lines:
+        if item[0] == itemname:
+            return multiroll(item[2], item[1], item[3])
 
 
 
@@ -148,7 +152,8 @@ if __name__ == '__main__':
     # q = input('q: ')
     # die = input('die: ')
     # mod = input('mod: ')
-    print(delMacro(name))
+    # print(addMacro(q,die,mod,name))
+    print(callMacro(name))
     # cond = input("New Item? (y/n)")
     # if cond == 'n':
     #     break
