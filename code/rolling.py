@@ -38,7 +38,7 @@ def dbError(keyfound, itemname):
 
 def roll(num = 20):
     if not isinstance(num, int):
-        return inputError(['roll'])
+        return inputError([num])
     res = random.randint(1,num)
     return res
 
@@ -148,12 +148,13 @@ def callMacro(itemname):
 if __name__ == '__main__':
 
         
-    name = input('name: ')
+    # name = input('name: ')
     # q = input('q: ')
     # die = input('die: ')
     # mod = input('mod: ')
     # print(addMacro(q,die,mod,name))
-    print(callMacro(name))
+    # print(delMacro(name))\
+    print(rollAdv())
     # cond = input("New Item? (y/n)")
     # if cond == 'n':
     #     break
