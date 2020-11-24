@@ -22,7 +22,7 @@ import csv
 
 def inputError(paramlist):
     params = ', '.join(paramlist)
-    res = 'Slow your roll! We did not recognize the following parameters: [%s], please be sure to use the following format: x d y + z.' %(params)
+    res = 'Slow your roll! We did not recognize the following parameters: [%s].' %(params)
     return res 
 
 def dbError(keyfound, itemname):
@@ -44,7 +44,7 @@ def roll(num = 20):
 
 def rollAdv(adv = True):
     if not isinstance(adv, bool):
-        return inputError(['adv'])
+        return inputError([adv])
     roll1, roll2 = roll(), roll()
     if adv:
         res = 'rolled %s and %s for %s!' %(roll1, roll2, max(roll1,roll2))
@@ -120,13 +120,17 @@ def addMacro(q, die, mod, itemname):
 def delMacro(itemname):
     lines = list()
     item = itemname
+    flag = False
     with open('macroset.csv', 'r') as readFile:
         reader = csv.reader(readFile)
         for row in reader:
             lines.append(row)
             for field in row:
                 if field == item:
+                    flag = True
                     lines.remove(row)
+        if not flag:
+            return dbError(flag, itemname)
     with open('macroset.csv', 'w') as writeFile:
         writer = csv.writer(writeFile)
         writer.writerows(lines)
@@ -153,8 +157,8 @@ if __name__ == '__main__':
     # die = input('die: ')
     # mod = input('mod: ')
     # print(addMacro(q,die,mod,name))
-    # print(delMacro(name))\
-    print(rollAdv())
+    # print(delMacro(name))
+    print(rollAdv('x'))
     # cond = input("New Item? (y/n)")
     # if cond == 'n':
     #     break
