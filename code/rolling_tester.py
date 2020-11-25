@@ -2,7 +2,7 @@ import unittest
 import os
 from rolling import *
 
-class TestRollingMethods(unittest.TestCase):
+class BlackBoxTests(unittest.TestCase):
     
 #-------------------------------------------
 #  BLACK BOX TEST CASES
@@ -113,14 +113,49 @@ class TestRollingMethods(unittest.TestCase):
 #  WHITE BOX TEST CASES
 #-------------------------------------------
 
-    def test_multiRollWB(self):
-        pass
+    #Note: Specs incorrectly identified the following test case:
+    # Testing: multiroll(die ?= 20, q ?= 1, mod ?= 0, fudge ?= 0)
+    # Testing Case 1: Assert that a 4th parameter (fudge) successfully overrides the roll
+    #                 without providing any indication of doing so.
+    # Justification: Fudge rolling is a valuable tool for a DM when discrete. We need
+    #                to ensure that adding the 4th parameter changes the behavior of the
+    #                function without showing the players.
+    # Special Set-Up: None
+    # Generation: Call multiroll with full parameter completeness AND a fudge > 0
+    #             (ex. 1d20+4 24 will return 24 regardless of the roll)
+    # Correctness: Correctly outputs formatted string with fudge substituted for calculation.
+    # Clean-Up: None
+
+    # This behavior is a black box test - as such it was included there instead
+
+class WhiteBoxTests(unittest.TestCase):
+    def setUp(self):
+        with open('macroset.csv', mode='a+', newline='') as macro_file:
+            macro_writer = csv.writer(macro_file, lineterminator='\r')
+            item = ['sword of the divine', 2, 10, 6]
+            macro_writer.writerow(item)
+    
+    def tearDown(self):
+        if os.path.exists('macroset.csv'):
+            os.remove('macroset.csv')
 
     def test_addMacroWB(self):
-        pass
+        addMacro(1, 2, 3, 'spear of testing')
+        with open('macroset.csv', 'r') as f:
+            reader = csv.reader(f)
+            items = [[row] for row in reader]
+        for item in items:
+            if item[0] == 'spear of testing':
+                self.assertEqual(item[1], 1)
+                self.assertEqual(item[2], 2)
+                self.assertEqual(item[3], 3)
 
     def test_delMacroWB(self):
-        pass
+        delMacro('sword of the divine')
+        with open('macroset.csv', 'r') as f:
+            reader = csv.reader(f)
+            items = [[row] for row in reader]
+        self.assertEqual(items, [])
 
     def test_inputError(self):
         pass

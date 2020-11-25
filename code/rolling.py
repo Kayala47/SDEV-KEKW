@@ -1,5 +1,6 @@
 import random
 import csv
+import os
 
 # Component Design - Rolling Module
 
@@ -115,9 +116,6 @@ def addMacro(q, die, mod, itemname):
     if errorlist:
         return inputError(errorlist)
 
-    if q < 1 or die < 1:
-        return negativeError()
-
     def build_set(filename):
         with open(filename, 'r') as f:
             reader = csv.reader(f)
@@ -145,8 +143,8 @@ def delMacro(itemname):
                     lines.remove(row)
         if not flag:
             return dbError(flag, itemname)
-    with open('macroset.csv', 'w') as writeFile:
-        writer = csv.writer(writeFile)
+    with open('macroset.csv', 'w', newline='') as writeFile:
+        writer = csv.writer(writeFile, lineterminator='\r')
         writer.writerows(lines)
     return 'successfully deleted item %s from the game database!'%(itemname)
 
@@ -162,16 +160,21 @@ def callMacro(itemname):
             return multiroll(item[2], item[1], item[3])
     return dbError(False, itemname)
 
+def deleteMacroFile():
+    if os.path.exists('macroset.csv'):
+        os.remove('macroset.csv')
 
 if __name__ == '__main__':
-
+    
         
     name = input('name: ')
-    # q = input('q: ')
-    # die = input('die: ')
-    # mod = input('mod: ')
-    print(callMacro(name))
+    q = input('q: ')
+    die = input('die: ')
+    mod = input('mod: ')
+    print(addMacro(q,die,mod,name))
+    # print(callMacro(name))
     # print(delMacro(name))
+    # deleteFile()
     # print(rollAdv('x'))
     # cond = input("New Item? (y/n)")
     # if cond == 'n':
