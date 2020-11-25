@@ -25,6 +25,9 @@ def inputError(paramlist):
     res = 'Slow your roll! We did not recognize the following parameters: [%s].' %(params)
     return res 
 
+def negativeError():
+    return 'Please ensure that dice and/or quantity are positive integers!'
+
 def dbError(keyfound, itemname):
     if keyfound:
         res = '%s already exists. Please remove item if attempting to add item of same name.' %(itemname)
@@ -39,6 +42,8 @@ def dbError(keyfound, itemname):
 def roll(num = 20):
     if not isinstance(num, int):
         return inputError([num])
+    if num < 1:
+        return negativeError()
     res = random.randint(1,num)
     return res
 
@@ -65,6 +70,9 @@ def multiroll(die = 20, q = 1, mod = 0, fudge = 0):
     if errorlist:
         return inputError(errorlist)
     
+    if q < 1 or die < 1:
+        return negativeError()
+    
     rolls = [roll(die) for i in range(q)]
     if fudge == 0:
         res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, sum(rolls))
@@ -85,7 +93,10 @@ def manualRoll(roll, die = 20, q = 1, mod = 0):
     if errorlist:
         return inputError(errorlist)
     
-    res = 'rolled %s d %s + %s for %s!' %(q, die, mod, roll)
+    if q < 1 or die < 1:
+        return negativeError()
+
+    res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, roll)
     return res
 
 
@@ -103,6 +114,9 @@ def addMacro(q, die, mod, itemname):
     except ValueError: errorlist.append(str(mod))
     if errorlist:
         return inputError(errorlist)
+
+    if q < 1 or die < 1:
+        return negativeError()
 
     def build_set(filename):
         with open(filename, 'r') as f:
@@ -146,19 +160,19 @@ def callMacro(itemname):
     for item in lines:
         if item[0] == itemname:
             return multiroll(item[2], item[1], item[3])
-
+    return dbError(False, itemname)
 
 
 if __name__ == '__main__':
 
         
-    # name = input('name: ')
+    name = input('name: ')
     # q = input('q: ')
     # die = input('die: ')
     # mod = input('mod: ')
-    # print(addMacro(q,die,mod,name))
+    print(callMacro(name))
     # print(delMacro(name))
-    print(rollAdv('x'))
+    # print(rollAdv('x'))
     # cond = input("New Item? (y/n)")
     # if cond == 'n':
     #     break
