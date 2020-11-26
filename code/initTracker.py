@@ -56,13 +56,14 @@ class InitTracker:
 
             return "Combat has already begun!"
         
-        elif type(initiative) != int:
-            # print statements
-            print("Initiative must be an integer!")
-
-            return "Initiative must be an integer!"
-
         else:
+            try:
+                initiative = int(initiative)
+            except ValueError:
+                print("Initiative must be an integer!")
+
+                return "Initiative must be an integer!"
+
             # Add all relevant information to the array.
             self.trackerInfo.append([username, name, initiative])
 
@@ -85,8 +86,7 @@ class InitTracker:
         else:
             self.sortTrackerInfo()
             self.rounds = 1
-            self.printTracker()
-            return self.trackerInfo[self.currentPlayer]
+            return self.printTracker()
     
     def end(self):
         # Clear the initiative tracker information.
@@ -103,17 +103,17 @@ class InitTracker:
             self.inc_round()
         else:
             self.currentPlayer = self.currentPlayer + 1
-        self.printTracker()
-        return self.trackerInfo[self.currentPlayer]
+        return self.printTracker()
     
+    # If !prev is called at start before join or begin, there's an error! :)
+    # If !prev is called after begin, there's an error! :)
     def prev(self):
         if self.currentPlayer - 1 == -1:
             self.currentPlayer = len(self.trackerInfo) - 1
             self.dec_round()
         else:
             self.currentPlayer = self.currentPlayer - 1
-        self.printTracker()
-        return self.trackerInfo[self.currentPlayer]
+        return self.printTracker()
     
     def inc_round(self):
         self.rounds += 1

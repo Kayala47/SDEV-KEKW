@@ -7,7 +7,7 @@ import discord.ext
 import random
 import string
 import re
-# import initTracker
+from initTracker import *
 
 """
 Chnages that need to be made: 
@@ -16,11 +16,12 @@ says that the user does not have all of the correct inputs. same for the join, w
 just have one error. Same for search, we cannot tell which key word is missing 
 """
 
-TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.4rdKAsGECwKYdu3Dp3-17IiROPc"
+TOKEN = ""
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
 bot = commands.Bot(command_prefix='!', description=description)
+tracker = InitTracker()
 
 # First few functions are welcoming a user when they join the same server as the bot and other pure UI things 
 @bot.event
@@ -236,16 +237,41 @@ async def callMacro(ctx, arg):
         await ctx.send("Attempting to call the macro with the name: " + argument)
 
 @bot.command()
-async def join(ctx):
-     await ctx.send("")
+async def join(ctx, *arg):
+    username = ctx.message.author
+    name = " ".join(arg[:-1])
+    initRoll = arg[-1]
+
+    msg = tracker.join(username, name, initRoll)
+
+    await ctx.send(username.mention + " " + msg)
 
 @bot.command()
 async def begin(ctx):
-     await ctx.send("")
+    msg = tracker.begin()
+    await ctx.send(msg)
 
 @bot.command()
 async def end(ctx):
-     await ctx.send("")
+    msg = tracker.end()
+    await ctx.send(msg)
+
+@bot.command()
+async def next(ctx):
+    msg = tracker.next()
+    username = tracker.trackerInfo[tracker.currentPlayer][0]
+    await ctx.send(username.mention + "\n" + msg)
+
+@bot.command()
+async def prev(ctx):
+    msg = tracker.prev()
+    username = tracker.trackerInfo[tracker.currentPlayer][0]
+    await ctx.send(username.mention + "\n" + msg)
+
+@bot.command()
+async def showTracker(ctx):
+    msg = tracker.printTracker()
+    await ctx.send(msg)
 
 @bot.command()
 async def search(ctx, *args):
