@@ -168,10 +168,10 @@ if __name__ == '__main__':
     
         
     name = input('name: ')
-    q = input('q: ')
-    die = input('die: ')
-    mod = input('mod: ')
-    print(addMacro(q,die,mod,name))
+    # q = input('q: ')
+    # die = input('die: ')
+    # mod = input('mod: ')
+    # print(addMacro(q,die,mod,name))
     # print(callMacro(name))
     # print(delMacro(name))
     # deleteFile()
