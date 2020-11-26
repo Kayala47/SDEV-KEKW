@@ -13,10 +13,11 @@ from initTracker import *
 Chnages that need to be made: 
 the addMacro cannot check for each individual inputs as we do not know which input the user was trying to make. SO we now just have one error that 
 says that the user does not have all of the correct inputs. same for the join, we cannot be certain of what filed the users were missing so we will 
-just have one error. Same for search, we cannot tell which key word is missing 
+just have one error. Same for search, we cannot tell which key word is missing. 
+We decided to remove the emoji listener as calling the next and other things were easier 
 """
 
-TOKEN = ""
+TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.d1wBbHBr_QdyCg7Zun3eTUmRlyI"
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
@@ -243,7 +244,6 @@ async def join(ctx, *arg):
     initRoll = arg[-1]
 
     msg = tracker.join(username, name, initRoll)
-
     await ctx.send(username.mention + " " + msg)
 
 @bot.command()
@@ -269,7 +269,7 @@ async def prev(ctx):
     await ctx.send(username.mention + "\n" + msg)
 
 @bot.command()
-async def showTracker(ctx):
+async def show(ctx):
     msg = tracker.printTracker()
     await ctx.send(msg)
 
