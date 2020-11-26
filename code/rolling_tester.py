@@ -181,6 +181,18 @@ class WhiteBoxTests(unittest.TestCase):
         'spear of testing does not exist. Check your item name.'
         self.assertEqual(delMacro('spear of testing'), message)
 
+    #Note: These tests were added after the programmer forgot to spec out a key function
+    def test_callMacro_with_item(self):
+        message = \
+        'rolled 2 d 10 + (6) for '
+        test = callMacro('sword of the divine')
+        self.assertEqual(test, message + test[24:])
+
+    def test_callMacro_without_item(self):
+        message = \
+        'test does not exist. Check your item name.'
+        self.assertEqual(callMacro('test'), message)
+
     #Note: Error toolkit does not necessitate white box testing, the components 
     #      calling the error methods did, so testing is done there instead
 
