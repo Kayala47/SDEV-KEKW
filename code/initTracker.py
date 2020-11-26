@@ -29,7 +29,7 @@ class InitTracker:
                     # print statements
                     print("**" + str(data[2]) + ": " + data[1] + "**")
                 else:
-                    toPrint = toPrint + str(data[2]) + ": " + data[1]
+                    toPrint = toPrint + "\n" + str(data[2]) + ": " + data[1]
 
                     # print statements
                     print(str(data[2]) + ": " + data[1])
@@ -55,11 +55,19 @@ class InitTracker:
             print("Combat has already begun!")
 
             return "Combat has already begun!"
+        
+        elif type(initiative) != int:
+            # print statements
+            print("Initiative must be an integer!")
+
+            return "Initiative must be an integer!"
+
         else:
-            # Add all relevant information to the arrays.
+            # Add all relevant information to the array.
             self.trackerInfo.append([username, name, initiative])
-            # Sort tracker information.
-            self.sortTrackerInfo()
+
+            # print statements
+            print("Combatant successfully joined!")
 
             return "Combatant successfully joined!"
     
@@ -69,7 +77,13 @@ class InitTracker:
             print("Combat has already begun!")
 
             return "Combat has already begun!"
+        elif len(self.trackerInfo) < 2:
+            # print statements
+            print("At least two combatants required!")
+
+            return "At least two combatants required!"
         else:
+            self.sortTrackerInfo()
             self.rounds = 1
             self.printTracker()
             return self.trackerInfo[self.currentPlayer]
@@ -113,16 +127,16 @@ class InitTracker:
     def sortTrackerInfo(self):
         self.trackerInfo = sorted(self.trackerInfo, key = lambda x:x[2], reverse = True)
 
-i = InitTracker()
+# i = InitTracker()
 
-i.join("@dana", "Scarlett", 17)
-i.join("@swam", "Blobfish", 1)
-i.join("@raf", "Meoung", 20)
+# i.join("@dana", "Scarlett", 17)
+# i.join("@swam", "Blobfish", 1)
+# i.join("@raf", "Meoung", 20)
 
-i.begin()
-i.next()
-i.next()
-i.next()
-i.prev()
-i.end()
-i.printTracker()
+# i.begin()
+# i.next()
+# i.next()
+# i.next()
+# i.prev()
+# i.end()
+# i.printTracker()
