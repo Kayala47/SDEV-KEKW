@@ -17,7 +17,7 @@ just have one error. Same for search, we cannot tell which key word is missing.
 We decided to remove the emoji listener as calling the next and other things were easier 
 """
 
-TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.d1wBbHBr_QdyCg7Zun3eTUmRlyI"
+TOKEN = ""
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
