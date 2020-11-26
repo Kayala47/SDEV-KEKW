@@ -7,6 +7,20 @@ class BlackBoxTests(unittest.TestCase):
 #-------------------------------------------
 #  BLACK BOX TEST CASES
 #-------------------------------------------
+    def test_inputError(self):
+        message = \
+        'Slow your roll! We did not recognize the following parameters: [x].'
+        self.assertEqual(inputError(['x']), message)
+    
+    def test_dbError_False(self):
+        message = \
+        'test does not exist. Check your item name.'    
+        self.assertEqual(dbError(False,'test'), message)
+   
+    def test_dbError_True(self):
+        message = \
+        'test already exists. Please remove item if attempting to add item of same name.'
+        self.assertEqual(dbError(True, 'test'), message)
 
     def test_roll(self):
         for test in range(1000):
@@ -139,7 +153,7 @@ class WhiteBoxTests(unittest.TestCase):
         if os.path.exists('macroset.csv'):
             os.remove('macroset.csv')
 
-    def test_addMacroWB(self):
+    def test_addMacro_no_collision(self):
         addMacro(1, 2, 3, 'spear of testing')
         with open('macroset.csv', 'r') as f:
             reader = csv.reader(f)
@@ -149,19 +163,26 @@ class WhiteBoxTests(unittest.TestCase):
                 self.assertEqual(item[1], 1)
                 self.assertEqual(item[2], 2)
                 self.assertEqual(item[3], 3)
-
-    def test_delMacroWB(self):
+    
+    def test_addMacro_collision(self):
+        message = \
+        'sword of the divine already exists. Please remove item if attempting to add item of same name.'
+        self.assertEqual(addMacro(10, 10, 10, 'sword of the divine'), message)
+    
+    def test_delMacro_with_item(self):
         delMacro('sword of the divine')
         with open('macroset.csv', 'r') as f:
             reader = csv.reader(f)
             items = [[row] for row in reader]
         self.assertEqual(items, [])
+    
+    def test_delMacro_no_item(self):
+        message = \
+        'spear of testing does not exist. Check your item name.'
+        self.assertEqual(delMacro('spear of testing'), message)
 
-    def test_inputError(self):
-        pass
-
-    def test_dbError(self):
-        pass
+    #Note: Error toolkit does not necessitate white box testing, the components 
+    #      calling the error methods did, so testing is done there instead
 
 if __name__ == '__main__':
     unittest.main()
