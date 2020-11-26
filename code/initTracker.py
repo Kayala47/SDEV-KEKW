@@ -75,9 +75,9 @@ class InitTracker:
     def begin(self):
         if self.currentPlayer != 0:
             # print statements
-            print("Combat has already begun!")
+            print("Combat has already begun! User !end to clear the initiative tracker.")
 
-            return "Combat has already begun!"
+            return "Combat has already begun! User !end to clear the initiative tracker."
         elif len(self.trackerInfo) < 2:
             # print statements
             print("At least two combatants required!")
@@ -98,17 +98,30 @@ class InitTracker:
         return "Initiative tracker cleared!"
 
     def next(self):
-        if self.currentPlayer + 1 == len(self.trackerInfo):
+        if self.currentPlayer == 0:
+            # print statement
+            print("Combat hasn't begun yet! Use !begin to begin combat.")
+
+            return "Combat hasn't begun yet! Use !begin to begin combat."        
+        elif self.currentPlayer + 1 == len(self.trackerInfo):
             self.currentPlayer = 0
             self.inc_round()
         else:
             self.currentPlayer = self.currentPlayer + 1
         return self.printTracker()
     
-    # If !prev is called at start before join or begin, there's an error! :)
-    # If !prev is called after begin, there's an error! :)
     def prev(self):
-        if self.currentPlayer - 1 == -1:
+        if self.currentPlayer == 0 and self.rounds == 0:
+            # print statement
+            print("Combat hasn't begun yet! Use !begin to begin combat.")
+
+            return "Combat hasn't begun yet! Use !begin to begin combat."
+        elif self.currentPlayer == 0 and self.rounds == 1:
+            # print statement
+            print("You're at the beginning of combat already!")
+
+            return "You're at the beginning of combat already!"
+        elif self.currentPlayer - 1 == -1:
             self.currentPlayer = len(self.trackerInfo) - 1
             self.dec_round()
         else:

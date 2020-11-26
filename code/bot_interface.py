@@ -53,10 +53,14 @@ Fudgeroll takes in xdy + modifier fudgeroll. all are necessary for a fudge roll
 async def roll(ctx, *arg):
      arguments = " ".join(arg)
      results = []
+     # !!! ADDED !!!
+     toSend = ""
      fudgeRoll = "Temp String"
      # this is the default call 
      if arguments == "": 
         await ctx.send("You called default roll, rolling a d20")
+        
+        toSend = str(roll())
         pass 
      elif not("d" in arguments):
         await ctx.send("Input Error: Make sure that your input for roll is in the format xdy + m")
@@ -117,6 +121,11 @@ async def roll(ctx, *arg):
         results.append(modifier)
         if fudgeRoll != "Temp String":
             results.append(fudgeRoll)
+        
+        # !!! ADDED !!!
+        toPrint = str(multiRoll(results[0], results[1], results[2], results[3]))
+        await ctx.send(toPrint)
+        # Delete once debugging is complete.
         await ctx.send(results)
         pass 
      
@@ -132,6 +141,9 @@ async def rollAdv(ctx, arg):
     # note we are not checking the validity of the person's input here: the checks for the input is done in the rolling module. 
     # I just have to check that the user passed a input with roll adv 
     else: 
+        # !!! ADDED !!!
+        await ctx.send(rollAdv())
+        # Delete once debugging is complete.
         await ctx.send("Called rollAdv with input: " + arg)
 
 """
@@ -189,6 +201,10 @@ async def mRoll(ctx, *args):
         results.append(sideDie)
         results.append(modifier)
         print(results)
+
+        # !!! ADDED !!!
+        await ctx.send(mRoll(results[0], results[1], results[2], results[3]))
+        # Delete once debugging is complete.
         await ctx.send(results)
         
 
@@ -211,6 +227,9 @@ async def addMacro(ctx, *args):
          pass 
      else: 
          await ctx.send("Processing your request to addMacro")
+         # !!! ADDED !!!
+         await ctx.send(addMacro(args[0], args[1], args[2], args[3]))
+         # Delete once debugging is complete.
          await ctx.send(inputs)
 
 """
@@ -225,6 +244,9 @@ async def delMacro(ctx, arg):
         await ctx.send("To delete a macro, you must input the name of the macro you wish to delete")
         pass 
     else: 
+        # !!! ADDED !!!
+        await ctx.send(arg)
+        # Delete once debugging is complete.
         await ctx.send("Attempting to delete the macro with the name: " + argument)
 
 @bot.command()
@@ -235,6 +257,9 @@ async def callMacro(ctx, arg):
         await ctx.send("To call a macro, you must input the name of the macro you wish to call")
         pass 
     else: 
+        # !!! ADDED !!!
+        await ctx.send(arg)
+        # Delete once debugging is complete.
         await ctx.send("Attempting to call the macro with the name: " + argument)
 
 @bot.command()
