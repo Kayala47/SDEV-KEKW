@@ -126,17 +126,3 @@ class InitTracker:
 
     def sortTrackerInfo(self):
         self.trackerInfo = sorted(self.trackerInfo, key = lambda x:x[2], reverse = True)
-
-# i = InitTracker()
-
-# i.join("@dana", "Scarlett", 17)
-# i.join("@swam", "Blobfish", 1)
-# i.join("@raf", "Meoung", 20)
-
-# i.begin()
-# i.next()
-# i.next()
-# i.next()
-# i.prev()
-# i.end()
-# i.printTracker()
