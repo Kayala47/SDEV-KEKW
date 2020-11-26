@@ -71,7 +71,33 @@ class BlackBoxTests(unittest.TestCase):
         self.assertEqual(rollAdv(""), errorResult)
         # with the input "arg"
         msg = "Called rollAdv with input: arg"
-        self.assertEqual(rollAdv("arg"), msg=)
+        self.assertEqual(rollAdv("arg"), msg)
+
+    def test_addMacro(self):
+        msg1 = "You are missing all of the inputs needed for the addMacro function."
+        msg2 = "Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information"
+        result = msg1 + " " + msg2
+        self.assertEqual(addMacro(""), result)
+
+        msg1 = "You have too many inputs for the funciton addMacro."
+        msg2 = "Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information"
+        result = msg1 + " " + msg2
+        self.assertEqual(addMacro(("d", "q", "m", "name", "extra")), result)
+
+        self.assertEqual(addMacro(("d", "q", "m", "name")), ["d", "q", "m", "name"])
+
+    def test_delMacro(self):
+        self.assertEqual(delMacro(("")), "To delete a macro, you must input the name of the macro you wish to delete")
+        self.assertEqual(delMacro(("name")), "name")
+    
+    def test_callMacro(self):
+        self.assertEqual(callMacro(("")), "To call a macro, you must input the name of the macro you wish to call")
+        self.assertEqual(callMacro(("name")), "name")
+
+    def test_join(self):
+        self.assertEqual(join(("name", "initRoll")), ["name", "initRoll"])
+        self.assertEqual(join(""), "To join initiative, the input must be in the form: [name] [initiative roll].")
+        self.assertEqual(join(("name", "lastName", "initRoll"), ["name lastName", "initRoll"])
 
 if __name__ == '__main__':
     unittest.main()

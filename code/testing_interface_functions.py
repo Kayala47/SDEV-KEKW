@@ -164,11 +164,14 @@ def callMacro(arg):
 
 def join(arg):
     result = []
-    name = " ".join(arg[:-1])
-    initRoll = arg[-1]
-    result.append(name)
-    result.append(initRoll)
-    return result
+    if len(arg) < 2:
+        return "To join initiative, the input must be in the form: [name] [initiative roll]."
+    else:
+        name = " ".join(arg[:-1])
+        initRoll = arg[-1]
+        result.append(name)
+        result.append(initRoll)
+        return result
     
 def begin():
       return "Begin function called"

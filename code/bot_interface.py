@@ -239,12 +239,15 @@ async def callMacro(ctx, arg):
 
 @bot.command()
 async def join(ctx, *arg):
-    username = ctx.message.author
-    name = " ".join(arg[:-1])
-    initRoll = arg[-1]
+    if len(arg) < 2:
+        await ctx.send("To join initiative, the input must be in the form: [name] [initiative roll].")
+    else:
+        username = ctx.message.author
+        name = " ".join(arg[:-1])
+        initRoll = arg[-1]
 
-    msg = tracker.join(username, name, initRoll)
-    await ctx.send(username.mention + " " + msg)
+        msg = tracker.join(username, name, initRoll)
+        await ctx.send(username.mention + " " + msg)
 
 @bot.command()
 async def begin(ctx):
