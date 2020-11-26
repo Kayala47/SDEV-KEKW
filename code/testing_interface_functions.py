@@ -7,11 +7,12 @@ def helpMe():
     return "SOME MESSAGE TO HELP: maybe a link to github"
 
 def roll(arg):
-    arguments = " ".join(arg)
+    arguments = "".join(arg)
+    print("this is new")
     results = []
     fudgeRoll = "Temp String"
-    # this is the default call 
-    if arguments == "": 
+    #this is the default roll 
+    if arguments == "":
         return "You called default roll, rolling a d20"
     elif not("d" in arguments):
         return "Input Error: Make sure that your input for roll is in the format xdy + m"
@@ -20,55 +21,56 @@ def roll(arg):
         numDie = elementList[0].split("d")[0]
         if numDie == "":
             return "Please input a value for the number of dice. Roll should be in format xdy+m where x is number of dice you want to roll. Please use help for more information"
-        results.append(numDie)
+        else:
+            results.append(numDie)
+        
+        # this case is to take care of when user just passes in xdy 
         if len(elementList) == 1: 
             sideDie = elementList[0].split("d")[1]
         elif len(elementList) == 2: 
-            if not elementList[0].endswith("+") and not elementList[0].endswith("-"):
+            if (not elementList[0].endswith("+")) and (not elementList[0].endswith("-")):
                 if not ("+" in elementList[1]):
                     fudgeRoll = elementList[1]
         elif len(elementList) == 3:
             if elementList[1] != "+":
                 fudgeRoll = elementList[2]
         elif len(elementList) == 4:
-            fudgeRoll = elementList [3]
-        # if there is a fudge roll, remove it from the argument string 
+            fudgeRoll = elementList[3]
+        # if there is a fudge roll, remove it 
         if arguments.endswith(fudgeRoll):
             arguments = arguments[:-(len(fudgeRoll))]
 
-        # the argument now has all of the fudgeroll numbers taken out if there was a fudgeroll 
         arguments = arguments.split("d")
         modifier = "+0"
         numDie = arguments[0]
         if "+" in arguments[1]:
             sideDie = arguments[1].split("+")[0]
-            if sideDie == " ":
+            if sideDie == " " or sideDie == "":
                 return "Please input a value for the side of dice. Roll should be in format xdy+m where y is the number of sides of the die you want to roll. Please use help for more information"
-            modifier = ''.join(arguments[1].split("+")[1:])
-            if modifier == "":
-                # "You inputed no modifier after the +, defaulted to modifier +0"
+            modifier = "".join(arguments[1].split("+")[1:])
+            if modifier == "" or modifier == " ":
+                # You inputed no modifier after the +, defaulted to modifier +0
                 modifier = "+0"
-            modifier = "+" + arguments[1].split("+")[1]
+            modifier = "+" + "".join(arguments[1].split("+")[1:])
         elif "-" in arguments[1]:
             sideDie = arguments[1].split("-")[0]
-            if sideDie == " ":
+            if sideDie == " " or sideDie == "":
                 return "Please input a value for the side of dice. Roll should be in format xdy+m where y is the number of sides of the die you want to roll. Please use help for more information"
-            modifier =  arguments[1].split("-")[1]
-            if modifier == "":
-                # "You inputed no modifier after the -, defaulted to modifier +0"
+            modifier = "".join(arguments[1].split("-")[1:])
+            if modifier == "" or modifier == " ":
+                # You inputed no modifier after the +, defaulted to modifier +0
                 modifier = "+0"
-            else: 
-                modifier = "-" + arguments[1].split("-")[1]
-                
+            print("this is modifier:")
+            print("".join(arguments[1].split("-")[1:]))
+            modifier = "-" + "".join(arguments[1].split("-")[1:])
+        
         sideDie = "".join(sideDie.split())
         modifier = "".join(modifier.split())
         results.append(sideDie)
         results.append(modifier)
         if fudgeRoll != "Temp String":
             results.append(fudgeRoll)
-            print(fudgeRoll)
         return results
-          
 """
 Rolling adv takes in one input: a bool: a true or a false statement 
 """
