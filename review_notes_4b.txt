@@ -1,0 +1,21 @@
+Review Notes - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 4B - Review Notes
+    Primary Author: Dana Teves
+
+----------------------------------------------------------------------------------
+rolling.py
+----------------------------------------------------------------------------------
+- rollAdv and multiroll both return strings, but if multiroll is used for rolling
+  initiative for !join. (eg. !join [name] [modifier] will call multiroll('1', '20',
+  '[modifier]').
+- It may be useful to have a function that shows you all existing macros, in case
+  the player forgot.
+----------------------------------------------------------------------------------
+rolling_tester.py
+----------------------------------------------------------------------------------
+- Confused about test_callMacro_with_item. Is it because rolling functionality is
+  required and precise roll isn't possible? In that case, can't you roll 1d1 + 1
+  to ensure you'll always get 2 to test this?
