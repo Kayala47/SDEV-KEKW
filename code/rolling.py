@@ -15,21 +15,21 @@ import os
 # The purpose of this module is to cover rolling requirements
 # for common TTRPG games. The module will be able to use this 
 # module to randomize custom dice rolls, specify manual input 
-# rolls, and store player items in the database.
+# rolls, and store player items in the database for use.
 
 #--------------------------------------------#
 # Error toolkit
 #--------------------------------------------#
 
-def inputError(paramlist):
+def inputError(paramlist: list) -> str:
     params = ', '.join(paramlist)
     res = 'Slow your roll! We did not recognize the following parameters: [%s].' %(params)
     return res 
 
-def negativeError():
+def negativeError() -> str:
     return 'Please ensure that dice and/or quantity are positive integers!'
 
-def dbError(keyfound, itemname):
+def dbError(keyfound: bool, itemname: str) -> str:
     if keyfound:
         res = '%s already exists. Please remove item if attempting to add item of same name.' %(itemname)
     else:
@@ -40,7 +40,7 @@ def dbError(keyfound, itemname):
 # Rolling toolkit
 #--------------------------------------------#
 
-def roll(num = 20):
+def roll(num: int = 20) -> int:
     if not isinstance(num, int):
         return inputError([num])
     if num < 1:
@@ -48,7 +48,7 @@ def roll(num = 20):
     res = random.randint(1,num)
     return res
 
-def rollAdv(adv = True):
+def rollAdv(adv: bool = True) -> str:
     if not isinstance(adv, bool):
         return inputError([adv])
     roll1, roll2 = roll(), roll()
@@ -58,7 +58,7 @@ def rollAdv(adv = True):
         res = 'rolled %s and %s for %s!' %(roll1, roll2, min(roll1,roll2))
     return res
 
-def multiroll(die = 20, q = 1, mod = 0, fudge = 0):
+def multiroll(die: int = 20, q: int = 1, mod: int = 0, fudge: int = 0) -> str:
     errorlist = []
     try: q = int(q)
     except ValueError: errorlist.append(str(q))
@@ -81,7 +81,7 @@ def multiroll(die = 20, q = 1, mod = 0, fudge = 0):
         res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, fudge)
     return res    
 
-def manualRoll(roll, die = 20, q = 1, mod = 0):
+def manualRoll(roll: int, die: int = 20, q: int = 1, mod: int = 0) -> str:
     errorlist = []
     try: int(q)
     except ValueError: errorlist.append(str(q))
@@ -105,7 +105,7 @@ def manualRoll(roll, die = 20, q = 1, mod = 0):
 # Macro toolkit
 #--------------------------------------------#
 
-def addMacro(q, die, mod, itemname):
+def addMacro(q: int, die: int, mod: int, itemname: str) -> str:
     errorlist = []
     try: int(q)
     except ValueError: errorlist.append(str(q))
@@ -116,7 +116,7 @@ def addMacro(q, die, mod, itemname):
     if errorlist:
         return inputError(errorlist)
 
-    def build_set(filename):
+    def build_set(filename: str) -> dict:
         with open(filename, 'r') as f:
             reader = csv.reader(f)
             return {row[0] for row in reader}
@@ -129,7 +129,7 @@ def addMacro(q, die, mod, itemname):
         macro_writer.writerow(item)
         return 'successfully added item %s with attributes %s d %s + (%s) to the game database!'%(itemname, q, die, mod)
         
-def delMacro(itemname):
+def delMacro(itemname: str) -> str:
     lines = list()
     item = itemname
     flag = False
@@ -149,7 +149,7 @@ def delMacro(itemname):
     return 'successfully deleted item %s from the game database!'%(itemname)
 
 
-def callMacro(itemname):
+def callMacro(itemname: str) -> str:
     lines = list()
     with open('macroset.csv', 'r') as readFile:
         reader = csv.reader(readFile)
@@ -160,7 +160,7 @@ def callMacro(itemname):
             return multiroll(item[2], item[1], item[3])
     return dbError(False, itemname)
 
-def deleteMacroFile():
+def deleteMacroFile() -> None:
     if os.path.exists('macroset.csv'):
         os.remove('macroset.csv')
 
