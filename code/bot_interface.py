@@ -277,7 +277,8 @@ async def join(ctx, *arg):
 @bot.command()
 async def begin(ctx):
     msg = tracker.begin()
-    await ctx.send(msg)
+    username = tracker.trackerInfo[tracker.currentPlayer][0]
+    await ctx.send(username.mention + "\n" + msg)
 
 @bot.command()
 async def end(ctx):
