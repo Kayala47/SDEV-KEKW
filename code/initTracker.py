@@ -50,7 +50,7 @@ class InitTracker:
                 return "That character already exists!"
                 break
         
-        if self.currentPlayer != 0:
+        if self.rounds != 0:
             # print statements
             print("Combat has already begun!")
 
@@ -73,7 +73,7 @@ class InitTracker:
             return "Combatant successfully joined!"
     
     def begin(self):
-        if self.currentPlayer != 0:
+        if self.rounds != 0:
             # print statements
             print("Combat has already begun! User !end to clear the initiative tracker.")
 
