@@ -1,0 +1,9 @@
+Team: Discord Dragons
+
+    Members: Dana, Kevin, Max, Swamik
+
+    Project: 3A - Management Plan
+       Product Proposal: https://github.com/Kayala47/SDEV-KEKW/blob/master/management_3a.txt
+       Primary Author: All
+
+https://docs.google.com/spreadsheets/d/1ML0ODebEEwGcPAekUhCLZj7egm31-GguYHxkyjDvVOo/edit#gid=0
