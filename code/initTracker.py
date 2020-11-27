@@ -29,7 +29,7 @@ class InitTracker:
                     # print statements
                     print("**" + str(data[2]) + ": " + data[1] + "**")
                 else:
-                    toPrint = toPrint + str(data[2]) + ": " + data[1]
+                    toPrint = toPrint + "\n" + str(data[2]) + ": " + data[1]
 
                     # print statements
                     print(str(data[2]) + ": " + data[1])
@@ -55,24 +55,38 @@ class InitTracker:
             print("Combat has already begun!")
 
             return "Combat has already begun!"
+        
         else:
-            # Add all relevant information to the arrays.
+            try:
+                initiative = int(initiative)
+            except ValueError:
+                print("Initiative must be an integer!")
+
+                return "Initiative must be an integer!"
+
+            # Add all relevant information to the array.
             self.trackerInfo.append([username, name, initiative])
-            # Sort tracker information.
-            self.sortTrackerInfo()
+
+            # print statements
+            print("Combatant successfully joined!")
 
             return "Combatant successfully joined!"
     
     def begin(self):
         if self.currentPlayer != 0:
             # print statements
-            print("Combat has already begun!")
+            print("Combat has already begun! User !end to clear the initiative tracker.")
 
-            return "Combat has already begun!"
+            return "Combat has already begun! User !end to clear the initiative tracker."
+        elif len(self.trackerInfo) < 2:
+            # print statements
+            print("At least two combatants required!")
+
+            return "At least two combatants required!"
         else:
+            self.sortTrackerInfo()
             self.rounds = 1
-            self.printTracker()
-            return self.trackerInfo[self.currentPlayer]
+            return self.printTracker()
     
     def end(self):
         # Clear the initiative tracker information.
@@ -84,22 +98,35 @@ class InitTracker:
         return "Initiative tracker cleared!"
 
     def next(self):
-        if self.currentPlayer + 1 == len(self.trackerInfo):
+        if self.currentPlayer == 0 and self.rounds == 0:
+            # print statement
+            print("Combat hasn't begun yet! Use !begin to begin combat.")
+
+            return "Combat hasn't begun yet! Use !begin to begin combat."        
+        elif self.currentPlayer + 1 == len(self.trackerInfo):
             self.currentPlayer = 0
             self.inc_round()
         else:
             self.currentPlayer = self.currentPlayer + 1
-        self.printTracker()
-        return self.trackerInfo[self.currentPlayer]
+        return self.printTracker()
     
     def prev(self):
-        if self.currentPlayer - 1 == -1:
+        if self.currentPlayer == 0 and self.rounds == 0:
+            # print statement
+            print("Combat hasn't begun yet! Use !begin to begin combat.")
+
+            return "Combat hasn't begun yet! Use !begin to begin combat."
+        elif self.currentPlayer == 0 and self.rounds == 1:
+            # print statement
+            print("You're at the beginning of combat already!")
+
+            return "You're at the beginning of combat already!"
+        elif self.currentPlayer - 1 == -1:
             self.currentPlayer = len(self.trackerInfo) - 1
             self.dec_round()
         else:
             self.currentPlayer = self.currentPlayer - 1
-        self.printTracker()
-        return self.trackerInfo[self.currentPlayer]
+        return self.printTracker()
     
     def inc_round(self):
         self.rounds += 1
@@ -112,17 +139,3 @@ class InitTracker:
 
     def sortTrackerInfo(self):
         self.trackerInfo = sorted(self.trackerInfo, key = lambda x:x[2], reverse = True)
-
-i = InitTracker()
-
-i.join("@dana", "Scarlett", 17)
-i.join("@swam", "Blobfish", 1)
-i.join("@raf", "Meoung", 20)
-
-i.begin()
-i.next()
-i.next()
-i.next()
-i.prev()
-i.end()
-i.printTracker()
