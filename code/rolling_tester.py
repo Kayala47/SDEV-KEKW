@@ -1,5 +1,4 @@
 import unittest
-import os
 from rolling import *
 
 class BlackBoxTests(unittest.TestCase):
@@ -7,45 +6,55 @@ class BlackBoxTests(unittest.TestCase):
 #-------------------------------------------
 #  BLACK BOX TEST CASES
 #-------------------------------------------
+    # Testing correct handling of input params
     def test_inputError(self):
         message = \
         'Slow your roll! We did not recognize the following parameters: [x].'
         self.assertEqual(inputError(['x']), message)
     
+    # Testing output correctness for False case
     def test_dbError_False(self):
         message = \
         'test does not exist. Check your item name.'    
         self.assertEqual(dbError(False,'test'), message)
-   
+    
+    # Testing output correctness for True case   
     def test_dbError_True(self):
         message = \
         'test already exists. Please remove item if attempting to add item of same name.'
         self.assertEqual(dbError(True, 'test'), message)
 
+    # Ensures roll correctly stays in bounds
     def test_roll(self):
         for test in range(1000):
             self.assertTrue(0 < roll() < 21)
             self.assertTrue(0 < roll(100) < 101)
     
+    # Ensure roll correctly presents error with bad params
     def test_roll_param_eror(self):
         self.assertEqual(roll('x'), 'Slow your roll! We did not recognize the following parameters: [x].')
 
+    # Ensure roll only accepts positive integers
     def test_roll_param_error2(self):
         self.assertEqual(roll(0), negativeError())
 
+    # Tests rolling with advantage correctly chooses best option
     def test_rollAdv_True(self):
         roll = rollAdv()[:-1]
         roll = roll.split()
         self.assertEqual(int(roll[5]), max(int(roll[1]), int(roll[3])))
    
+    # Tests rolling with disadvantage correctly chooses worst option
     def test_rollAdv_False(self):
         roll = rollAdv(False)[:-1]
         roll = roll.split()
         self.assertEqual(int(roll[5]), min(int(roll[1]), int(roll[3])))
 
+    # Ensure rolling with advantage correctly presents error with bad params
     def test_rollAdv_param_error(self):
         self.assertEqual(rollAdv('x'), 'Slow your roll! We did not recognize the following parameters: [x].')
 
+    # The following four tests cover various parameter usage for multiroll()
     def test_multiRoll_0_params(self):
         for test in range(1000):
             roll = multiroll()[:-1].split()
@@ -53,7 +62,7 @@ class BlackBoxTests(unittest.TestCase):
             self.assertEqual(int(roll[3]), 20)
             self.assertEqual(int(roll[5][1:-1]),  0)
             self.assertTrue(0 < int(roll[-1]) < 21)
-
+    # 1 param
     def test_multiRoll_1_params(self):
         for test in range(1000):
             roll = multiroll(100)[:-1].split()
@@ -61,7 +70,7 @@ class BlackBoxTests(unittest.TestCase):
             self.assertEqual(int(roll[3]), 100)
             self.assertEqual(int(roll[5][1:-1]),  0)
             self.assertTrue(0 < int(roll[-1]) < 101)
-
+    # 2 params
     def test_multiRoll_2_params(self):
         for test in range(1000):
             roll = multiroll(100, 10)[:-1].split()
@@ -69,7 +78,7 @@ class BlackBoxTests(unittest.TestCase):
             self.assertEqual(int(roll[3]), 100)
             self.assertEqual(int(roll[5][1:-1]),  0)
             self.assertTrue(0 < int(roll[-1]) < 1001)
-
+    # 3 params
     def test_multiRoll_3_params(self):
         for test in range(1000):
             roll = multiroll(100, 10, 10)[:-1].split()
@@ -78,6 +87,7 @@ class BlackBoxTests(unittest.TestCase):
             self.assertEqual(int(roll[5][1:-1]),  10)
             self.assertTrue(10 < int(roll[-1]) < 1011)
 
+    # Tests that fudge roll successfully overwrites roll output
     def test_multiRoll_fudge(self):
         for test in range(1000):
             roll = multiroll(100, 10, 10, 42)[:-1].split()
@@ -86,6 +96,7 @@ class BlackBoxTests(unittest.TestCase):
             self.assertEqual(int(roll[5][1:-1]),  10)
             self.assertEqual(int(roll[-1]), 42)
 
+    # Ensure multirolls correctly present errors with combinations of bad params
     def test_multiRoll_param_error(self):
         error_str = 'Slow your roll! We did not recognize the following parameters: [x'
         self.assertEqual(multiroll('x'), error_str + '].' )
@@ -93,9 +104,11 @@ class BlackBoxTests(unittest.TestCase):
         self.assertEqual(multiroll('x', 'x', 'x'), error_str + ', x, x].')
         self.assertEqual(multiroll('x', 'x', 'x', 'x'), error_str + ', x, x, x].')
     
+    # Ensure multiroll only accepts positive integers for q and die
     def test_multiRoll_param_error2(self):
-        self.assertEqual(multiroll(0), negativeError())
-        
+        self.assertEqual(multiroll(0, 0), negativeError())
+
+    # Tests that manual roll successfully overwrites roll output
     def test_manualRoll_combined_params(self):
         roll = manualRoll(20)[:-1].split()
         self.assertEqual(int(roll[1]), 1)
@@ -103,6 +116,7 @@ class BlackBoxTests(unittest.TestCase):
         self.assertEqual(int(roll[5][1:-1]), 0)          
         self.assertEqual(int(roll[-1]), 20)
 
+    # Ensure incorrectly formatted macros cannot be added
     def test_addMacro_param_error(self):
         error = 'Slow your roll! We did not recognize the following parameters: [x].'
         self.assertEqual(addMacro('x', 2, 3, 'x'), error)
@@ -153,6 +167,7 @@ class WhiteBoxTests(unittest.TestCase):
         if os.path.exists('macroset.csv'):
             os.remove('macroset.csv')
 
+    # Successfully add a macro without collision case
     def test_addMacro_no_collision(self):
         addMacro(1, 2, 3, 'spear of testing')
         with open('macroset.csv', 'r') as f:
@@ -163,12 +178,14 @@ class WhiteBoxTests(unittest.TestCase):
                 self.assertEqual(item[1], 1)
                 self.assertEqual(item[2], 2)
                 self.assertEqual(item[3], 3)
-    
+
+    # Tests that correctly identifies collision case when adding item
     def test_addMacro_collision(self):
         message = \
         'sword of the divine already exists. Please remove item if attempting to add item of same name.'
         self.assertEqual(addMacro(10, 10, 10, 'sword of the divine'), message)
     
+    # Tests that correctly removes an item from the database with no trace
     def test_delMacro_with_item(self):
         delMacro('sword of the divine')
         with open('macroset.csv', 'r') as f:
@@ -176,18 +193,22 @@ class WhiteBoxTests(unittest.TestCase):
             items = [[row] for row in reader]
         self.assertEqual(items, [])
     
+    # Test whether reports to user that item did not exist for removal
     def test_delMacro_no_item(self):
         message = \
         'spear of testing does not exist. Check your item name.'
         self.assertEqual(delMacro('spear of testing'), message)
 
     #Note: These tests were added after the programmer forgot to spec out a key function
+    
+    # Ensures can call and use item stored in database with correct format
     def test_callMacro_with_item(self):
         message = \
         'rolled 2 d 10 + (6) for '
         test = callMacro('sword of the divine')
         self.assertEqual(test, message + test[24:])
 
+    # Ensures we cannot call an item that does not exist
     def test_callMacro_without_item(self):
         message = \
         'test does not exist. Check your item name.'
