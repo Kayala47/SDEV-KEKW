@@ -1,0 +1,18 @@
+Code Review Writeup - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 4B: Code Review Report  
+    Primary Author: Max
+    Slip Days: 0
+
+DATE HERE
+
+PARTICIPANTS HERE
+
+The component being reviewed during this session was the rolling module code,
+which includes code for testing and functionality for the rolling portion. 
+This supports dice rolling, item tracking, macro storage, and item usage within
+player games. Testing is black box with the exception of macro handling, which
+requires insight into how the items are being stored to test correct functionality.
+

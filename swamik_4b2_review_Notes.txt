@@ -1,0 +1,56 @@
+
+# Team: Discord Dragons
+#     Members: Dana, Kevin, Max, Swamik
+#     Project: 3C: Component Design
+#     Primary Author: Swamik 
+#     Slip Days: 0
+
+# PURPOSE: 
+
+These are the notes that I have taken for Max's rolling module, 
+and the testing for the rolling module. These notes are what I am going 
+to use during the Code Reveiw of the Roling Module. 
+
+#Notes on rolling.py: The implimentation
+
+- The error messages look good
+- General Note for the naming convention: Clash with intrface function names 
+    - The interface module is going to be calling the methods in the rolling module  
+    - The commands that the user can place are those in the interface
+    - When the interfae module imports the rolling module, there are errors because we have the same names for functions 
+    - I think it would be better to rename some functions in the rollingModule, it can be longer as users
+      are not directly calling it, us the developers are calling it, For EX: roll changes to RegularRoll. This is to avoid 
+      crashing of functino names. 
+- RollAdv
+      - you are checking to see if the input is a bool, however, from previous discussion, you had indicated you wanted 
+        the interface to pass you exactly what the user inputed. When we pass that information to you, it is going to be in the 
+        string format. 
+      - Because of this, you cannot just check to see if it is a bool or not, you have to do checks like String == "True."
+      - Alternatively you can tell the interface module to do that check for you and just pass in a bool. 
+- MultiRoll, 
+      - there is a issue with the fudge roll. 
+            - The way you have it set up, I believe that the call to multiRoll must have an 
+              input for fudge roll, however, on previous discusion, we had agreed that the fudge roll field would be empty if the user did not call it. 
+            - There are 2 ways to address this, I can default a value for fudge roll, or insted of taking in specific amount of inputs, you 
+              take in an input of a list and get the values that way. But it will cause an error when we integrate if not addressed. 
+            - there also seems to be a default multiroll option that does the same thing as the roll function 
+- Manual Roll: Change the order of the inputs you take in. 
+      - The code shows the order die, q, mod, roll, but the inputs have roll in the begining. It is confusing for the interface designers 
+        to call if there is inconsistencies.
+- AddMacro: 
+      - You have a function defined inside of another function. I do not think that is good programming practice. Try to move the function 
+        outside and just call it from the addMacro function like a helper function. 
+      - For the error message, you have a generic message, but people will be using the addMacro less than the rolling function so having a 
+        good error message outlining how the user is supposed to add a Macro might be good. 
+- For del and call macro, you seem to be doing a similar process of finding the macro in the csv file. Maybe it would be cleaner to make a fucntion 
+  called findMacro that you call from both functions? If it is easier: Suggestion 
+
+# Notes on rolling_tester.py 
+
+- test_roll_param_error2: 
+      - You checked 0 as negative error, maybe also add -1 just to confirm 
+- test_rollAdve 
+      - The tests for rollAdv seem to depend on roll working as indicated, in this case since roll is just 
+        retuning a rnad int it should be fine, but I know we want our functions to be tested indipendently from others 
+- 
+
