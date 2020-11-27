@@ -189,5 +189,37 @@ class initTracker_Tests(unittest.TestCase):
         self.assertEqual(tracker.rounds, 0)
         self.assertEqual(tracker.currentPlayer, 0)
 
+    # Assert that the round has been incremented by 1.
+    def test_inc(self):
+        for data in dummyJoin:
+            tracker.join(data[0], data[1], data[2])
+        
+        tracker.begin()
+        tracker.next()
+        tracker.next()
+        tracker.next()
+        self.assertEqual(tracker.currentPlayer, 3)
+        self.assertEqual(tracker.rounds, 1)
+        tracker.next()
+        self.assertEqual(tracker.currentPlayer, 0)
+        self.assertEqual(tracker.rounds, 2)
+
+    # Assert that the round has been decremented by 1.
+    def test_dec(self):
+        for data in dummyJoin:
+            tracker.join(data[0], data[1], data[2])
+        
+        tracker.begin()
+        tracker.next()
+        tracker.next()
+        tracker.next()
+        tracker.next()
+        self.assertEqual(tracker.currentPlayer, 0)
+        self.assertEqual(tracker.rounds, 2)
+        tracker.prev()
+        self.assertEqual(tracker.currentPlayer, 3)
+        self.assertEqual(tracker.rounds, 1)
+
+
 if __name__ == '__main__':
     unittest.main()

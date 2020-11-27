@@ -98,7 +98,7 @@ class InitTracker:
         return "Initiative tracker cleared!"
 
     def next(self):
-        if self.currentPlayer == 0:
+        if self.currentPlayer == 0 and self.rounds == 0:
             # print statement
             print("Combat hasn't begun yet! Use !begin to begin combat.")
 
