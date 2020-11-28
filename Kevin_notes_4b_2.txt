@@ -1,0 +1,31 @@
+Team: Discord Dragons
+
+    Members: Dana, Kevin, Max, Swamik
+
+    Project: 4b.2 - Code Review
+
+       primary author: Kevin
+
+Notes for Code Review of Rolling Component
+
+
+ROLLING.PY
+- I really liked your error handling, definitely gave me a good 
+example to use for my own component 
+- the comment for dbError isn't helpful. Maybe consider the first line 
+to be something like "Returns an error indicating incorrect access of 
+macro database"
+- rollAdv is efficient because you'll usually be rolling 1d20's, but there 
+are a few scenarios where you get to re-roll certain other dice. I'm thinking 
+a fighting style like Great Weapon Master lets you re-reroll your weapon die. 
+I think we could potentially use this same command for it, if we had a way to 
+tell it what nunmber it would use. Not a necessity, since this is a pretty clever 
+way to do things
+- should you have some error checking in macros in case you can't find the file?
+- I really liked your setup, especially the comments at the beginning of each function
+
+
+
+
+ROLLING TEST
+- these tests look great!s
