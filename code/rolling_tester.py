@@ -123,7 +123,7 @@ class BlackBoxTests(unittest.TestCase):
     # Tests that manual roll successfully overwrites roll output.
     # Verifies components of output align with desired quantities.
     def test_manualRoll_combined_params(self):
-        roll = manualRoll(20)[:-1].split()
+        roll = manualRoll(20, 1, 0, 20)[:-1].split()
         self.assertEqual(int(roll[1]), 1)
         self.assertEqual(int(roll[3]), 20)      
         self.assertEqual(int(roll[5][1:-1]), 0)          
@@ -174,7 +174,7 @@ class WhiteBoxTests(unittest.TestCase):
     def setUp(self):
         with open('macroset.csv', mode='a+', newline='') as macro_file:
             macro_writer = csv.writer(macro_file, lineterminator='\r')
-            item = ['sword of the divine', 2, 10, 6]
+            item = ['sword of the divine', 1, 1, 1]
             macro_writer.writerow(item)
     
     def tearDown(self):
@@ -223,9 +223,9 @@ class WhiteBoxTests(unittest.TestCase):
     # Attempts to use item and verifies correct return message is presented.
     def test_callMacro_with_item(self):
         message = \
-        'rolled 2 d 10 + (6) for '
+        'rolled 1 d 1 + (1) for 2!'
         test = callMacro('sword of the divine')
-        self.assertEqual(test, message + test[24:])
+        self.assertEqual(test, message)
 
     # Ensures we cannot call an item that does not exist.
     # Attempts to call macro when none exists and verifies correct error.
@@ -234,6 +234,10 @@ class WhiteBoxTests(unittest.TestCase):
         'test does not exist. Check your item name.'
         self.assertEqual(callMacro('test'), message)
 
+    def test_viewMacros(self):
+        message = \
+        '''[['sword of the divine', '1', '1', '1']]'''
+        self.assertEqual(str(viewMacros()), message)
     #Note: Error toolkit does not necessitate white box testing, the components 
     #      calling the error methods did, so testing is done there instead
 
