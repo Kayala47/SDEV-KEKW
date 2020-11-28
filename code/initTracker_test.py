@@ -62,9 +62,9 @@ class initTracker_Tests(unittest.TestCase):
     def test_begin_2(self):
         count = 0
         error_str1 = "At least two combatants required!"
-        error_str2 = "Combat has already begun!"
+        error_str2 = "Combat has already begun! User !end to clear the initiative tracker."
         
-        begin_str = "-----------------------------------\nCurrent Initiative: 1\n-----------------------------------"
+        begin_str = "-----------------------------------\nCurrent Round: 1\n-----------------------------------"
         middle_str = ""
         end_str = "\n-----------------------------------"
 
@@ -78,11 +78,13 @@ class initTracker_Tests(unittest.TestCase):
             else:
                 middle_str = middle_str + "\n" + str(data[2]) + ": " + data[1]
                 self.assertEqual(tracker.begin(), begin_str + middle_str + end_str)
+                self.assertEqual(tracker.begin(), error_str2)
+                tracker.rounds = 0
 
     # Assert that the characters are in the correct sorted order when they
     #are printed.
     def test_sort(self):
-        begin_str = "-----------------------------------\nCurrent Initiative: 1\n-----------------------------------"
+        begin_str = "-----------------------------------\nCurrent Round: 1\n-----------------------------------"
         middle_str = ""
         end_str = "\n-----------------------------------"
 
