@@ -68,7 +68,7 @@ class InitTracker:
             Outputs:    string indicating error or success '''
 
         if self.rounds != 0:
-            return "Combat has already begun! User !end to clear the initiative tracker."
+            return "Combat has already begun! Use !end to clear the initiative tracker."
         elif len(self.trackerInfo) < 2:
             return "At least two combatants required!"
         else:

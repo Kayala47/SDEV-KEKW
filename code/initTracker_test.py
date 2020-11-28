@@ -62,7 +62,7 @@ class initTracker_Tests(unittest.TestCase):
     def test_begin_2(self):
         count = 0
         error_str1 = "At least two combatants required!"
-        error_str2 = "Combat has already begun! User !end to clear the initiative tracker."
+        error_str2 = "Combat has already begun! Use !end to clear the initiative tracker."
         
         begin_str = "-----------------------------------\nCurrent Round: 1\n-----------------------------------"
         middle_str = ""
