@@ -20,7 +20,7 @@ Need to change the testing file from 3e
 Search is not just taking 2 keywords, can be multiple, we are returning an array of strings 
 """
 
-TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.9S5iX5X5OxV8-7M9Z5QI4dOOsXw"
+TOKEN = ""
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
