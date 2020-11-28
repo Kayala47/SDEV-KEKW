@@ -1,0 +1,96 @@
+Code Review Report - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 4B: Code Review Report  
+    Primary Author: Max
+    Slip Days: 0
+
+28 November 2020
+13:00 PST
+
+Reviewers: Dana, Kevin, Swamik
+Developer: Max
+
+The component being reviewed during this session was the rolling module code,
+which includes code for testing and functionality for the rolling portion. 
+This supports dice rolling, item tracking, macro storage, and item usage within
+player games. Testing is black box with the exception of macro handling, which
+requires insight into how the items are being stored to test correct functionality.
+
+
+Link to review package:
+https://github.com/Kayala47/SDEV-KEKW/blob/master/review_package_rolling_4b.txt
+
+-----------
+Must Fix
+-----------
+- Issue: Interface expects die, q, mod, roll for manualRoll params
+    - Necessary to change argument order to preserve integration integrity
+
+- Defect: No function to display all macros
+    - Users may forget what items are stored, or seek attributes for physical rolling
+
+- Question: What happens when delMacro or callMacro are used when there is no file?
+    - This could be dangerous. Missing file location should be handled so users don't get scary errors.
+-----------
+Should Fix
+-----------
+- Comment: Could use a helper function for parsing the file (Repeated code in del and call)
+    - Easy to implement and should reduce clutter overall.
+
+- Test roll_param_error2 uses 0 to check, should also check -1 value.
+    - Easy to fix, may use both.
+
+- Clash between names of functions in interface and rolling module
+    - Avoid user confusion on front end
+    - Issues: roll(), rollAdv(), addMacro(), delMacro(), callMacro()
+    - Potential fixes: replace 'from rolling import *' with 'import rolling'
+                       Rename methods for easier integration
+    NOTE: We are making changes in the interfact file.
+-----------
+Comments
+-----------
+- Question: Is it ok to nest function calls?
+    - Yes, not bad bad practice at all.
+
+- Question: When is the file created?
+    - Use of the cvs library dictates when opening mode is '*+', the '+' indicates that file is created if absent.
+
+how valuable the input received from the code review process was, and what kinds of problems it turned up.
+what kinds of problems remainined in the code after the code review process, and why they weren't found.
+the relative merits of doing code review before or after testing.
+would knowing that you were going to have a code review have caused you to make any changes to your test plan?
+how would you do this differently next time?
+
+Though most of the review session was resolved by answering questions regarding 
+implementation decisions, some good issues were raised that made the review process
+valuable, including how the module generates files and handles missing files. Additionally,
+the review was important in beginning to develop integration behaviors. 
+
+After the review process, the developer spent time removing duplicated code, and did so
+using a helper function as suggested. Regarding issues that were not found, a test failed
+to cover multiroll in such a way that modifier was occasionally not factored into the result.
+This was overlooked possibly due to being a small error relating to an arithmetic mistake.
+
+Code review before testing is good because it makes the chance of repeating work less necessary,
+as test cases are identified and potentially caught before mistakes are made during actual coding.
+However, testing before review can identify errors, thus saving reviewers time and making feedback
+more valuable. These tradeoffs will be weighed in the future according to code complexity to determine
+best practice at the time.
+
+In this particular instance, the developer does not feel that knowledge of a code review process would 
+have impacted the test plan, and they were grateful for the additional feedback that made their
+share of work easier during later development.
+
+Next time, the developer would comment library-specific language that is difficult to understand without
+pre-existing familiarity with the libararies. Additionally, more communication with the interface developer
+ahead of time would have saved time fort the other review team members.
+
+Based on the submitted code and testing plan for the rolling module, we approve 
+the module with required changes. The main source of issue was the handling of
+a missing file location, which the developer assured was an easy fix. Secondly,
+convenience of seeing items was a feature we decided was important to add, assuming
+the developer could do so in a timely fashion. Additionally, communication will be 
+necessary with the interfact engineer during integration to assure smooth 
+handling of methods. 
