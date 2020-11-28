@@ -8,6 +8,7 @@ import random
 import string
 import re
 from initTracker import *
+import rolling
 
 """
 Chnages that need to be made: 
@@ -15,13 +16,17 @@ the addMacro cannot check for each individual inputs as we do not know which inp
 says that the user does not have all of the correct inputs. same for the join, we cannot be certain of what filed the users were missing so we will 
 just have one error. Same for search, we cannot tell which key word is missing. 
 We decided to remove the emoji listener as calling the next and other things were easier 
+Need to change the testing file from 3e 
+Search is not just taking 2 keywords, can be multiple, we are returning an array of strings 
 """
 
-TOKEN = ""
+TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.9S5iX5X5OxV8-7M9Z5QI4dOOsXw"
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
 bot = commands.Bot(command_prefix='!', description=description)
+
+#making the initive tracker object 
 tracker = InitTracker()
 
 # First few functions are welcoming a user when they join the same server as the bot and other pure UI things 
@@ -32,15 +37,15 @@ async def on_ready():
 # here is where we will start the bot commands 
 @bot.command()
 async def hello(ctx):
-     await ctx.send("Hey Stranger, lets play some D&D")
+    await ctx.send("Hey Stranger, lets play some D&D")
 
 @bot.command()
 async def helpMe(ctx):
-     await ctx.send("SOME MESSAGE TO HELP: maybe a link to github")
+    await ctx.send("SOME MESSAGE TO HELP: maybe a link to github")
 
 @bot.command()
 async def test(ctx, *arg):
-     await ctx.send(arg)
+    await ctx.send(arg)
 
 """
 the command that takes care most roling functions including multiroll, standard roll, and fudgerolling 
@@ -51,84 +56,49 @@ Fudgeroll takes in xdy + modifier fudgeroll. all are necessary for a fudge roll
 
 @bot.command()
 async def roll(ctx, *arg):
-     arguments = " ".join(arg)
-     results = []
-     # !!! ADDED !!!
-     toSend = ""
-     fudgeRoll = "Temp String"
-     # this is the default call 
-     if arguments == "": 
+    results = []
+    data = " ".join(arg)
+    # spliting the input by a space 
+    arg = data.split(" ")
+    #returns a bool if the user inputed a fudge roll 
+    isFudgeRoll = hasFudge(data)
+    if data == "":
         await ctx.send("You called default roll, rolling a d20")
-        
-        toSend = str(roll())
-        pass 
-     elif not("d" in arguments):
-        await ctx.send("Input Error: Make sure that your input for roll is in the format xdy + m")
-        pass
-     else: 
-        elementList = arguments.split(" ")
-        numDie = elementList[0].split("d")[0]
-        if numDie == "":
-            await ctx.send("Please input a value for the number of dice. Roll should be in format xdy+m where x is number of dice you want to roll. Please use help for more information")
-            pass
-        results.append(numDie)
-        # this case takes care of if the user just passses in xdy 
-        if len(elementList) == 1: 
-            sideDie = elementList[0].split("d")[1]
+        return 
+    if len(arg) > 6: 
+        await ctx.send("Too many inputs for the roll function. Make sure the form is in xdy +m")
+        return 
+    #fudge roll will never be in arg[0] because it is space sensative 
+    firstParam = arg[0]
 
-        # we are going to check if it is a fudge roll here, and do approate actions 
-        if len(elementList) == 2: 
-            if not elementList[0].endswith("+") and not elementList[0].endswith("-"):
-                if not ("+" in elementList[1]):
-                    print("I got here")
-                    fudgeRoll = elementList[1]
-        elif len(elementList) == 3:
-            if elementList[1] != "+":
-                fudgeRoll = elementList[2]
-        elif len(elementList) == 4:
-            fudgeRoll = elementList [3]
-        # if there is a fudge roll, remove it from the argument string 
-        if arguments.endswith(fudgeRoll):
-            arguments = arguments[:-(len(fudgeRoll))]
-
-        arguments = arguments.split("d")
-        modifier = "+0"
-        numDie = arguments[0]
-        if "+" in arguments[1]:
-            sideDie = arguments[1].split("+")[0]
-            if sideDie == " ":
-                await ctx.send("Please input a value for the side of dice. Roll should be in format xdy+m where y is the number of sides of the die you want to roll. Please use help for more information")
-                pass
-            modifier = ''.join(arguments[1].split("+")[1:])
-            if modifier == "":
-                await ctx.send("You inputed no modifier after the +, defaulted to modifier +0")
-                modifier = "+0"
-            modifier = "+" + ''.join(arguments[1].split("+")[1:])
-        elif "-" in arguments[1]:
-            sideDie = arguments[1].split("-")[0]
-            if sideDie == " ":
-                await ctx.send("Please input a value for the side of dice. Roll should be in format xdy+m where y is the number of sides of the die you want to roll. Please use help for more information")
-                pass
-            modifier =  arguments[1].split("-")[1:]
-            if modifier == "":
-                await ctx.send("You inputed no modifier after the -, defaulted to modifier +0")
-                modifier = "+0"
-            modifier = "-" + ''.join(arguments[1].split("-")[1:])
-
-        sideDie = "".join(sideDie.split())
-        modifier = "".join(modifier.split())
-        results.append(sideDie)
-        results.append(modifier)
-        if fudgeRoll != "Temp String":
-            results.append(fudgeRoll)
-        
-        # !!! ADDED !!!
-        toPrint = str(multiRoll(results[0], results[1], results[2], results[3]))
-        await ctx.send(toPrint)
-        # Delete once debugging is complete.
-        await ctx.send(results)
-        pass 
+    paramList = firstParam.split("d")
+    if len(paramList) == 0:
+        await ctx.send("You did not input the right amount of inputs. Make sure the inputs are in form xdy +m")
+        return 
+    numDie = paramList[0]
+    if numDie == "": 
+        await ctx.send("Please input a value for the num of dice. Roll should be in format xdy +m where y is the number of sides of the die you want to roll. Please use help for more information")
+        return
+    results.append(numDie)
+ 
+    sideDie = getSideDie(data)
+    if sideDie == "": 
+        await ctx.send("Please input a value for the side of dice. Roll should be in format xdy +m where y is the number of sides of the die you want to roll. Please use help for more information")
+        return
+    sideDie = sideDie.strip()
+    results.append(sideDie)
      
+    # call to the helper function to get the modifier 
+    modifier = getModifier(data, isFudgeRoll)
+    modifier = modifier.strip()
+    results.append(modifier)
+    # if the roll is a fudge roll, get the fudge roll value 
+    if isFudgeRoll:
+        fudgeVal = getFudgeValue(data)
+        results.append(fudgeVal)
+    await ctx.send(results)
+    return 
+
           
 """
 Rolling adv takes in one input: a bool: a true or a false statement 
@@ -137,14 +107,15 @@ Rolling adv takes in one input: a bool: a true or a false statement
 async def rollAdv(ctx, arg):
     if arg == "":
         await ctx.send("You need a input for this command. Please input a bool as an input for this function. A true or false statement. Refer to helpMe command for more information :)")
-        pass
+        return
     # note we are not checking the validity of the person's input here: the checks for the input is done in the rolling module. 
     # I just have to check that the user passed a input with roll adv 
     else: 
         # !!! ADDED !!!
-        await ctx.send(rollAdv())
+        await ctx.send(rolling.rollAdv(arg))
         # Delete once debugging is complete.
         await ctx.send("Called rollAdv with input: " + arg)
+        return 
 
 """
 The function that takes care of manual rolls. we want to make sure that the format for manual rolls is the same as the one for normal rolls. 
@@ -153,96 +124,97 @@ As such, we will have almost all the similar checks as the ones used in roll
 This function needs to get fixed
 """
 @bot.command()
-async def mRoll(ctx, *args):
-     arguments = " ".join(args)
-     results = []
-     rollResult = "Temp String"
-     if arguments == "": 
-          await ctx.send("Not Valid. You called manual roll with no inputs. Manual roll needs to be in the format xdy + modifier. Refer to helpMe for more information :)")
-     elif not ("d" in arguments):
+async def mroll(ctx, *arg):
+    results = []
+    data = " ".join(arg)
+    # spliting the input by a space 
+    arg = data.split(" ")
+    if data == "":
+        await ctx.send("You cannot call manual roll with no inputs. Put in form xdy + m rollResult")
+        return 
+    # reusing the hasFudge helper function to check to see if the user has a roll Result 
+    # returns a bool if the user inputted a rollResult or not. sending data to the helper function 
+    hasRollResult = hasFudge(data)
+    if not hasRollResult: 
         await ctx.send("Input Error: Make sure that your input for roll is in the format xdy + m rollResult")
-        pass 
-     else: 
-        elementList = arguments.split(" ")
-        numDie = elementList[0].split("d")[0]
-        if numDie == "":
-            await ctx.send("Please input a value for the number of dice. Roll should be in format xdy+m rollResult where x is number of dice you want to roll. Please use help for more information")
-            pass
-        results.append(numDie)
-        # the case where they just pass in xdy 
-        if len(elementList) == 1: 
-            await ctx.send("Input Error: Make sure that your input for roll is in the format xdy + m rollResult")
-            pass 
+        return 
+    if not("d" in data):
+        await ctx.send("Input Error: Make sure that your input for roll is in the format xdy + m rollResult")
+        return 
+    # Even if everthing is spaced out with a rollResult, the max length of args is 6 
+    if len(arg)>6:
+        await ctx.send("Too many inputs for the manual roll function. Call helpMe for more info")
+        return 
+
+    firstParam = arg[0]
+    # spliting the first argument by "d"
+    paramList = firstParam.split("d")
+    if len(paramList) == 0:
+        await ctx.send("Input Error: Make sure that your input for roll is in the format xdy + m rollResult")
+        return 
+    numDie = paramList[0]
+    if numDie == "": 
+        await ctx.send("Please input a value for the number of dice. Roll should be in format xdy+m rollResult where x is number of dice you want to roll. Please use help for more information")
+        return 
+    results.append(numDie)
+    # Call to the helper function to get the side die 
+    sideDie = getSideDie(data)
+    # the case if they split x d y with spaces between each 
+    if sideDie == "": 
+        await ctx.send("Please input a value for the side of dice. Roll should be in format xdy +m rollResult where y is the number of sides of the die you want to roll. Please use help for more information")
+        return 
+    
+    sideDie = sideDie.strip()
+    results.append(sideDie)
+ 
+    # We are passing the whole string input to the helper function getModifier 
+    modifier = getModifier(data, hasRollResult)
+ 
+    # in case there is extra spaces in the modifier returned after the call to getModifier 
+    modifier = modifier.strip()
+    # No need to check if modifier is "" because if there is no user input for modifier, defaults to +0 
+    results.append(modifier)
+    # isFudgeRoll is a bool value to see if there is a fudgeroll in the input, if there is, add to the results list 
+    rollVal = getFudgeValue(data)
+    results.append(rollVal)
+    # returning the value 
+    await ctx.send(results)
         
+# """
+# The function needed to add macros 
+# This function is spacing sensative, so the user needs to include all the spaces needed 
+# The input should be in the form die q mod name 
+# """
 
-
-        if "+" in arguments[1]:
-            sideDie = arguments[1].split("+")[0]
-            if sideDie == " ":
-                await ctx.send("Please input a value for the side of dice. Roll should be in format xdy+m where y is the number of sides of the die you want to roll. Please use help for more information")
-                pass
-            modifier = arguments[1].split("+")[1]
-            if modifier == "":
-                await ctx.send("You inputed no modifier after the +, defaulted to modifier +0")
-                modifier = "+0"
-            modifier = "+" + arguments[1].split("+")[1]
-        elif "-" in arguments[1]:
-            sideDie = arguments[1].split("-")[0]
-            if sideDie == " ":
-                await ctx.send("Please input a value for the side of dice. Roll should be in format xdy+m where y is the number of sides of the die you want to roll. Please use help for more information")
-                pass
-            modifier =  arguments[1].split("-")[1]
-            if modifier == "":
-                await ctx.send("You inputed no modifier after the -, defaulted to modifier +0")
-                modifier = "+0"
-            modifier = "-" + arguments[1].split("-")[1]
-        sideDie = "".join(sideDie.split())
-        modifier = "".join(modifier.split())
-        results.append(sideDie)
-        results.append(modifier)
-        print(results)
-
-        # !!! ADDED !!!
-        await ctx.send(mRoll(results[0], results[1], results[2], results[3]))
-        # Delete once debugging is complete.
-        await ctx.send(results)
-        
-
-"""
-The function needed to add macros 
-This function is spacing sensative, so the user needs to include all the spaces needed 
-The input should be in the form die q mod name 
-"""
 @bot.command()
 async def addMacro(ctx, *args):
-     arguments = " ".join(args)
-     inputs = arguments.split(" ")
-     if len(inputs) < 4: 
+    arguments = " ".join(args)
+    inputs = arguments.split(" ")
+    if len(inputs) < 4: 
         await ctx.send("You are missing all of the inputs needed for the addMacro function.")
         await ctx.send("Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information")
-        pass 
-     elif len(inputs) > 4: 
-         await ctx.send("You have too many inputs for the funciton addMacro.")
-         await ctx.send("Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information")
-         pass 
-     else: 
-         await ctx.send("Processing your request to addMacro")
-         # !!! ADDED !!!
-         await ctx.send(addMacro(args[0], args[1], args[2], args[3]))
-         # Delete once debugging is complete.
-         await ctx.send(inputs)
+        return  
+    elif len(inputs) > 4: 
+        await ctx.send("You have too many inputs for the funciton addMacro.")
+        await ctx.send("Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information")
+        return  
+    else: 
+        await ctx.send("Processing your request to addMacro")
+        # !!! ADDED !!!
+        await ctx.send(rolling.addMacro(args[0], args[1], args[2], args[3]))
+        # Delete once debugging is complete.
+        await ctx.send(inputs)
 
 """
-The method needed to delete a macro. The input is just a name. As such we will only look at the first argument passed 
+The method needed to delete a macro. The input is just a name. As such we will only look at the first argument return ed 
 """
 @bot.command()
 async def delMacro(ctx, arg):
-
     argument = "".join(arg)
 
     if argument == "": 
         await ctx.send("To delete a macro, you must input the name of the macro you wish to delete")
-        pass 
+        return  
     else: 
         # !!! ADDED !!!
         await ctx.send(arg)
@@ -255,7 +227,7 @@ async def callMacro(ctx, arg):
 
     if argument == "": 
         await ctx.send("To call a macro, you must input the name of the macro you wish to call")
-        pass 
+        return  
     else: 
         # !!! ADDED !!!
         await ctx.send(arg)
@@ -304,30 +276,141 @@ async def show(ctx):
 
 @bot.command()
 async def search(ctx, *args):
-     arguments = " ".join(args)
-     inputs = arguments.split(" ")
-     result = []
-     if len(inputs) < 2: 
+    arguments = " ".join(args)
+    inputs = arguments.split(" ")
+    result = []
+    if len(inputs) < 2: 
         await ctx.send("You are missing all of the inputs needed for the search function.")
         await ctx.send("Make sure that you are inputing two key words to search. Refer to helpMe command for more information")
-        pass 
-     elif len(inputs) > 2: 
-         await ctx.send("You have too many inputs for the funciton search.")
-         await ctx.send("We are using your first two keywords to perform the search. Refer to helpMe command for more information")
-         result.append(inputs[0])
-         result.append(inputs[1]) 
-         await ctx.send(result)
-         pass 
-     else: 
-         await ctx.send("Processing your search request")
-         result.append(inputs[0])
-         result.append(inputs[1]) 
-         await ctx.send(result)
-         pass
+        return  
+    else: 
+        await ctx.send("Processing your search request")
+        await ctx.send(inputs)
+        return 
 
-# the simple diceroller
-def diceRoll(x):
-    return random.randint(1,x)
+# Helper functions for the parsing of user inputs for roll and manual roll 
+
+"""
+get side die is getting the input of a string in the first position after spliting on "d" 
+As such there are 3 different cases can be passed as an input to this, where y refers to the side die 
+Case 1: [y]
+Case 2: [y+]
+Case 3: [y-]
+"""
+def getSideDie(data):
+    if not("+" in data or "-" in data): 
+        params = data.split("d")
+        sideDie = params[1].strip()
+        return sideDie
+    if "+" in data:
+        params = data.split("d")
+        params = params[1].strip()
+        params = params.split("+")
+        sideDie = params[0].strip()
+        return sideDie
+    if "-" in data:
+        params = data.split("d")
+        params = params[1].strip()
+        params = params.split("-")
+        sideDie = params[0].strip()
+        return sideDie
+
+"""
+we are getting passed the whole data string as the input to this funciton 
+Case 1: If there is no + or - in string, there is no modifier so default to +0 
+Case 2: There is a modifier and there is a fudgeRoll: call the getModifierWithFudge funciton 
+Case 3: There is a modifier but no fudgeRoll: split on either + or - and return the item in the first position 
+"""
+def getModifier(data, hasFudgeRoll): 
+    if not("+" in data or "-" in data):
+        modifier = "+0"
+        return modifier
+    if hasFudgeRoll: 
+        return getModifierWithFudge(data)
+    if not(hasFudgeRoll):
+        if "+" in data:  
+            modifier = data.split("+")[1]
+            modifier = modifier.strip()
+            modifier = "+" + modifier
+            return modifier
+        if "-" in data:  
+            modifier = data.split("-")[1]
+            modifier = modifier.strip()
+            modifier = "-" + modifier
+            return modifier
+
+"""
+If there is a fudge roll, getting the modifier is slightly more complicated 
+Still have to split by either + or - 
+The modifier after the split shoud be in the first position while the fudgeroll is on the second position 
+"""
+def getModifierWithFudge(data):
+    if "+" in data: 
+        rightSide = data.split("+")[1]
+        rightSide = rightSide.strip().split(" ")
+        # If the length is 2, then there is something in the modifier roll slot 
+        if len(rightSide) > 1: 
+            rightSide[0] = rightSide[0].strip()
+            return "+" + rightSide[0]
+    if "-" in data: 
+        rightSide = data.split("-")[1]
+        rightSide = rightSide.strip().split(" ")
+        # If the length is 2, then there is something in the modifier roll slot 
+        if len(rightSide) > 1: 
+            rightSide[0] = rightSide[0].strip()
+            return "-" + rightSide[0]
+
+"""
+Helper function to check if the user input has a fudge roll 
+If there is no + or - then no fudge roll, becasue we need a modifier for users to be able to use fudgeroll 
+If there is a +or -, we do a split on it then the fudge roll should be in the second position of the resulting array 
+"""
+def hasFudge(data):
+    if not("+" in data or "-" in data):
+         return False 
+    if "+" in data: 
+        rightSide = data.split("+")[1]
+        rightSide = rightSide.strip().split(" ")
+        # if the length is 1, it is not a fudge roll 
+        if len(rightSide) == 1:
+            return False
+        # If the length is 2, then there is something in the fudge roll slot 
+        if len(rightSide) > 1: 
+            return True 
+    if "-" in data: 
+        rightSide = data.split("-")[1]
+        rightSide = rightSide.strip().split(" ")
+         # if the length is 1, it is not a fudge roll 
+        if len(rightSide) == 1:
+            return False
+        # If the length is 2, then there is something in the fudge roll slot 
+        if len(rightSide) > 1: 
+            return True 
+"""
+Getting the fudgeValue if there is a fudge roll 
+Similar process as hasFudge, but instead of returning a bool, we return the value 
+"""
+def getFudgeValue(data): 
+    if "+" in data: 
+        print("got here +")
+        rightSide = data.split("+")[1]
+        rightSide = rightSide.strip().split(" ")
+        print(rightSide)
+        # if the length is 1, it is not a fudge roll 
+        # If the length is 2, then there is something in the fudge roll slot 
+        if len(rightSide) > 1: 
+            result = rightSide[1].strip()
+            return result
+    if "-" in data: 
+        print("got here -")
+        rightSide = data.split("-")[1]
+        rightSide = rightSide.strip().split(" ")
+        print(rightSide)
+        # if the length is 1, it is not a fudge roll 
+        # If the length is 2, then there is something in the fudge roll slot 
+        if len(rightSide) > 1: 
+            result = rightSide[1].strip()
+            return result
 
 bot.run(TOKEN)
 
