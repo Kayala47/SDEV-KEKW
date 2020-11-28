@@ -1,0 +1,11 @@
+- No explanation for the actual architecture (top-down, bottom-up) found; no justification for architecture.
+- For release 1.0, this seems like it might be a lot of work. How long do you forsee all of this taking to build?
+- Currently listening on Discord using Spotify requires a Premium account for all parties. How will you get around this?
+- What do you believe might cause a timeout?
+- !Genre [timeframe] : It's unclear what "timeframe" means.
+- !Leave : Seems like this should case the bot to leave the voice channel rather than having the person leave the voice channel.
+	- People want to continue talking on the voice channel.
+	- It would require everyone to leave for the bot to leave.
+- !Queue [song name] : What is the point of the song name if this displays all the songs added in the queue?
+- For usability, it might be useful to have a means of changing the prefix.
+- For usability, lowercase commands would be ideal.
