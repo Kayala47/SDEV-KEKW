@@ -20,13 +20,13 @@ Need to change the testing file from 3e
 Search is not just taking 2 keywords, can be multiple, we are returning an array of strings 
 """
 
-TOKEN = ""
+TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.k7X2j_z5PTkD24m2SMLaMeRVC1E"
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
 bot = commands.Bot(command_prefix='!', description=description)
 
-#making the initive tracker object 
+#making the initiative tracker object 
 tracker = InitTracker()
 
 # First few functions are welcoming a user when they join the same server as the bot and other pure UI things 
@@ -44,10 +44,6 @@ async def hello(ctx):
 async def helpMe(ctx):
     await ctx.send("SOME MESSAGE TO HELP: maybe a link to github")
 
-@bot.command()
-async def test(ctx, *arg):
-    await ctx.send(arg)
-
 """
 the command that takes care most roling functions including multiroll, standard roll, and fudgerolling 
 Standard roll takes in no inputs and calls the rolling funciton with no inputs 
@@ -64,7 +60,8 @@ async def roll(ctx, *arg):
     #returns a bool if the user inputed a fudge roll 
     isFudgeRoll = hasFudge(data)
     if data == "":
-        await ctx.send("You called default roll, rolling a d20")
+        await ctx.send("You called default roll, rolling a d20.")
+        await ctx.send(rolling.multiroll())
         return 
     if len(arg) > 6: 
         await ctx.send("Too many inputs for the roll function. Make sure the form is in xdy +m")
@@ -98,6 +95,12 @@ async def roll(ctx, *arg):
         fudgeVal = getFudgeValue(data)
         results.append(fudgeVal)
     await ctx.send(results)
+
+    # Sending results.
+    if len(results) == 3:
+        await ctx.send(f'{ctx.message.author.mention} ' + rolling.multiroll(results[0], results[1], results[2]))
+    else:
+        await ctx.send(f'{ctx.message.author.mention} ' + rolling.multiroll(results[0], results[1], results[2], results[3]))
     return 
 
           
@@ -112,10 +115,10 @@ async def rollAdv(ctx, arg):
     # note we are not checking the validity of the person's input here: the checks for the input is done in the rolling module. 
     # I just have to check that the user passed a input with roll adv 
     else: 
-        # !!! ADDED !!!
-        await ctx.send(rolling.rollAdv(arg))
         # Delete once debugging is complete.
         await ctx.send("Called rollAdv with input: " + arg)
+        # Sending results.
+        await ctx.send(f'{ctx.message.author.mention} ' + rolling.rollAdv(arg))
         return 
 
 """
@@ -180,6 +183,9 @@ async def mroll(ctx, *arg):
     results.append(rollVal)
     # returning the value 
     await ctx.send(results)
+
+    # Sending results.
+    await ctx.send(f'{ctx.message.author.mention} ' + rolling.manualRoll(results[0], results[1], results[2], results[3]))
         
 # """
 # The function needed to add macros 
@@ -201,8 +207,8 @@ async def addMacro(ctx, *args):
         return  
     else: 
         await ctx.send("Processing your request to addMacro")
-        # !!! ADDED !!!
-        await ctx.send(rolling.addMacro(args[0], args[1], args[2], args[3]))
+        # Sending results.
+        await ctx.send(f'{ctx.message.author.mention} ' + rolling.addMacro(args[0], args[1], args[2], " ".join(args[3:])))
         # Delete once debugging is complete.
         await ctx.send(inputs)
 
@@ -210,30 +216,30 @@ async def addMacro(ctx, *args):
 The method needed to delete a macro. The input is just a name. As such we will only look at the first argument return ed 
 """
 @bot.command()
-async def delMacro(ctx, arg):
-    argument = "".join(arg)
+async def delMacro(ctx, *arg):
+    argument = " ".join(arg)
 
     if argument == "": 
         await ctx.send("To delete a macro, you must input the name of the macro you wish to delete")
         return  
     else: 
-        # !!! ADDED !!!
-        await ctx.send(arg)
+        # Sending results.
+        await ctx.send(f'{ctx.message.author.mention} ' + rolling.delMacro(argument))
         # Delete once debugging is complete.
         await ctx.send("Attempting to delete the macro with the name: " + argument)
 
 @bot.command()
-async def callMacro(ctx, arg):
-    argument = "".join(arg)
+async def callMacro(ctx, *arg):
+    argument = " ".join(arg)
 
     if argument == "": 
         await ctx.send("To call a macro, you must input the name of the macro you wish to call")
         return  
     else: 
-        # !!! ADDED !!!
-        await ctx.send(arg)
         # Delete once debugging is complete.
         await ctx.send("Attempting to call the macro with the name: " + argument)
+        # Sending results.
+        await ctx.send(f'{ctx.message.author} ' + rolling.callMacro(argument))
 
 @bot.command()
 async def join(ctx, *arg):
