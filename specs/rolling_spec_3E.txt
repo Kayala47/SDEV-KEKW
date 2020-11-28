@@ -1,0 +1,157 @@
+
+Component Design Specification - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3E: Revised Specifications 
+    Primary Author: Max
+    Slip Days: 0
+
+PURPOSE: 
+
+The purpose of this module is to cover rolling requirements
+for common TTRPG games. The module will be able to use this 
+module to randomize custom dice rolls, specify manual input 
+rolls, and store player items in the database.
+
+**************
+MODULE METHODS
+**************
+
+Function roll(a)
+    possible returns: INT
+    inputs: a : INT
+    logic: rolls a random number 
+            from 1 to a, inclusive.
+            Defaults to d20 if no args.
+    
+    error handling: call ERR if input is non int
+
+Revisions: 
+- We decided that defaulting to a d20 would be valuable, as it is by far the most frequent roll.
+
+Function rollAdv(bool)
+    possible returns: INT
+    inputs: bool : BOOLEAN
+    logic: call ROLL(20) twice, returns
+            the greater if bool = TRUE, 
+            else returns the lesser
+    output:
+    ---------------------------------------------------
+    | user rolled a 'roll1' and 'roll2' for 'result'. |
+    ---------------------------------------------------
+    error handling: call ERR if input is nonbool
+
+Revisions:
+- None
+
+Function multiRoll(die, q, mod, fudge)
+    possible returns: INT
+    inputs: q, die, mod, fudge : INT
+    logic: check over inputs and call ERR for any mistypes
+            call ROLL(die) q times,
+            return result + mod
+            if fudge is passed as an
+            arg, replace output with fudge
+    output:
+    ------------------------------------------
+    | user rolled 'q' d 'die' + 'mod' for x! |
+    ------------------------------------------
+    error handling: call ERR if q,die,mod,fudge nonint
+
+Revisions:
+- We are using default assignments for all params.
+- Will check individual params and identify any that are incorrect.
+- Mod will also be defaulted to 0 in instances where no modifier is present.
+    
+Function addMacro(die, q, mod, name)
+    possible returns: none
+    inputs: q, die, mod : INT, name : STR
+    logic: add DB item represented by a 
+            list of components. can be sent 
+            to MULTIROLL().
+    output:
+    ----------------------------
+    | user stored item 'name'. |
+    ----------------------------
+    error handling: call ERR if name in DB
+
+Revisions: 
+- We will check all params to ensure the macro is valid.
+- Macro is added in a row where col order is (name, die, q, mod).
+
+Function delMacro(name)
+    possible returns: none
+    inputs: name : STR
+    logic: removes item of name 'name' from DB
+    error handling: call ERR if name not in DB
+    output:
+    -----------------------------
+    | user removed item 'name'. |
+    -----------------------------
+    error handling: call ERR if name not in DB
+
+Revisions:
+- None
+
+Function callMacro(name):
+    possible returns: STR
+    inputs: name : STR
+    logic: checks if name is valid in DB.
+            passes stored parameters into a call to multiRoll()
+            returns string of result
+    error handling: call ERR if name not in DB
+    output:
+    -----------------------------------------------------------
+    | user used item 'name' rolled 'q' d 'die' + 'mod' for x! |
+    -----------------------------------------------------------
+
+Revisions:
+- I completely forgot about this method originally, which will allow players to use stored items.
+
+Function MANUALIN(q, die, mod, roll)
+    possible returns: STR
+    inputs: q, die, mod, roll : INT
+    logic: Expresses combination of inputs in
+            similarly to synthetic roll, but
+            specifically outputs 'roll'
+    output:
+    -----------------------------------------------
+    | user rolled 'q' d 'die' + 'mod' for 'roll'! |
+    -----------------------------------------------
+    error handling: call ERR if missing/incorrect args 
+
+Revisions:
+- None
+
+
+*************
+ERROR METHODS
+*************
+
+For the revision of this module, we have implemented comprehensive input error indication.
+Now, instead of simply telling the user that 'something' went wrong, we are able to
+dynamically indicate which elements of their input were specifically incorrect.
+
+Additionally, a database error will inform the user of the specific item collision/item not found.
+
+Function inputError(parameters)
+    possible returns: STR
+    inputs: parameters : LIST of params
+    logic: indicate to the user WHICH parameters are incorrect
+    -----------------------------------------------------------------------------------------
+    | 'Slow your roll! We did not recognize the following parameters: ' list all parameters |  
+    -----------------------------------------------------------------------------------------
+
+Function dbError(key, itemname)
+    possible returns: STR
+    inputs: key : BOOL
+            itemname : STR
+    logic: if key is True, indicate db collision
+           if key is False, indicate item is not found
+    output:
+    --------------------------------------------------------------------------------
+    | ' already exists. Please remove item if attempting to add item of same name' |
+    --------------------------------------------------------------------------------
+    | ' does not exist. Check your item name.' |
+    --------------------------------------------

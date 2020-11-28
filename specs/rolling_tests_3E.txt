@@ -1,0 +1,255 @@
+Testing Plan - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3C - Testing Plan
+    Primary Author: Max
+    Slip Days: 0
+
+SPECIFICATIONS TO COVER:
+- able to roll with [dis]advantage
+- able to roll traditional [x]d[y]+[z] format and inform player of results
+- able to fudge a roll, faking the output of an [x]d[y]+[z] format roll
+- able to manually input a roll, represented as an [x]d[y]+[z] format roll with specified output
+- able to add an item macro to shared csv file with attributes, unless the item is already present (database)
+- able to remove an item macro from the shared csv file, unless the item is not there (database)
+- able to use an item macro as long as it exists in the csv file (database)
+- return format will be a string acceptable for the bot to message in channel
+(integration testing - will not be done here)
+
+The plan for testing is to use a seperate class where running main will immediately verify all test cases,
+and return which tests are broken.
+
+For all testing purposes, we will be using py unittest framework, as it is straightforward with desired funtionality.
+NOTE: '?=' implies default value
+
+BLACK BOX TEST CASES
+
+Testing: roll(die ?= 20)
+    Testing Case 1: Assert that the returned roll value is between 1 and die, inclusive.
+                    Verified by checking whether output is within desired bounds.
+    Justification: Ensures all rolls performed by this method (and consequently others)
+                   are valid, which is the base functionality for the entire module.
+    Special Set-Up: None
+    Generation: When roll() or roll(die) is called.
+    Correctness: Returned roll must be 1 <= roll <= die.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert that roll() successfully flags an input error if parameters are invalid.
+    Justification: Ensures that the user cannot accidentally pass incorrect arguments.
+    Special Set-Up: None
+    Generation: When roll(die) is called where die is not an integer.
+    Correctness: We expect the anticipated error message (see specs) along with 
+                 an indicator that die is invalid.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: rollAdv(bool ?= True)
+    Testing Case 1: Assert when called with no parameters, we roll with advantage.
+    Justification: The most likely use case for this method is rolling with advantage,
+                   so we default to True in the case that the user passes no arguments
+    Special Set-Up: None
+    Generation: Call rollAdv() with no params or True
+    Correctness: Returns a string with the roll results, returning the larger.
+    Clean-Up: N/A
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert when called with False parameter, we roll with disadvantage.
+    Justification: Occasionally a player will roll with disadvantage. We want to ensure
+                   we are generating the correct roll.
+    Special Set-Up: None
+    Generation: Call rollAdv() with False argument.
+    Correctness: Returns a string with the roll results, returning the lesser.
+    Clean-Up: N/A
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 3: Assert that rollAdv() successfully flags an input error 
+                    if parameters are invalid.
+    Justification: Ensures that the user cannot accidentally pass incorrect arguments.
+    Special Set-Up: None
+    Generation: When rollAdv(bool) is called where bool is not a boolean.
+    Correctness: We expect the anticipated error message (see specs) along with 
+                 an indicator that call is invalid.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: multiroll(die ?= 20, q ?= 1, mod ?= 0, fudge ?= 0)
+    Testing Case 1: Assert output string is correct for any sequence of valid parameters.
+    Justification: Our most used function, we want to ensure that a typical TTRPG roll
+                   is correctly parsed and interpreted. Any integer values are acceptable.
+                   (Who knows what wacky numbers a DM might want? Not us.)
+    Special Set-Up: None
+    Generation: Call multiroll with varying parameter completeness 
+                (ex. 4d10, d20+2, empty)
+    Correctness: Correctly outputs formatted string with valid calculation.
+    Clean-Up: N/A
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert that multiroll() successfully flags an input error if 
+                    and of the given parameters are invalid.
+    Justification: Ensures that the user cannot accidentally pass incorrect arguments.
+    Special Set-Up: None
+    Generation: When multiroll() is called where ANY of the params are non-integer.
+    Correctness: We expect the anticipated error message (see specs) along with 
+                 an indicator that any specific parameter is invalid.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 3: Assert that multiroll() successfully flags an input error if 
+                    q, die are < 1.
+    Justification: Ensures that the user cannot accidentally pass incorrect arguments.
+    Special Set-Up: None
+    Generation: When multiroll() is called where q or die are less than 1.
+    Correctness: We expect the anticipated error message (see specs) along with 
+                 an indicator that any specific parameter is invalid.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: manualRoll(q, die, mod, roll)
+    Testing Case 1: Assert output string is correct for any sequence of valid parameters.
+    Justification: Some users prefer to use their own dice.
+    Special Set-Up: None
+    Generation: Call manualRoll() with all necessary params
+    Correctness: Correctly outputs formatted string with result as 'roll'.
+    Clean-Up: N/A
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: addMacro(q, die, mod, itemname)
+    Testing Case 1: Assert that addMacro() successfully flags an input error if 
+                    and of the given parameters are invalid.
+    Justification: Ensures that the user cannot accidentally pass incorrect arguments.
+    Special Set-Up: None
+    Generation: When addMacro() is called where ANY of the params other than itemname 
+                are non-integer. Same for itemname not being a string.
+    Correctness: We expect the anticipated error message (see specs) along with 
+                 an indicator that any specific parameter is invalid.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: delMacro(itemname)
+    Testing Case 1: Assert that delMacro() successfully flags an input error if 
+                    itemname is not an int.
+    Justification: We cant look for a key in the database if the key can't exist.
+    Special Set-Up: None
+    Generation: When delMacro() is called where itemname is not a string.
+    Correctness: We expect the anticipated error message (see specs) along with 
+                 an indicator that any specific parameter is invalid.
+    Clean-Up: None
+    
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+WHITE BOX TEST CASES
+
+Testing: multiroll(die ?= 20, q ?= 1, mod ?= 0, fudge ?= 0)
+    Testing Case 1: Assert that a 4th parameter (fudge) successfully overrides the roll
+                    without providing any indication of doing so.
+    Justification: Fudge rolling is a valuable tool for a DM when discrete. We need
+                   to ensure that adding the 4th parameter changes the behavior of the
+                   function without showing the players.
+    Special Set-Up: None
+    Generation: Call multiroll with full parameter completeness AND a fudge > 0
+                (ex. 1d20+4 24 will return 24 regardless of the roll)
+    Correctness: Correctly outputs formatted string with fudge substituted for calculation.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: addMacro(q, die, mod, itemname)
+    Testing Case 1: Assert that addMacro successfully adds a macro to the database.
+    Justification: Macro tools are useful for players. We need to ensure that our database
+                   ingestion successfully adds a properly formatted macro
+    Special Set-Up: The database has no entry under itemname
+    Generation: Calling addMacro() with full parameters
+    Correctness: The database is populated with the new macro with arguments in the proper location.
+    Clean-Up: delMacro(itemname)
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert that addMacro returns a dbError when called where itemname exists
+    Justification: Items should be unique, so we can't allow collisions.
+    Special Set-Up: The database should have an entry under itemname
+    Generation: Calling addMacro() with itemname that exists
+    Correctness: Should return a dberror indicating item exists already.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: delMacro(itemname)
+    Testing Case 1: Assert that delMacro successfully removes an item
+    Justification: Players may lose or sell items so we should be able to remove them.
+    Special Set-Up: addMacro with itemname, params do not matter otherwise.
+    Generation: Calling delMacro() with itemname
+    Correctness: item should no longer exist in the database.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert that delMacro returns a dbError when called where 
+                    itemname does not exist
+    Justification: We can't delete an item that isn't there.
+    Special Set-Up: The database should have no entry under itemname
+    Generation: Calling delMacro() with itemname not in database
+    Correctness: Should return a dberror indicating item isn't there.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: inputError(params)
+    Testing Case 1: Assert inputError is successfully able to indicate bad parameters.
+    Justification: More specificity for the user is better in this context.
+    Special Set-Up: None
+    Generation: Calling inputError() with a list of parameters
+    Correctness: inputError() will go through the list and return a string indicating issues
+                 with provided parameters
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: inputError(params)
+    Testing Case 1: Assert inputError is successfully able to indicate bad parameters.
+    Justification: More specificity for the user is better in this context.
+    Special Set-Up: None
+    Generation: Calling inputError() with a list of parameters
+    Correctness: inputError() will go through the list and return a string indicating issues
+                 with provided parameters
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: dbError(key, itemname)
+    Testing Case 1: Assert that dbError successfully indicates an item is already present
+    Justification: Important functionality to help with addMacro().
+    Special Set-Up: None
+    Generation: Calling dbError() with key set to True.
+    Correctness: returns string indicating which key was already present.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert that dbError successfully indicates an item does not exist
+    Justification: Important functionality to help with delMacro().
+    Special Set-Up: None
+    Generation: Calling dbError() with key set to False.
+    Correctness: returns string indicating which input key was not found.
+    Clean-Up: None

@@ -1,0 +1,227 @@
+Component Design Specification - Compendium Lookup
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3E: Specifications 
+    Primary Author: Kevin
+    Slip Days: 0
+
+PURPOSE:
+
+The purpose of this module is to allow our users to access a wider variety of 
+information about the game. They will be able to use this feature to look up 
+salient facts about the game rules and mechanics without having to pay for 
+the extra features. 
+
+We'll be making use of the fact that the Dungeons and Dragons community is 
+full of extremely prolific writers and content creators. There is a very 
+complete wiki at: http://dnd5e.wikidot.com/ that we can leverage. It is full
+of all the published rules and even lots of user-created content. 
+
+PUBLIC METHODS:
+
+Function search(String[] input)
+    
+    inputs: An array of strings, in the following order:
+        - input[0] = one of "class", "spell", "race" "background", "feat"
+        any strings other those (or very similar variants) that will cause a failure *
+        - input[1:] = the series of words describing the ruleset searched by the user.
+        These inputs should be merged to form one string that will be used for the URL
+        of the page containing the necessary information.
+
+    purpose: this function will call the relevant child function (detailed in the Private
+    Methods section). The purpose of this separation is to create a facade for the Discord
+    bot to use, which will allow users to learn fewer commands. 
+    
+    output: the result of the relevant child function call. This function will create an
+    embed with the information from the child function, or will return an error if the information
+    couldn't be found
+
+    logic: this function will first attempt to get results from the 5e api. On a success, will 
+    simply return that information. On a failure, it will call one of the child functions to 
+    retrieve that information using a web scraper. 
+
+    example usage: a user attempting to search for the "Magic Missile" spell will type "!search
+    spell magic missile". This function will first make sure that input[0] is valid, else run step 
+    distance on it to see if it could be a misspelling of any of the valid inputs. If it is either 
+    the exact spelling or within two letters of a valid input, it will first call the 5e api, then
+    call the relevant child function (searchSpell in this case) if the response is a failure. Using 
+    the string it receives from the child function, it will create an embed for the Discord bot 
+    with the following information:
+
+    --------------------------------------
+    | Casting Time: 1 action              |
+    | Range: 120 feet                     |
+    | Components: V, S                    |
+    | Duration: Instantaneous             | 
+    | Description:                        |
+    | You create three glowing darts of   |
+    | magical force. Each dart hits a     |
+    | creature of your choice that you can| 
+    | see within range. A dart deals 1d4  |
+    | + 1 force damage to its target. The |
+    | darts all strike simultaneously and | 
+    | you can direct them to hit one      |
+    | creature or several.                |
+    | At Higher Levels. When you cast this|
+    | spell using a spell slot of 2nd     |
+    | level or higher, the spell creates  |
+    | one more dart for each slot level   |
+    | above 1st.                          |      
+    ---------------------------------------
+
+
+PRIVATE METHODS:
+
+Function stepDifference(String a, String b)
+    inputs: two strings, which will be compared based on the step distance formula. 
+    A description of the formula can be found here: https://www.geeksforgeeks.org/edit-distance-dp-5/
+
+    purpose: this is a life improvement addition for our users. It should be able to account for small 
+    misspellings in the main function.
+
+    output: an integer value for the number of deletions, additions, or substitutions that must take place
+    to turn input a into input b, or vice versa. It will return the minimum necessary number of any such operations.
+
+    example usage: When given a = "spelll" and b = "spell", this function will evaluate the changes
+    needed to turn the longer of the two (a) into the shorter (b). In this case, we require exactly
+    one deletion, the third "l" in a. Therefore, the function will return 1. 
+
+NOTE: the following functions will be called from search in order to handle different types of information
+sought by our users. These functions are identical in inputs and purpose, except that the structure of the
+wiki is different for the distinct types of information, so we will have to scrape differently and return 
+the information in a different format. To avoid repetition, the scraping process will be explained in 
+the PSEUDOCODE section.
+
+Function classSearch(String searchParams)
+    inputs: searchParams, which will be the merged string containing the name of the class being searched.
+    Distinct words will be separated by a hyphen.
+
+    purpose: will scrape information from the class wiki and return it in a presentable format.
+
+    logic: this function will use python's request package to call the relevant URL. In this case, 
+    the format of this call would be "request('http://dnd5e.wikidot.com/class:' + SEARCHPARAMS). 
+    From there, it will scrape the most salient elements to give a quick description. In this case, 
+    the most pertinent information is the class table, which contains an overview of the abilities
+    and resources for each class. 
+
+    output: a string containing the text representation of the class table.
+    NOTE: one of our "nice to haves" will be to implement the wkhtmltopdf package to instead return
+    an image of the complete webpage, right in the discord server. 
+
+
+Function spellSearch(String searchParams)
+    inputs: searchParams, which will be the merged string containing the name of the spell being searched.
+    Distinct words will be separated by a hyphen.
+
+    purpose: will scrape information from the spell wiki and return it in a presentable format.
+
+    logic: this function will use python's request package to call the relevant URL. In this case, 
+    the format of this call would be "request('http://dnd5e.wikidot.com/spell:' + SEARCHPARAMS). 
+    From there, it will scrape the most salient elements to give a quick description. In this case, 
+    we return the entirety of the spell description, since all of the components are necessary.
+
+    output: a string containing the text representation of the complete spell description.
+    NOTE: one of our "nice to haves" will be to implement the wkhtmltopdf package to instead return
+    an image of the complete webpage, right in the discord server. 
+
+Function raceSearch(String searchParams)
+    inputs: searchParams, which will be the merged string containing the name of the race being searched.
+    Distinct words will be separated by a hyphen.
+
+    purpose: will scrape information from the race wiki and return it in a presentable format.
+
+    logic: this function will use python's request package to call the relevant URL. In this case, 
+    the format of this call would be "request('http://dnd5e.wikidot.com/race:' + SEARCHPARAMS). 
+    From there, it will scrape the most salient elements to give a quick description. In this case, 
+    the most pertinent information is the text under the "features" section, which will be presented
+    in list format.
+
+    output: a string containing the text representation of the racial features.
+    NOTE: one of our "nice to haves" will be to implement the wkhtmltopdf package to instead return
+    an image of the complete webpage, right in the discord server. 
+
+Function backgroundSearch(String searchParams)
+    inputs: searchParams, which will be the merged string containing the name of the background being searched.
+    Distinct words will be separated by a hyphen.
+
+    purpose: will scrape information from the background wiki and return it in a presentable format.
+
+    logic: this function will use python's request package to call the relevant URL. In this case, 
+    the format of this call would be "request('http://dnd5e.wikidot.com/background:' + SEARCHPARAMS). 
+    From there, it will scrape the most salient elements to give a quick description. In this case, 
+    the most pertinent information includes the "proficiencies" section and the "features" section.
+
+    output: a string containing the text representation of the background features listed above.
+    NOTE: one of our "nice to haves" will be to implement the wkhtmltopdf package to instead return
+    an image of the complete webpage, right in the discord server. 
+
+Function featSearch(String searchParams)
+    inputs: searchParams, which will be the merged string containing the name of the feat being searched.
+    Distinct words will be separated by a hyphen.
+
+    purpose: will scrape information from the feat wiki and return it in a presentable format.
+
+    logic: this function will use python's request package to call the relevant URL. In this case, 
+    the format of this call would be "request('http://dnd5e.wikidot.com/feat:' + SEARCHPARAMS). 
+    From there, it will scrape the most salient elements to give a quick description. In this case, 
+    we include the entirety of the feat description. 
+
+    output: a string containing the text representation of the page.
+    NOTE: one of our "nice to haves" will be to implement the wkhtmltopdf package to instead return
+    an image of the complete webpage, right in the discord server. 
+
+
+INSTANCE VARIABLES AND DATA STRUCTURES
+
+Valid Inputs 
+    We will retain a list of the valid inputs for search. This will be stored locally in an array of
+    strings, and will allow for iteration through them the step distance function in order to alleviate
+    misspellings.
+
+PACKAGES
+
+Requests: a python library to allow for web scraping via URL. We will be able to directly access a page
+        using this package
+
+Beautiful Soup: a python library that makes plain HTML more human readable, and allows for the extraction
+        of specific elements, such as headers and lists. This package also allows for searching of elements
+        by class and id.
+
+Imgkit: a python library that uses wkhtmltopdf infrastructure to convert a webpage into an image, using the URL. 
+        This will be useful for our "nice to have" feature of returning the image of the webpage instead of a 
+        string representation.
+
+
+ALGORITHMS
+
+Step Distance:
+    This algorithm will help us account for user error such as misspellings, by allowing us to turn simple misspellings
+    into the intended word. It measures the minimum number of additions, deletions, and substitutions of characters needed
+    to turn String a into an exact copy of String b.
+
+    Purpose: to allow for recovery from small spelling mistakes from our users, 
+    leading to more overall robustness of our application. 
+
+    A full description can be found here: https://www.geeksforgeeks.org/edit-distance-dp-5/
+
+PSEUDOCODE
+
+Web Scraping:
+    Each of the child search functions will use a variant of this techinque, with slight variations for the structure of information
+    in each page. Note that the specific identifiers needed will need to come from personal research into the page, since they may 
+    change from the time of this writing. 
+
+    #step 1: use the requests package to get a string representation of the html in the page
+    URL = "http://dnd5e.wikidot.com/" + search_type + ":" + search_params
+    page = request.get(URL)
+
+    #step 2: parse using Beautiful Soup
+    soup = BeautifulSoup(page.content, 'html.parser')
+    result1 = soup.find(id='spell-description') #this is just an example, you'll have to find the identifier yourself, based on the page
+    result2 = soup.find(id='casting-time')
+
+    final = result1 + '\n' + result2 #the line splits will be used by the main function to generate the embed
+
+    return final
+

@@ -1,0 +1,66 @@
+Review Notes - Initiative Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3D: Review  
+    Primary Author: Max
+    Slip Days: 0
+
+SPECS:
+- Are fn names allcaps?
+- Will output give info to interface or be generated locally?
+- What libraries are required?
+- How does ERR work?
+DESIGN:
+- What kind of database are we using here?
+- Have you considered using a dictionary?
+- Solid commenting
+TESTS:
+- Notes integration testing is done elsewhere
+- Very strong testing outlines
+- Will you use pyunittest?
+- Good idea with "clean-up" section
+
+
+Review Notes - Compendium Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3D: Review  
+    Primary Author: Max
+    Slip Days: 0
+
+SPECS:
+- Looks really good
+- Why are the private methods private?
+- Detailed package requirements
+- Little to no error outlining
+DESIGN:
+- Needs more in-depth error handling than "Invalid Input. Please try again", "Something went wrong. Try again. \n".
+- More documentation for code, comments!!
+TESTS:
+- Solid outlining of testing suite
+- how will misbehaviors be remedied case-by-case?
+
+Review Notes - Bot Interface Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3D: Review  
+    Primary Author: Max
+    Slip Days: 0
+
+SPEC:
+- Do we pass parameters to methods as lists or as individual vals?
+- Would it be better to deliver an error message helping the user?
+    - Less crowded if no message, but may leave user confused
+- For mroll(), we want to know what the roll was supposed to be (xdy+z = ?)
+- Are we allowing for people to join initiative after it has started?
+- For search(), can we specify unrecognized vals to the user?
+DESIGN:
+- How do we guarantee that args for roll are always consistent?
+TEST:
+- How do we log testing results?
+- How do we test whether the interface is broken, or the called modules?
+- Missing whitebox testing concepts, can we give more information about what has broken?
+- No error specs

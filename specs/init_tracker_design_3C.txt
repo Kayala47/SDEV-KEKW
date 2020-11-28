@@ -1,0 +1,90 @@
+Component Design - Initiative Tracker Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3C - Component Design
+    Primary Author: Dana Teves
+    Slip Days: 1
+
+PURPOSE:
+
+The purpose of this module is to handle the initiative tracker in response to the bot interface module, and to
+provide relevant information. As such, its main goal is to interact with the database.
+
+To allow for persistent storage, to keep track of the current player, the current round, and the initiative order
+list, this module will have a class to allow for intitiative order object to be created and updated.
+
+// Pseudocode
+
+// Global
+string[] usernames
+string[] names
+int[] inits
+int round = 0
+int currentPlayer = 0
+
+join(username, name, init) {
+// This function is in charge of adding a character into the initiative order.
+// It interacts directly with the database.
+	old_len = database.length
+	if name not in database OR !name.isString() or !init.isInt():
+		database.newEntry(username, name, init)
+		database.sort(init) // sort the database from highest to lowest init
+		if(database.length != old_len + 1):
+			return error message
+	else:
+		return error message
+
+begin() {
+// This function begins combat in a text channel.
+len = database.length
+
+round = 1
+currentPlayer = 0
+
+if len == 0:
+	return error message
+else:
+	retrieveList() // updates object instance variables (usernames, names, inits)
+
+end() {
+// This function ends combat.
+if !wasCalled(begin): // check that begin() has already been called
+	return error message
+else:
+	database.clear()
+	if database.length != 0:
+		return error message
+
+next() {
+// This is called when the bot interface gets triggered by the "next" emoji.
+currentPlayer++
+if currentPlayer == 0:
+	inc_round()
+// Bot Interface should have access to the object, and can use the object instance
+// variables to output username[currentPlayer], names[currentPlayer], and round.
+
+prev() {
+// This is called when the bot interface gets triggered by the "prev" emoji.
+if currentPlayer - 1 < 0:
+	currentPlayer = usernames.length - 1
+	dec_round()
+else:
+	currentPlayer--
+// Bot Interface should have access to the object, and can use the object instance
+// variables to output username[currentPlayer], names[currentPlayer], and round.
+
+inc_round() {
+// Increments the round by 1.
+round++
+
+dec_round() {
+// Decrements the round by 1, unless it's the 1st round.
+if round - 1 < 1:
+	round = 1
+else:
+	round--
+
+
+
+

@@ -1,0 +1,90 @@
+Component Design - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3C: Component Design
+    Primary Author: Max
+    Slip Days: 0
+
+PURPOSE: 
+
+The purpose of this module is to cover rolling requirements
+for common TTRPG games. The module will be able to use this 
+module to randomize custom dice rolls, specify manual input 
+rolls, and store player items in the database.
+
+Primary Revisions:
+Revision specifics can be find in individual methods in specs, 
+however we tried to present more comprehensive error parsing 
+to improve program complexity for the sake of better testing demos.
+
+def roll(int num ?= 20):
+    if num != int:
+        return inputError(num)
+    res = random number 1 <= res <= num
+    return int(res)
+
+def rollAdv(bool adv ?= True):
+    if adv != bool:
+        return inputError(adv)
+    roll1 = roll()
+    roll2 = roll()
+    if adv == True;
+        res = 'rolled' roll1 'and' roll2 'for' max(roll1,roll2)
+    else:
+        res = 'rolled' roll1 'and' roll2 'for' min(roll1,roll2)
+    return res
+
+
+def multiroll(int die = 20, int q = 1, int mod = 0, int fudge = 0):
+    if q, die, mod, fudge != int:
+        return inputError(params with incorrect type)
+    list = []
+    add a call to roll(die) to list q times
+    if fudge != 0:
+        res = 'rolled' q 'd' die '+' mod 'for' sum(list)+mod '!'
+    else:
+        res = 'rolled' q 'd' die '+' mod 'for' fudge '!'
+    return res
+
+def addMacro(int q, int die, int mod, str itemname);
+    if q, die, mod != int:
+        return inputError(params with incorrect type)
+    with open(file in database as WRITE):
+        if itemname in Database:
+            return dbError(True, itemname):
+        else write new row under key itemname
+    return
+    
+def delMacro(str itemname)
+    with open(file in database as WRITE):
+        if itemname not in Database:
+            return dbError(False, itemname):
+        else remove all data under key itemname
+    return
+
+def manualRoll(int roll, int die, int q, int mod):
+    if q, die, mod, fudge != int:
+        return inputError()
+    res = 'rolled' q 'd' die '+' mod 'for' roll)
+    return res
+
+def callMacro(str itemname):
+    if name in Database:
+        params = //DRAW PARAMS FROM DB
+        roll = multiroll(params[1], params[2], params[3])
+    else:
+        return dbError(False, itemname)
+    res = 'used item' name ',' roll
+    return res
+        
+def inputError(params):
+    res = "Slow your roll! We did not recognize the following parameters: " string of elements in params 
+          "\n please be sure to use the following format: x 'd' y '+' z"
+    return res
+
+def dbError(bool keyfound, itemname):
+    if key == True:
+        res = itemname ' already exists. Please remove item if attempting to add item of same name'
+    elif key == False:
+        return itemname ' does not exist. Check your item name.'

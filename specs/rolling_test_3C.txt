@@ -1,0 +1,73 @@
+Component Design Testing - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3C: Component Design
+    Primary Author: Max
+    Slip Days: 0
+
+PURPOSE: 
+
+The purpose of this module is to cover rolling requirements
+for common TTRPG games. The module will be able to use this 
+module to randomize custom dice rolls, specify manual input 
+rolls, and store player items in the database.
+
+Testing for this module is fairly straightforward, as the
+correctness of function inputs is always binary in terms of 
+correctness.
+
+def roll(int num):
+    TESTING:
+    for roll(), we only have 1 input and we want to rule out
+    any nonint input, then we only need to test boundary cases.
+
+    - assert roll() returns an int for any valid input
+    - assert roll() throws an input error for any nonint input
+    - assert roll() throws an error if input < 0
+    - assert roll() throws an error if num > sys.maxint
+
+def rollAdv(bool adv):
+    TESTING:
+    for rollAdv(), we can utilize the testing for roll().
+    Then, we need only test our branching case for adv,
+    and ensure adv throws an error if it's of the wrong type.
+
+    - assert rollAdv() returns an int if adv is bool
+    - assert rollAdv() throws an input error for any nonbool input
+    - assert rollAdv() returns the greater of the two rolls when adv = True
+    - assert rollAdv() returns the lesser of the two rolls when adv = False
+
+def multiroll(int q, int die, int mod, int fudge = 0):
+    TESTING:
+    for multiroll(), we have several inputs and we want to rule out
+    any nonint inputs, then we only need to test boundary cases and fudge.
+
+    - assert multiroll() returns a correctly formatted string
+    - assert multiroll() throws an input error for incorrect input types
+    - assert multiroll() throws an error if q, die < 1
+    - assert multiroll() throws an error if inputs > sys.maxint
+    - assert multiroll() correctly represents a fudge roll
+
+def addMacro(int q, int die, int mod, str itemname);
+    TESTING:
+    addMacro() needs to successfully add a new item to our item csv.
+    Additionally, needs to handle collisions correctly and process
+    input variables correctly.
+
+    - assert addMacro() throws an input error if types are incorrect
+    - assert addMacro() successfully adds a new item with correct inputs to csv
+    - assert addMacro() throws a dbError() if there's a name collision
+
+def delMacro(str itemname)
+    TESTING:
+    delMacro() needs to successfully remove agiven item from our item csv.
+    Additionally, needs to handle missing name correctly.
+
+    - assert delMacro() throws an input error if itemname is not a valid str
+    - assert delMacro() successfully removes an item with a valid name from csv
+    - assert delMacro() throws a dbError() if there's no item of name itemname
+
+def manualRoll(int q, int die, int mod, int roll):
+    TESTING:
+    This function has the EXACT same behaviour as multiRoll, but should ALWAYS return 'roll'.

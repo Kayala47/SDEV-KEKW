@@ -1,0 +1,104 @@
+Component Design Specification - Initiative Tracker Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3B - Specifications
+    Primary Author: Dana
+    Slip Days: 2
+
+PURPOSE: 
+
+The purpose of this module is to cover the initiative
+tracking requirements for common TTRPG games. The bot will
+be able to use this module to add characters to the initiative
+tracker with either a physically-rolled initiative or a
+bot-rolled initiative, display the initiative order to the
+text channel, keep track of rounds and the current turn, and
+end combat by clearing the initiative tracker.
+
+Variables:
+    usernames - STRING ARRAY
+    names - STRING ARRAY
+    inits - INT ARRAY
+    round - INT
+    currentPlayer - INT
+
+Function JOIN(username, name, init)
+    possible returns: none
+    inputs: username - STRING
+            name - STRING
+            init - INT
+    logic: adds "username, name, init" into
+           database, sorting from highest to
+           lowest init value.
+    error handling: calls ERR if name is non-string,
+                    init is non-int, or if name already
+                    exists in the database
+    comments: This function is in charge of adding a
+              character into the initiative order. The
+              Dungeon Master can also add creatures in
+              this way.
+
+Function BEGIN()
+    possible returns: usernames - ARRAY
+                      names - ARRAY
+                      inits - ARRAY
+    inputs: none
+    logic: loop through database to generate
+           usernames, names, and inits; sets round = 1;
+           sets currentPlayer = 0
+    error handling: calls ERR if database is empty
+    comments: Discussion needs to be had on the best
+              way for BEGIN to output the information
+              to be displayed by the bot interface, but
+              in this way, only the index needs to be
+              kept track of for the purposes of NEXT and PREV.
+
+Function END()
+    possible returns: none
+    inputs: none
+    logic: clear the database; set round = 0
+    error handling: calls ERR if database cannot
+                    be cleared correctly, or BEGIN
+                    hasn't been called yet
+    comments: This should be called at the end of combat.
+
+Function NEXT()
+    possible returns: string
+    inputs: none
+    logic: change global variable index to next
+           player in the initiative order and return
+           their details (username, name, init) as well
+           as the round number, also a global variable;
+           calls INC_ROUND() if currentPlayer = 0.
+    error handling: calls ERR if database is empty
+    comments: This is called by the bot interface
+              when mesage.awaitReact("EMOJI") gets
+              triggered by the "next" emoji.
+
+Function PREV()
+    possible returns: string
+    inputs: none
+    logic: change global variable index to previous
+           player in the initiative order and return
+           their details (username, name, init) as well
+           as the round number, also a global variable;
+           calls DEC_ROUND() if currentPlayer is length-1
+           of the names array.
+    error handling: calls ERR if database is empty
+    comments: This is called by the bot interface
+              when mesage.awaitReact("EMOJI") gets
+              triggered.
+
+Function INCR_ROUND()
+    possible returns: round - INT
+    inputs: none
+    logic: increment global variable round by 1
+    error handling: N/A
+
+Function DEC_ROUND()
+    possible returns: round - INT
+    inputs: none
+    logic: decrement global variable round by 1
+    error handling: if round-1 < 1, sets round = 1 and
+                    calls ERR
