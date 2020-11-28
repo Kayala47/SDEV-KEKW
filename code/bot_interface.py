@@ -37,7 +37,8 @@ async def on_ready():
 # here is where we will start the bot commands 
 @bot.command()
 async def hello(ctx):
-    await ctx.send("Hey Stranger, lets play some D&D")
+    username = ctx.message.author
+    await ctx.send("Hey " f"{username}, lets play some D&D")
 
 @bot.command()
 async def helpMe(ctx):

@@ -64,6 +64,25 @@ class BlackBoxTests(unittest.TestCase):
         self.assertEqual(roll(("x", "dy", "-m", "f")), result2)
         self.assertEqual(roll(("x", "d", "y", "-", "m", "f")), result2)
 
+    def test_mRoll_fourInputs(self):
+        # going to call the roll function with the input of xdy +m fudgeroll. should return a list with x, y, m, and fudgeroll
+        # The funcitons should work with any number of spacing. As there are many different ways to space, we will test the edge cases and mostly used cases. For both + and - modifiers
+        result = ["x", "y", "+m", "f"]
+        self.assertEqual(mRoll(("xdy+m", "f")), result)
+        self.assertEqual(mRoll(("xdy", "+m", "f")), result)
+        self.assertEqual(mRoll(("xdy", "+", "m", "f")), result)
+        self.assertEqual(mRoll(("xd", "y", "+m", "f")), result)
+        self.assertEqual(mRoll(("x", "dy", "+m", "f")), result)
+        self.assertEqual(mRoll(("x", "d", "y", "+", "m", "f")), result)
+       
+        result2 = ["x", "y", "-m", "f"]
+        self.assertEqual(mRoll(("xdy-m", "f")), result2)
+        self.assertEqual(mRoll(("xdy", "-m", "f")), result2)
+        self.assertEqual(mRoll(("xdy", "-", "m", "f")), result2)
+        self.assertEqual(mRoll(("xd", "y", "-m", "f")), result2)
+        self.assertEqual(mRoll(("x", "dy", "-m", "f")), result2)
+        self.assertEqual(mRoll(("x", "d", "y", "-", "m", "f")), result2)
+
     def test_rollAdv(self):
         # the rollAdv takes in one input. If the user does not input anything we will send an error and if they do pass in an argument, we 
         # need to correctly parse it and return the input that they gave the user 
@@ -74,7 +93,7 @@ class BlackBoxTests(unittest.TestCase):
         self.assertEqual(rollAdv("arg"), msg)
 
     def test_addMacro(self):
-        msg1 = "You are missing all of the inputs needed for the addMacro function."
+        msg1 = "You are missing some inputs needed for the addMacro function."
         msg2 = "Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information"
         result = msg1 + " " + msg2
         self.assertEqual(addMacro(""), result)
@@ -120,8 +139,8 @@ class BlackBoxTests(unittest.TestCase):
         self.assertEqual(showTracker(), msg)
 
     def test_search(self):
-        msg1 = "You are missing all of the inputs needed for the search function."
-        msg2 = "Make sure that you are inputing two key words to search. Refer to helpMe command for more information"
+        msg1 = "You are missing some inputs needed for the search function."
+        msg2 = "Make sure that you are inputing at least two key words to search. Refer to helpMe command for more information"
         result = msg1 + " " + msg2
         self.assertEqual(search(("",)), result)
         self.assertEqual(search(("keyword",)), result)
@@ -132,6 +151,116 @@ class BlackBoxTests(unittest.TestCase):
         inputs = ["keyword1", "word2", "word3"]
         self.assertEqual(search(("keyword1","word2", "word3")), inputs)
 
+class WhiteBoxTests(unittest.TestCase):
+    def test_multiroll(self):
+        error_str1 = "Please input a value for the number of dice. Roll should be in format xdy+m where x is number of dice you want to roll. Please use help for more information"
+        error_str2 = "Please input a value for the side of dice. Roll should be in format xdy +m where y is the number of sides of the die you want to roll. Please use help for more information"
+        error_str3 = "Input Error: Make sure that your input for roll is in the format xdy + m"
+        error_str4 = "Too many inputs for the roll function"
+
+        # Missing numDie
+        self.assertEqual(roll(('dy',)), error_str1)
+        self.assertEqual(roll(('d', 'y')), error_str1)
+        self.assertEqual(roll(('dy', '+m')), error_str1)
+        self.assertEqual(roll(('d', 'y', '+m')), error_str1)
+        self.assertEqual(roll(('d', 'y', '+', 'm')), error_str1)
+        self.assertEqual(roll(('dy', '-m')), error_str1)
+        self.assertEqual(roll(('d', 'y', '-m')), error_str1)
+        self.assertEqual(roll(('d', 'y', '-', 'm')), error_str1)
+
+        # Missing sideDie
+        self.assertEqual(roll(('xd',)), error_str2)
+        self.assertEqual(roll(('x', 'd')), error_str2)
+        self.assertEqual(roll(('xd', '+m')), error_str2)
+        self.assertEqual(roll(('x', 'd', '+m')), error_str2)
+        self.assertEqual(roll(('x', 'd', '+', 'm')), error_str2)
+        self.assertEqual(roll(('xd', '-m')), error_str2)
+        self.assertEqual(roll(('x', 'd', '-m')), error_str2)
+        self.assertEqual(roll(('x', 'd', '-', 'm')), error_str2)
+
+        # Missing d
+        self.assertEqual(roll(('xy',)), error_str3)
+        self.assertEqual(roll(('x', 'y')), error_str3)
+        self.assertEqual(roll(('xy', '+m')), error_str3)
+        self.assertEqual(roll(('x', 'y', '+m')), error_str3)
+        self.assertEqual(roll(('x', 'y', '+', 'm')), error_str3)
+        self.assertEqual(roll(('xy', '-m')), error_str3)
+        self.assertEqual(roll(('x', 'y', '-m')), error_str3)
+        self.assertEqual(roll(('x', 'y', '-', 'm')), error_str3)
+
+        # Too many inputs
+        self.assertEqual(roll(('x', 'd', 'y', '+', 'm', 'f', 'extra')), error_str4)
+
+    def test_manualRoll(self):
+        error_str1 = "Please input a value for the number of dice. Roll should be in format xdy+m rollResult where x is number of dice you want to roll. Please use help for more information"
+        error_str2 = "Please input a value for the side of dice. Roll should be in format xdy +m rollResult where y is the number of sides of the die you want to roll. Please use help for more information"
+        error_str3 = "Input Error: Make sure that your input for roll is in the format xdy + m rollResult"
+        error_str4 = "You cannot call manual roll with no inputs. Put in form xdy + m rollResult"
+        error_str5 = "Too many inputs for the manual roll function"
+
+        # Missing numDie
+        self.assertEqual(mRoll(('dy',)), error_str1)
+        self.assertEqual(mRoll(('d', 'y')), error_str1)
+        self.assertEqual(mRoll(('dy', '+m')), error_str1)
+        self.assertEqual(mRoll(('d', 'y', '+m')), error_str1)
+        self.assertEqual(mRoll(('d', 'y', '+', 'm')), error_str1)
+        self.assertEqual(mRoll(('dy', '-m')), error_str1)
+        self.assertEqual(mRoll(('d', 'y', '-m')), error_str1)
+        self.assertEqual(mRoll(('d', 'y', '-', 'm')), error_str1)
+
+        # Missing sideDie
+        self.assertEqual(mRoll(('xd',)), error_str2)
+        self.assertEqual(mRoll(('x', 'd')), error_str2)
+        self.assertEqual(mRoll(('xd', '+m')), error_str2)
+        self.assertEqual(mRoll(('x', 'd', '+m')), error_str2)
+        self.assertEqual(mRoll(('x', 'd', '+', 'm')), error_str2)
+        self.assertEqual(mRoll(('xd', '-m')), error_str2)
+        self.assertEqual(mRoll(('x', 'd', '-m')), error_str2)
+        self.assertEqual(mRoll(('x', 'd', '-', 'm')), error_str2)
+
+        # Missing d
+        self.assertEqual(mRoll(('xy',)), error_str3)
+        self.assertEqual(mRoll(('x', 'y')), error_str3)
+        self.assertEqual(mRoll(('xy', '+m')), error_str3)
+        self.assertEqual(mRoll(('x', 'y', '+m')), error_str3)
+        self.assertEqual(mRoll(('x', 'y', '+', 'm')), error_str3)
+        self.assertEqual(mRoll(('xy', '-m')), error_str3)
+        self.assertEqual(mRoll(('x', 'y', '-m')), error_str3)
+        self.assertEqual(mRoll(('x', 'y', '-', 'm')), error_str3)
+
+        # Missing all
+        self.assertEqual(mRoll(('',)), error_str4)
+
+        # Too many inputs
+        self.assertEqual(mRoll(('x', 'd', 'y', '+', 'm', 'f', 'extra')), error_str5)
+    
+    def test_addMacro(self):
+        msg1 = "You are missing some inputs needed for the addMacro function."
+        msg2 = "You have too many inputs for the funciton addMacro."
+        msg_end = "Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information"
+        result1 = msg1 + " " + msg_end
+        result2 = msg2 + " " + msg_end
+
+        self.assertEqual(addMacro(('d',)), result1)
+        self.assertEqual(addMacro(('d', 'q')), result1)
+        self.assertEqual(addMacro(('d', 'q', 'mod')), result1)
+
+        self.assertEqual(addMacro(('d', 'q', 'mod', 'name', 'extra')), result2)
+
+    def test_join(self):
+        error_msg = "To join initiative, the input must be in the form: [name] [initiative roll]."
+
+        self.assertEqual(join(('',)), error_msg)
+        self.assertEqual(join(('name',)), error_msg)
+    
+    def test_search(self):
+        msg1 = "You are missing some inputs needed for the search function."
+        msg2 = "Make sure that you are inputing at least two key words to search. Refer to helpMe command for more information"
+        result = msg1 + " " + msg2
+
+        self.assertEqual(search(('',)), result)
+        self.assertEqual(search(('kw1',)), result)
+    
     # testing the helper functions for parsing 
 
     def test_getSideDie(self):

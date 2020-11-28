@@ -75,10 +75,6 @@ def mRoll(arg):
     if data == "":
         return "You cannot call manual roll with no inputs. Put in form xdy + m rollResult"
     # reusing the hasFudge helper function to check to see if the user has a roll Result 
-    # returns a bool if the user inputted a rollResult or not. sending data to the helper function 
-    hasRollResult = hasFudge(data)
-    if not hasRollResult: 
-        return "Input Error: Make sure that your input for roll is in the format xdy + m rollResult"
     if not("d" in data):
         return "Input Error: Make sure that your input for roll is in the format xdy + m rollResult"
     # Even if everthing is spaced out with a rollResult, the max length of args is 6 
@@ -102,6 +98,9 @@ def mRoll(arg):
     sideDie = sideDie.strip()
     results.append(sideDie)
 
+    # returns a bool if the user inputted a rollResult or not. sending data to the helper function 
+    hasRollResult = hasFudge(data)
+
     # We are passing the whole string input to the helper function getModifier 
     modifier = getModifier(data, hasRollResult)
 
@@ -110,6 +109,9 @@ def mRoll(arg):
     # No need to check if modifier is "" because if there is no user input for modifier, defaults to +0 
     results.append(modifier)
     # isFudgeRoll is a bool value to see if there is a fudgeroll in the input, if there is, add to the results list 
+
+    if not hasRollResult: 
+        return "Input Error: Make sure that your input for roll is in the format xdy + m rollResult"
     if hasRollResult:
         fudgeVal = getFudgeValue(data)
         results.append(fudgeVal)
@@ -128,7 +130,7 @@ def addMacro(args):
     arguments = " ".join(args)
     inputs = arguments.split(" ")
     if len(inputs) < 4: 
-        msg1 = "You are missing all of the inputs needed for the addMacro function."
+        msg1 = "You are missing some inputs needed for the addMacro function."
         msg2 = "Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information"
         result = msg1 + " " + msg2
         return result  
@@ -188,8 +190,8 @@ def search(args):
     inputs = arguments.split(" ")
     result = []
     if len(inputs) < 2: 
-        msg1 = "You are missing all of the inputs needed for the search function."
-        msg2 = "Make sure that you are inputing two key words to search. Refer to helpMe command for more information"
+        msg1 = "You are missing some inputs needed for the search function."
+        msg2 = "Make sure that you are inputing at least two key words to search. Refer to helpMe command for more information"
         result = msg1 + " " + msg2
         return result 
     else: 
