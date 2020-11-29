@@ -239,9 +239,10 @@ def deleteMacroFile() -> None:
     ''' Deletes the database.
         Inputs: None
         Outputs: None '''
-    if os.path.exists('macroset.csv'):
-        print('Throwing items into lava...')
-        os.remove('macroset.csv')
+    if not os.path.exists('macroset.csv'):
+        return 'No macros exist.'
+    os.remove('macroset.csv')
+    return 'Throwing items into lava...'
 
 if __name__ == '__main__':
     
