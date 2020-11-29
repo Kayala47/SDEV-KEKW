@@ -116,20 +116,20 @@ def manualRoll(die: int = 20, q: int = 1, mod: int = 0, roll: int = 0) -> str:
                 mod   : modifier for resulting roll
                 roll  : the amount the user actually rolled
         Outputs: formatted dice roll with user specified result '''
-
+        
     errorlist = []
-    try: int(q)
+    try: q = int(q)
     except ValueError: errorlist.append(str(q))
-    try: int(die)
+    try: die = int(die)
     except ValueError: errorlist.append(str(die))
-    try: int(mod)
+    try: mod = int(mod)
     except ValueError: errorlist.append(str(mod))
-    try: int(roll)
+    try: roll = int(roll)
     except ValueError: errorlist.append(str(roll))
     if errorlist:
         return inputError(errorlist)
     
-    if q < 1 or die < 1:
+    if q < 1 or die < 1: 
         return negativeError()
 
     res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, roll)
@@ -244,12 +244,12 @@ def deleteMacroFile() -> None:
 
 if __name__ == '__main__':
     
-    print(viewMacros())    
+    # print(viewMacros())    
     name = input('name: ')
-    q = input('q: ')
-    die = input('die: ')
-    mod = input('mod: ')
-    print(addMacro(q,die,mod,name))
+    # q = input('q: ')
+    # die = input('die: ')
+    # mod = input('mod: ')
+    # print(addMacro(q,die,mod,name))
     # print(callMacro(name))
     # print(delMacro(name))
     # deleteMacroFile()
