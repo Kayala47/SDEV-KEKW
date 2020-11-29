@@ -132,7 +132,7 @@ def manualRoll(die: int = 20, q: int = 1, mod: int = 0, roll: int = 0) -> str:
     if q < 1 or die < 1: 
         return negativeError()
 
-    res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, roll)
+    res = 'manually rolled %s d %s + (%s) for %s!' %(q, die, mod, roll)
     return res
 
 
@@ -240,6 +240,7 @@ def deleteMacroFile() -> None:
         Inputs: None
         Outputs: None '''
     if os.path.exists('macroset.csv'):
+        print('Throwing items into lava...')
         os.remove('macroset.csv')
 
 if __name__ == '__main__':
