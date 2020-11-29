@@ -98,11 +98,6 @@ class BlackBoxTests(unittest.TestCase):
         result = msg1 + " " + msg2
         self.assertEqual(addMacro(""), result)
 
-        msg1 = "You have too many inputs for the funciton addMacro."
-        msg2 = "Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information"
-        result = msg1 + " " + msg2
-        self.assertEqual(addMacro(("d", "q", "m", "name", "extra")), result)
-
         self.assertEqual(addMacro(("d", "q", "m", "name")), ["d", "q", "m", "name"])
 
     def test_delMacro(self):
@@ -112,6 +107,12 @@ class BlackBoxTests(unittest.TestCase):
     def test_callMacro(self):
         self.assertEqual(callMacro(("")), "To call a macro, you must input the name of the macro you wish to call")
         self.assertEqual(callMacro(("name")), "name")
+
+    def test_viewMacro(self):
+        self.assertEqual(viewMacro(), "Called the View Macro Function.")
+    
+    def test_deleteMacros(self):
+        self.assertEqual(deleteMacros(), "Called the Delete Macro File Function.")
 
     def test_join(self):
         self.assertEqual(join(("name", "initRoll")), ["name", "initRoll"])
@@ -236,15 +237,14 @@ class WhiteBoxTests(unittest.TestCase):
     
     def test_addMacro(self):
         msg1 = "You are missing some inputs needed for the addMacro function."
-        msg2 = "You have too many inputs for the funciton addMacro."
         msg_end = "Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information"
         result1 = msg1 + " " + msg_end
-        result2 = msg2 + " " + msg_end
 
         self.assertEqual(addMacro(('d',)), result1)
         self.assertEqual(addMacro(('d', 'q')), result1)
         self.assertEqual(addMacro(('d', 'q', 'mod')), result1)
 
+        result2 = ["d", "q", "mod", "name", "extra"]
         self.assertEqual(addMacro(('d', 'q', 'mod', 'name', 'extra')), result2)
 
     def test_join(self):

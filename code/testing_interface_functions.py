@@ -134,11 +134,6 @@ def addMacro(args):
         msg2 = "Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information"
         result = msg1 + " " + msg2
         return result  
-    elif len(inputs) > 4: 
-        msg1 = "You have too many inputs for the funciton addMacro."
-        msg2 = "Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information"
-        result = msg1 + " " + msg2
-        return result 
     else: 
         return inputs
 
@@ -158,6 +153,12 @@ def callMacro(arg):
         return "To call a macro, you must input the name of the macro you wish to call"
     else: 
        return argument
+
+def viewMacro():
+    return "Called the View Macro Function."
+
+def deleteMacros():
+   return "Called the Delete Macro File Function."
 
 def join(arg):
     result = []
