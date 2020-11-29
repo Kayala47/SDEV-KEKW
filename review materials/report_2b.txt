@@ -1,0 +1,89 @@
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 2B.3 - Review Report
+Proposal: https://github.com/Kayala47/SDEV-KEKW/blob/master/report_2b.txt
+Primary Authors: Dana, Kevin, Max, Swamik
+---------------------------------------------------------------------------------------------------------------------
+
+Architecture Review on Team Dewbed 
+
+Time: 1:00 PM to 2:15 PM 
+
+Project: Introspective Spotify 
+
+Attendees: Swamik, Max, Kevin, Dana, William, Bettina, Emily, Devika, Aryana, Ben, Theo 
+
+Must Fix 
+- Defect: Prefix
+    - The bot needs to allow people to change the prefix for bot commands.
+    - ! is common for many bots, and trying to call one bot will call multiple if they 
+    have overlapping commands. (eg. !help)
+
+- Defect: Remove a song from the queue
+    - There is currently no command that allows users to remove a song from the queue.
+
+- Defect: Trolling 
+    - The bot needs a way to prevent users from trolling, or messing with, the other listeners.
+     (ie. by continuously pausing and playing a track, skipping forward through the whole queue 
+     without listening to everyone’s songs, etc.)
+    - Having a time constraint on how many commands one can make in a certain amount of time was 
+    suggested.
+    - Having a voting system for skipping songs could be implemented using emoji reactions for 
+    release 2.0.
+
+- Issue: Security/ Privacy
+    - The bot has to handle confidential information correctly.
+    - We do not want users to access other people’s song history without their confirmation, 
+    because some users may want their privacy.
+    - Emoji reactions were suggested as a means of accepting a potential query to use the 
+    history comparison feature with friends.
+
+- Hierarchy 
+    - Creating one class to listen for commands in the Discord server which can access 
+    the database of login information and call the other classes on a need-based basis was suggested.
+    - This would also help with complexity, making it so the bot doesn’t have five classes 
+    all listening unnecessarily to the text channels despite not all being needed at once.
+    - This one listening component was also suggested to help with the “trolling” 
+    problem, adding the command cooldown functionality.
+
+- Defect: No DBMS selected 
+    - There is a lot of information that the developers want to store, but they have not 
+    selected their DBMS.
+    - The DBMS needs to communicate with their Discord bot and possibly the Spotify API 
+    and needs to be selected carefully.
+
+Should Fix 
+- Defect: Different queues if using the Spotify app to add songs
+    - If a user decides to queue a song through the Spotify app using their personal account, 
+    the user will be out of sync with the listening group.
+    - The bot should be able to access the user queue from Spotify and sync with everyone 
+    else’s Spotify queues by updating the listening party queue.
+
+- Issue: Capitalization of commands  
+    - The bot commands currently all start with a capital letter. (eg. !Spotify)
+    - Users might not want to capitalize their letters, so the bot should allow users 
+    to use lower case for their commands. (eg. !spotify)
+
+Comments 
+- Issue: The architecture approach is not outlined 
+    - In the document, there should be a section where they outline the approach they will be using.
+    - The document should also provide justification for their specific approach, which they 
+    mentioned was a mixture of top-down and bottom-up.
+
+- Issue: Conflicting Commands 
+    - The developers are not expecting conflicting commands, except users trying to use listening 
+    party commands where there is no listening party. In this situation, the bot will return an error 
+    into the text channel.
+
+- Question: Searching songs with the same names but different artists 
+    - How will the bot deal with vague search queries?
+    - A suggestion would be to allow users to add Spotify song links, to ensure their specific song 
+    will be played in the queue instead of a song with the same name. These song links can be found 
+    by right-clicking on the song, and navigating to “Share”; there’s a “Copy Song Link” button.
+
+Based on the architecture report and the issues and defects raised during the meeting, we decided to 
+approve the project with required changes. The main points in the must fix section are issues that deal 
+with usability and security regarding user’s paid subscriptions. The other main issue is the lack of DBMS 
+in their architecture. During the meeting, the group had plans on how to address all of these key issues, 
+and from their responses they seemed reasonably easy to fix. For this reason, we believe that once these 
+necessary changes are made, this project will be ready to be approved.
