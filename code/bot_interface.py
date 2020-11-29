@@ -98,9 +98,9 @@ async def roll(ctx, *arg):
 
     # Sending results.
     if len(results) == 3:
-        await ctx.send(f'{ctx.message.author.mention} ' + rolling.multiroll(results[0], results[1], results[2]))
+        await ctx.send(f'{ctx.message.author.mention} ' + rolling.multiroll(results[1], results[0], results[2]))
     else:
-        await ctx.send(f'{ctx.message.author.mention} ' + rolling.multiroll(results[0], results[1], results[2], results[3]))
+        await ctx.send(f'{ctx.message.author.mention} ' + rolling.multiroll(results[1], results[0], results[2], results[3]))
     return 
 
           
@@ -185,7 +185,7 @@ async def mroll(ctx, *arg):
     await ctx.send(results)
 
     # Sending results.
-    await ctx.send(f'{ctx.message.author.mention} ' + rolling.manualRoll(results[0], results[1], results[2], results[3]))
+    await ctx.send(f'{ctx.message.author.mention} ' + rolling.manualRoll(results[1], results[0], results[2], results[3]))
         
 # """
 # The function needed to add macros 
