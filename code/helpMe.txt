@@ -1,0 +1,4 @@
+!roll [x]d[y]+/-[m]
+    Rolls x multisided dice with modifier
+
+    
