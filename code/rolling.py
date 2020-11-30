@@ -233,6 +233,9 @@ def callMacro(itemname: str) -> str:
     return dbError(False, itemname)
 
 def viewMacros():
+    ''' Views all in the database.
+        Inputs: None
+        Outputs: str representation of database '''
     if not os.path.exists('macroset.csv'):
         return 'No macros exist.'
     
