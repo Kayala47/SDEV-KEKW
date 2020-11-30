@@ -1,4 +1,21 @@
 !roll [x]d[y]+/-[m]
     Rolls x multisided dice with modifier
 
+!join [n] [i]
+    Adds new combatant's information into tracker. This includes username, name, and initiative roll.
+
+!begin
+    Begins initiative and prints current initiative order.
+
+!end
+    Ends initiative and clears all stored tracker information.
+
+!next
+    Moves to the next combatant in initiative.
+
+!previous
+    Moves to the previous combatant in initiative. (Alias: !prev)
+
+!show
+    Prints current initiative order.
     
