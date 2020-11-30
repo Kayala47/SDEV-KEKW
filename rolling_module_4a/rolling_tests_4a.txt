@@ -24,6 +24,40 @@ For all testing purposes, we will be using py unittest framework, as it is strai
 NOTE: '?=' implies default value
 
 BLACK BOX TEST CASES
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: inputError(params)
+    Testing Case 1: Assert inputError is successfully able to indicate bad parameters.
+    Justification: More specificity for the user is better in this context.
+    Special Set-Up: None
+    Generation: Calling inputError() with a list of parameters
+    Correctness: inputError() will go through the list and return a string indicating issues
+                 with provided parameters
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: dbError(key, itemname)
+    Testing Case 1: Assert that dbError successfully indicates an item is already present
+    Justification: Important functionality to help with addMacro().
+    Special Set-Up: None
+    Generation: Calling dbError() with key set to True.
+    Correctness: returns string indicating which key was already present.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert that dbError successfully indicates an item does not exist
+    Justification: Important functionality to help with delMacro().
+    Special Set-Up: None
+    Generation: Calling dbError() with key set to False.
+    Correctness: returns string indicating which input key was not found.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
 Testing: roll(die ?= 20)
     Testing Case 1: Assert that the returned roll value is between 1 and die, inclusive.
@@ -45,6 +79,16 @@ Testing: roll(die ?= 20)
                  an indicator that die is invalid.
     Clean-Up: None
 
+----------------------------------------------------------------------------------------
+
+    Testing Case 3: Assert that roll() successfully flags a negative input error if 
+                    parameter is less than 1.
+    Justification: Ensures that the user cannot accidentally pass incorrect arguments.
+    Special Set-Up: None
+    Generation: When roll(die) is called where die is not an integer.
+    Correctness: We expect the anticipated error message (see specs) along with 
+                 an indicator that die is invalid.
+    Clean-Up: None
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 
@@ -115,6 +159,29 @@ Testing: multiroll(die ?= 20, q ?= 1, mod ?= 0, fudge ?= 0)
     Clean-Up: None
 
 ----------------------------------------------------------------------------------------
+
+    Testing Case 4: Assert that a 4th parameter (fudge) successfully overrides the roll
+                    without providing any indication of doing so.
+    Justification: Fudge rolling is a valuable tool for a DM when discrete. We need
+                   to ensure that adding the 4th parameter changes the behavior of the
+                   function without showing the players.
+    Special Set-Up: None
+    Generation: Call multiroll with full parameter completeness AND a fudge > 0
+                (ex. 1d20+4 24 will return 24 regardless of the roll)
+    Correctness: Correctly outputs formatted string with fudge substituted for calculation.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 5: Assert that multiroll() successfully lowers roll result to
+                    highest possible roll when fudge is too large.
+    Justification: Maintains DM discretion and doesn't betray the user.
+    Special Set-Up: None
+    Generation: When multiroll() is called where fudge > q*die + mod.
+    Correctness: Roll result should be the maximum rollable value.
+    Clean-Up: None
+
+----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 
 Testing: manualRoll(q, die, mod, roll)
@@ -124,6 +191,16 @@ Testing: manualRoll(q, die, mod, roll)
     Generation: Call manualRoll() with all necessary params
     Correctness: Correctly outputs formatted string with result as 'roll'.
     Clean-Up: N/A
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert that manualRoll() successfully informs user of impossible roll.
+    Justification: Ensure player did not make a mistake.
+    Special Set-Up: None
+    Generation: When manualRoll() is called where fudge > q*die + mod.
+    Correctness: Tell user how far off the result was.
+    Clean-Up: None
+
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 
@@ -156,18 +233,6 @@ Testing: delMacro(itemname)
 
 WHITE BOX TEST CASES
 
-Testing: multiroll(die ?= 20, q ?= 1, mod ?= 0, fudge ?= 0)
-    Testing Case 1: Assert that a 4th parameter (fudge) successfully overrides the roll
-                    without providing any indication of doing so.
-    Justification: Fudge rolling is a valuable tool for a DM when discrete. We need
-                   to ensure that adding the 4th parameter changes the behavior of the
-                   function without showing the players.
-    Special Set-Up: None
-    Generation: Call multiroll with full parameter completeness AND a fudge > 0
-                (ex. 1d20+4 24 will return 24 regardless of the roll)
-    Correctness: Correctly outputs formatted string with fudge substituted for calculation.
-    Clean-Up: None
-
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 
@@ -178,7 +243,7 @@ Testing: addMacro(q, die, mod, itemname)
     Special Set-Up: The database has no entry under itemname
     Generation: Calling addMacro() with full parameters
     Correctness: The database is populated with the new macro with arguments in the proper location.
-    Clean-Up: delMacro(itemname)
+    Clean-Up: remove added macro
 
 ----------------------------------------------------------------------------------------
 
@@ -213,43 +278,41 @@ Testing: delMacro(itemname)
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 
-Testing: inputError(params)
-    Testing Case 1: Assert inputError is successfully able to indicate bad parameters.
-    Justification: More specificity for the user is better in this context.
-    Special Set-Up: None
-    Generation: Calling inputError() with a list of parameters
-    Correctness: inputError() will go through the list and return a string indicating issues
-                 with provided parameters
+Testing: callMacro(itemname)
+    Testing Case 1: Assert that callMacro successfully uses an item
+    Justification: Players store items with the intent of using them.
+    Special Set-Up: Item must be present in database.
+    Generation: Calling callMacro() with itemname
+    Correctness: item should be called and rolled.
+    Clean-Up: Remove item from database
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert callMacro raises error when no  item is present
+    Justification: We can't use items that do not exist.
+    Special Set-Up: The database should have no entry under itemname
+    Generation: Calling callMacro() with itemname not in database
+    Correctness: Should return a dberror indicating item isn't there.
     Clean-Up: None
 
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 
-Testing: inputError(params)
-    Testing Case 1: Assert inputError is successfully able to indicate bad parameters.
-    Justification: More specificity for the user is better in this context.
-    Special Set-Up: None
-    Generation: Calling inputError() with a list of parameters
-    Correctness: inputError() will go through the list and return a string indicating issues
-                 with provided parameters
+Testing: viewMacros()
+    Testing Case 1: Assert that viewMacros successfully displays items
+    Justification: Players may want to see items without using them.
+    Special Set-Up: Items must be present in database.
+    Generation: Calling viewMacro() on a populated database
+    Correctness: items should be displayed in list format.
     Clean-Up: None
 
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 
-Testing: dbError(key, itemname)
-    Testing Case 1: Assert that dbError successfully indicates an item is already present
-    Justification: Important functionality to help with addMacro().
-    Special Set-Up: None
-    Generation: Calling dbError() with key set to True.
-    Correctness: returns string indicating which key was already present.
-    Clean-Up: None
-
-----------------------------------------------------------------------------------------
-
-    Testing Case 2: Assert that dbError successfully indicates an item does not exist
-    Justification: Important functionality to help with delMacro().
-    Special Set-Up: None
-    Generation: Calling dbError() with key set to False.
-    Correctness: returns string indicating which input key was not found.
+Testing: deleteMacroFile()
+    Testing Case 1: Assert deleteMacroFile successfully eliminates file
+    Justification: Players might want to start fresh.
+    Special Set-Up: Database must exist.
+    Generation: Calling deleteMacroFile() on a database
+    Correctness: file should be destroyed.
     Clean-Up: None

@@ -105,6 +105,8 @@ def multiroll(die: int = 20, q: int = 1, mod: int = 0, fudge: int = 0) -> str:
     rolls = [roll(die) for i in range(q)]
     if fudge == 0:
         res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, sum(rolls) + mod)
+    elif fudge > (q*die + mod):
+        res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, (q*die + mod))
     else:
         res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, fudge)
     return res    
@@ -131,8 +133,10 @@ def manualRoll(die: int = 20, q: int = 1, mod: int = 0, roll: int = 0) -> str:
     
     if q < 1 or die < 1: 
         return negativeError()
-
-    res = 'manually rolled %s d %s + (%s) for %s!' %(q, die, mod, roll)
+    if roll > q*die+mod:
+        res = 'manual input too large by %s, please ensure the roll is possible.'  %(roll - q*die+mod)
+    else:
+        res = 'manually rolled %s d %s + (%s) for %s!' %(q, die, mod, roll)
     return res
 
 
@@ -245,7 +249,7 @@ def deleteMacroFile() -> None:
     return 'Throwing items into lava...'
 
 if __name__ == '__main__':
-    
+    print(multiroll(100, 1, 0, 101))
     # name = input('name: ')
     # q = input('q: ')
     # die = input('die: ')
