@@ -246,16 +246,14 @@ def deleteMacroFile() -> None:
 
 if __name__ == '__main__':
     
-    # print(viewMacros())    
-    name = input('name: ')
+    # name = input('name: ')
     # q = input('q: ')
     # die = input('die: ')
     # mod = input('mod: ')
     # print(addMacro(q,die,mod,name))
+    
+    # print(viewMacros())    
     # print(callMacro(name))
     # print(delMacro(name))
+    
     # deleteMacroFile()
-    # print(rollAdv('x'))
-    # cond = input("New Item? (y/n)")
-    # if cond == 'n':
-    #     break

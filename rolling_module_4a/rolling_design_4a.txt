@@ -15,12 +15,20 @@ rolls, and store player items in the database.
 
 Primary Revisions:
 Revision specifics can be find in individual methods in specs, 
-however we tried to present more comprehensive error parsing 
-to improve program complexity for the sake of better testing demos.
+however we added significant complexity in the database parsing
+featureset as well as some convenient functions relating to the data.
+
+LIBRARIES:
+random
+os
+csv
+
 
 def roll(int num ?= 20):
     if num != int:
         return inputError(num)
+    if num < 1:
+        return negativeError()
     res = random number 1 <= res <= num
     return int(res)
 
@@ -39,6 +47,8 @@ def rollAdv(bool adv ?= True):
 def multiroll(int die = 20, int q = 1, int mod = 0, int fudge = 0):
     if q, die, mod, fudge != int:
         return inputError(params with incorrect type)
+    if die, q < 1:
+        return negativeError()
     list = []
     add a call to roll(die) to list q times
     if fudge != 0:
@@ -47,37 +57,60 @@ def multiroll(int die = 20, int q = 1, int mod = 0, int fudge = 0):
         res = 'rolled' q 'd' die '+' mod 'for' fudge '!'
     return res
 
-def addMacro(int q, int die, int mod, str itemname);
+def manualRoll(int roll, int die, int q, int mod):
+    if q, die, mod, fudge != int:
+        return inputError()
+    if die, q < 1:
+        return negativeError()
+    res = 'manually rolled' q 'd' die '+' mod 'for' roll
+    return res
+
+def addMacro(int q, int die, int mod, str itemname):
     if q, die, mod != int:
         return inputError(params with incorrect type)
     with open(file in database as WRITE):
         if itemname in Database:
             return dbError(True, itemname):
         else write new row under key itemname
-    return
+    return indicator string
+
+def csvHelper(str filename):
+    with open(file in database as READ):
+        populate python list with contents
+    return list of items from filename
+
+def delMacro(str itemname):
     
-def delMacro(str itemname)
     with open(file in database as WRITE):
-        if itemname not in Database:
+        if itemname not in csvHelper():
             return dbError(False, itemname):
         else remove all data under key itemname
-    return
-
-def manualRoll(int roll, int die, int q, int mod):
-    if q, die, mod, fudge != int:
-        return inputError()
-    res = 'rolled' q 'd' die '+' mod 'for' roll)
-    return res
+    return indicator string
 
 def callMacro(str itemname):
-    if name in Database:
+    if database file does not exist:
+        return indicator
+    if name in csvHelper():
         params = //DRAW PARAMS FROM DB
         roll = multiroll(params[1], params[2], params[3])
     else:
         return dbError(False, itemname)
     res = 'used item' name ',' roll
     return res
-        
+
+def viewMacros():
+    if database file does not exist:
+        return indicator
+    else:
+        return csvHelper()
+
+def deleteMacroFile():
+    if database file does not exist:
+        return indicator
+    else:
+        remove file from os
+        return indicator
+
 def inputError(params):
     res = "Slow your roll! We did not recognize the following parameters: " string of elements in params 
           "\n please be sure to use the following format: x 'd' y '+' z"
@@ -88,3 +121,6 @@ def dbError(bool keyfound, itemname):
         res = itemname ' already exists. Please remove item if attempting to add item of same name'
     elif key == False:
         return itemname ' does not exist. Check your item name.'
+
+def negativeError():
+    return 'please ensure q and die are positive integers!'
