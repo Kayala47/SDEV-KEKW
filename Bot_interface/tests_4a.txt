@@ -1,0 +1,31 @@
+
+FINAL TESTS - Bot Interface 
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 4A: Final Code
+    Primary Author: Swamik
+    Slip Days: 0
+
+This module is the bot interface module. It is supposed to handle user input and the 
+parsing of said input. After correctly parsing the input, we pass the arguments to other 
+modules and return the messages or results of those modules back to the user in the form 
+of a Discord message. 
+
+FILE LINKS:
+
+Final Component SPECIFICATIONS:
+
+https://github.com/Kayala47/SDEV-KEKW/blob/master/Bot_interface/interface_spec_final.txt
+
+Final Component README:
+
+https://github.com/Kayala47/SDEV-KEKW/blob/master/Bot_interface/README.md
+
+Final Component TEST PLAN and REQUIREMENTS:
+
+https://github.com/Kayala47/SDEV-KEKW/blob/master/Bot_interface/interface_testplan_final.txt
+
+Final Component TEST CODE:
+
+https://github.com/Kayala47/SDEV-KEKW/blob/master/code/interface_tester.py

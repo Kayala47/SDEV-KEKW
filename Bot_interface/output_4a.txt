@@ -1,0 +1,37 @@
+
+The outputs after running the testing suite
+
+test_addMacro (interface_tester.BlackBoxTests) ... ok
+test_begin (interface_tester.BlackBoxTests) ... ok
+test_callMacro (interface_tester.BlackBoxTests) ... ok
+test_delMacro (interface_tester.BlackBoxTests) ... ok
+test_deleteMacros (interface_tester.BlackBoxTests) ... ok
+test_end (interface_tester.BlackBoxTests) ... ok
+test_helpMe (interface_tester.BlackBoxTests) ... ok
+test_join (interface_tester.BlackBoxTests) ... ok
+test_mRoll_fourInputs (interface_tester.BlackBoxTests) ... ok
+test_next (interface_tester.BlackBoxTests) ... ok
+test_prev (interface_tester.BlackBoxTests) ... ok
+test_rollAdv (interface_tester.BlackBoxTests) ... ok
+test_roll_fourInputs (interface_tester.BlackBoxTests) ... ok
+test_roll_noInputs (interface_tester.BlackBoxTests) ... ok
+test_roll_threeInputs (interface_tester.BlackBoxTests) ... ok
+test_roll_twoInputs (interface_tester.BlackBoxTests) ... ok
+test_search (interface_tester.BlackBoxTests) ... ok
+test_showTracker (interface_tester.BlackBoxTests) ... ok
+test_viewMacro (interface_tester.BlackBoxTests) ... ok
+test_addMacro (interface_tester.WhiteBoxTests) ... ok
+test_getFudgeValue (interface_tester.WhiteBoxTests) ... ok
+test_getModifier (interface_tester.WhiteBoxTests) ... ok
+test_getModifierWithFudge (interface_tester.WhiteBoxTests) ... ok
+test_getSideDie (interface_tester.WhiteBoxTests) ... ok
+test_hasFudge (interface_tester.WhiteBoxTests) ... ok
+test_join (interface_tester.WhiteBoxTests) ... ok
+test_manualRoll (interface_tester.WhiteBoxTests) ... ok
+test_multiroll (interface_tester.WhiteBoxTests) ... ok
+test_search (interface_tester.WhiteBoxTests) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.003s
+
+OK

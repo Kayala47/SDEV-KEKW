@@ -33,6 +33,8 @@ location in your directory.
 TESTING:   
 simply run interface_tester.py in the same directory   
 as testing_interface_functions.py in your python interpreter.   
+If you run with just the command "python interface_tester.py" you will not get a specific message including all the different testcases passed 
+use python -m unittest -v interface_tester.py to get the detailed message, like the one seen in the output_4a.txt file. 
 
 USING COMPONENT:   
 The testing_interface_functions.py was meant to just be used for testing purposes, but if you would like to test/ call specific funcitons, you can make a main 
