@@ -131,8 +131,8 @@ Testing: next()
                     len(trackerInfo) - 1.
     Justification: The index should increment when someone finishes their turn in combat.
     Special Set-Up: trackerInfo should have at least two characters.
-    Generation: When a player finishes their turn and clicks the "next" emoji reaction
-                on the bot interface.
+    Generation: When a player finishes their turn and uses next() at the end of a round
+                and they aren't at the end of initiative.
     Correctness: We are expecting that when the currentPlayer, or index, is anywhere
                  before the last person in initiative order, or database length - 1, the
                  currentPlayer is increased by 1.
@@ -145,11 +145,22 @@ Testing: next()
     Justification: The index should loop around to the top of the initiative order once
                    the last person in the list takes their turn.
     Special Set-Up: trackerInfo should have at least two characters.
-    Generation: When a player finishes their turn and clicks the "next" emoji reaction
-                at the end of a round.
+    Generation: When a player finishes their turn and uses next() at the end of a round
+                and they are at the end of initiative.
     Correctness: We are expecting that when currentPlayer is at len(trackerInfo) - 1, it
                  gets reset to 0.
     Clean-Up: trackerInfo.clear(); currentPlayer = 0; rounds = 0
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 3: Assert that an error is sent if begin() hasn't been called yet.
+    Justification: If combat hasn't begun, you shouldn't be able to go to the next
+                   combatant.
+    Special Set-Up: trackerInfo should have at least two characters.
+    Generation: When a player finishes their turn and uses next() before initiative has
+                begun.
+    Correctness: We are expecting that when rounds = 0, an error is sent.
+    Clean-Up: end()
 
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
@@ -159,8 +170,8 @@ Testing: prev()
     Justification: The index should decrement when someone retracts or revisits their
                    turn in combat.
     Special Set-Up: trackerInfo should have at least two characters.
-    Generation: When a player finished their turn and clicks the "previous" emoji reaction
-                on the bot interface.
+    Generation: When a player revisits their turn and uses prev() and they are not at
+                the beginning of initiative.
     Correctness: We are expecting that when the currentPlayer, or index, is anywhere
                  after the first person in initiative order, or 0, the currentPlayer is
                  decreased by 1.
@@ -172,11 +183,22 @@ Testing: prev()
                     0 when prev() is called.
     Justification: The index should loop back to the bottom of initiative order if they
                    rewind the combat order.
-    Special Set-Up: The database should have at least two characters.
-    Generation: When a player revisits their turn and clicks the "previous" emoji reaction
-                on the bot interface when they are at the top of initiative order.
+    Special Set-Up: trackerInfo should have at least two characters.
+    Generation: When a player revisits their turn and uses prev() and they are at
+                the beginning of initiative.
     Correctness: We are expecting that when currentPlayer is at 0, it gets reset to
                  database length - 1.
+    Clean-Up: end()
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 3: Assert that an error is sent if begin() hasn't been called yet.
+    Justification: If combat hasn't begun, you shouldn't be able to go to the previous
+                   combatant.
+    Special Set-Up: trackerInfo should have at least two characters.
+    Generation: When a player revisits their turn and uses prev() before initiative has
+                begun.
+    Correctness: We are expecting that when rounds = 0, an error is sent.
     Clean-Up: end()
 
 ----------------------------------------------------------------------------------------
@@ -207,4 +229,6 @@ Testing: dec_round() via prev()
     Correctness: We are expecting that if the current index is 0 and prev() is called, the
                  round will decrease by 1.
     Clean-Up: end()
+   
+----------------------------------------------------------------------------------------
     
