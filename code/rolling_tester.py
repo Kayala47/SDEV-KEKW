@@ -32,7 +32,7 @@ class BlackBoxTests(unittest.TestCase):
     def test_roll(self):
         for test in range(1000):
             self.assertTrue(0 < roll() < 21)
-            self.assertTrue(0 < roll(100) < 101)
+            self.assertTrue(0 < roll(1) < 2)
     
     # Ensure roll correctly presents error with bad params.
     # Compares output to correct desired message.
@@ -119,16 +119,42 @@ class BlackBoxTests(unittest.TestCase):
     # Checks output message and verifies that components are correct.
     def test_multiRoll_param_error2(self):
         self.assertEqual(multiroll(0, 0), negativeError())
+        self.assertEqual(multiroll(-1, -1), negativeError())
 
+    # Ensure multiroll lowers fudged roll to the highest possible roll if too large.
+    # Checks output message to ensure result was effectively modded.
+    def test_multiRoll_fudge_too_large(self):
+        roll = multiroll(100, 1, 0, 101)[:-1].split()
+        self.assertEqual(int(roll[1]), 1)
+        self.assertEqual(int(roll[3]), 100)
+        self.assertEqual(int(roll[5][1:-1]), 0)
+        self.assertEqual(int(roll[-1]), 100)
+        
     # Tests that manual roll successfully overwrites roll output.
     # Verifies components of output align with desired quantities.
     def test_manualRoll_combined_params(self):
         roll = manualRoll(20, 1, 0, 20)[:-1].split()
-        self.assertEqual(int(roll[1]), 1)
-        self.assertEqual(int(roll[3]), 20)      
-        self.assertEqual(int(roll[5][1:-1]), 0)          
+        self.assertEqual(int(roll[2]), 1)
+        self.assertEqual(int(roll[4]), 20)      
+        self.assertEqual(int(roll[6][1:-1]), 0)          
         self.assertEqual(int(roll[-1]), 20)
+    # Ensure manual rolls correctly present errors with combinations of bad params.
+    # Compares each possible argument error with the correct corresponding error message.
+    def test_manualRoll_param_error(self):
+        error_str = \
+        'Slow your roll! We did not recognize the following parameters: [x'
+        self.assertEqual(manualRoll('x'), error_str + '].' )
+        self.assertEqual(manualRoll('x', 'x'), error_str + ', x].')
+        self.assertEqual(manualRoll('x', 'x', 'x'), error_str + ', x, x].')
+        self.assertEqual(manualRoll('x', 'x', 'x', 'x'), error_str + ', x, x, x].')
 
+    # Ensure manual roll is identified if too large.
+    # Checks output message to ensure result was effectively modded.
+    def test_manualRoll_input_too_large(self):
+        message = \
+        'manual input too large by 1, please ensure the roll is possible.'
+        self.assertEqual(manualRoll(1,1,0,2), message)
+        
     # Ensure incorrectly formatted macros cannot be added
     # Compares each possible argument error with the correct corresponding error message.
     def test_addMacro_param_error(self):
@@ -234,12 +260,23 @@ class WhiteBoxTests(unittest.TestCase):
         'test does not exist. Check your item name.'
         self.assertEqual(callMacro('test'), message)
 
+    # Ensures macros are correctly printed.
+    # Calls the print command and compares the output.
     def test_viewMacros(self):
         message = \
         '''[['sword of the divine', '1', '1', '1']]'''
         self.assertEqual(str(viewMacros()), message)
+
+    # Ensures macro file is successfully cleaned up after use.
+    # Checks file location before and after call for  deletion.
+    def test_deleteMacroFile(self):
+        self.assertTrue(os.path.exists('macroset.csv'))
+        deleteMacroFile()
+        self.assertFalse(os.path.exists('macroset.csv'))
+    
+    
     #Note: Error toolkit does not necessitate white box testing, the components 
-    #      calling the error methods did, so testing is done there instead
+    #      calling the error methods did, so testing is done via those components 
 
 if __name__ == '__main__':
     unittest.main()

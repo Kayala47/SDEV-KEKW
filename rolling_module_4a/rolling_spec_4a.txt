@@ -1,0 +1,194 @@
+
+Component Design Specification - Rolling Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 4A: Final Specifications 
+    Primary Author: Max
+    Slip Days: 0
+
+PURPOSE: 
+
+The purpose of this module is to cover rolling requirements
+for common TTRPG games. The module will be able to use this 
+module to randomize custom dice rolls, specify manual input 
+rolls, and store player items in the database.
+
+
+**************
+MODULE METHODS
+**************
+
+Function roll(a)
+    possible returns: INT
+    inputs: a : INT
+    logic: rolls a random number 
+            from 1 to a, inclusive.
+            Defaults to d20 if no args.
+    
+    error handling: call ERR if input is non int or negative
+
+Revisions:
+- Negative input handling
+
+Function rollAdv(bool)
+    possible returns: INT
+    inputs: bool : BOOLEAN
+    logic: call ROLL(20) twice, returns
+            the greater if bool = TRUE, 
+            else returns the lesser
+    output:
+    ---------------------------------------------------
+    | user rolled a 'roll1' and 'roll2' for 'result'. |
+    ---------------------------------------------------
+    error handling: call ERR if input is nonbool
+
+Revisions:
+- None
+
+Function multiRoll(die, q, mod, fudge)
+    possible returns: INT
+    inputs: q, die, mod, fudge : INT
+    logic: check over inputs and call ERR for any mistypes
+            call ROLL(die) q times,
+            return result + mod
+            if fudge is passed as an
+            arg, replace output with fudge
+    output:
+    ------------------------------------------
+    | user rolled 'q' d 'die' + 'mod' for x! |
+    ------------------------------------------
+    error handling: call ERR if q,die,mod,fudge nonint or negative
+                    if fudge > possible roll, return largest possible.
+
+Revisions:
+- Negative input handling
+- Covers case where fudge is too large
+
+Function manualRoll(q, die, mod, roll)
+    possible returns: STR
+    inputs: q, die, mod, roll : INT
+    logic: Expresses combination of inputs
+            similarly to multiroll, but
+            obviously outputs 'roll'
+    output:
+    -----------------------------------------------
+    | user rolled 'q' d 'die' + 'mod' for 'roll'! |
+    -----------------------------------------------
+    error handling: call ERR if missing/incorrect args 
+
+Revisions:
+- Errors if we try to manual roll higher than possible
+
+Function addMacro(die, q, mod, name)
+    possible returns: none
+    inputs: q, die, mod : INT, name : STR
+    logic: add DB item represented by a 
+            list of components. can be sent 
+            to MULTIROLL().
+    output:
+    --------------------------------------------------------------------------------------------
+    | successfully added item name with attributes 'q' d 'die' + ('mod') to the game database! |
+    --------------------------------------------------------------------------------------------
+    error handling: call ERR if name in DB
+                    specify incorrect params
+
+Revisions:
+- Will identify specific parameters that were problematic
+
+Function csvHelper(filename):
+    possible returns: list of items from csv
+    inputs: filename : STR
+    logic: iterates through csv and populates a python list
+    output: None
+    error handling: None
+
+Revisions:
+- New function to reduce clutter and repeated work
+
+Function delMacro(name):
+    possible returns: none
+    inputs: name : STR
+    logic: removes item of name 'name' from DB using csvHelper()
+    output:
+    ------------------------------------------------------------
+    | successfully deleted item 'name' from the game database! |
+    ------------------------------------------------------------
+    error handling: call ERR if name not in DB
+                    inform user if no macros exist
+
+Revisions:
+- Handles missing database correctly
+
+Function callMacro(name):
+    possible returns: STR
+    inputs: name : STR
+    logic: checks if name is valid in DB using csvHelper.
+            passes stored parameters into a call to multiRoll()
+            returns string of result
+    output:
+    -----------------------------------------------------------
+    | user used item 'name' rolled 'q' d 'die' + 'mod' for x! |
+    -----------------------------------------------------------
+    error handling: call ERR if name not in DB
+                    inform user if no macros  exist
+
+Revisions:
+- Handles missing database correctly
+
+Function viewMacros(filename):
+    possible returns: STR
+    inputs: None
+    logic: prints list representation of item database for viewing
+    output:
+    -------------------------------------------
+    | [item1, 1, 1, 1], [item2, 2, 2, 2], etc |
+    -------------------------------------------
+    error handling: inform user if no macros  exist
+
+Revisions:
+- This is a new method that is easy to implement
+
+Function deleteMacroFile():
+    possible returns: STR
+    inputs: None
+    logic: annihilates all macros and deletes file from local dir
+    output:
+    --------------------------------
+    | Threw all items into lava... |
+    --------------------------------
+    error handling: inform user if no macros  exist
+
+Revisions:
+- This is a new method that is easy to implement
+- Easy to clean up after we are done
+
+*************
+ERROR METHODS
+*************
+
+Function inputError(parameters)
+    possible returns: STR
+    inputs: parameters : LIST of params
+    logic: indicate to the user WHICH parameters are incorrect
+    -----------------------------------------------------------------------------------------
+    | 'Slow your roll! We did not recognize the following parameters: ' list all parameters |  
+    -----------------------------------------------------------------------------------------
+
+Function dbError(key, itemname)
+    possible returns: STR
+    inputs: key : BOOL
+            itemname : STR
+    logic: if key is True, indicate db collision
+           if key is False, indicate item is not found
+    output:
+    --------------------------------------------------------------------------------
+    | ' already exists. Please remove item if attempting to add item of same name' |
+    --------------------------------------------------------------------------------
+    | ' does not exist. Check your item name.' |
+    --------------------------------------------
+
+Function negativeError()
+    possible returns: STR
+    inputs: None
+    logic: Return string indicating a parameter was incorrectly negative.

@@ -1,0 +1,35 @@
+python .\rolling_tester.py -v
+test_addMacro_param_error (__main__.BlackBoxTests) ... ok
+test_dbError_False (__main__.BlackBoxTests) ... ok
+test_dbError_True (__main__.BlackBoxTests) ... ok
+test_inputError (__main__.BlackBoxTests) ... ok
+test_manualRoll_combined_params (__main__.BlackBoxTests) ... ok
+test_manualRoll_input_too_large (__main__.BlackBoxTests) ... ok
+test_manualRoll_param_error (__main__.BlackBoxTests) ... ok
+test_multiRoll_0_params (__main__.BlackBoxTests) ... ok
+test_multiRoll_1_params (__main__.BlackBoxTests) ... ok
+test_multiRoll_2_params (__main__.BlackBoxTests) ... ok
+test_multiRoll_3_params (__main__.BlackBoxTests) ... ok
+test_multiRoll_fudge (__main__.BlackBoxTests) ... ok
+test_multiRoll_fudge_too_large (__main__.BlackBoxTests) ... ok
+test_multiRoll_param_error (__main__.BlackBoxTests) ... ok
+test_multiRoll_param_error2 (__main__.BlackBoxTests) ... ok
+test_roll (__main__.BlackBoxTests) ... ok
+test_rollAdv_False (__main__.BlackBoxTests) ... ok
+test_rollAdv_True (__main__.BlackBoxTests) ... ok
+test_rollAdv_param_error (__main__.BlackBoxTests) ... ok
+test_roll_param_eror (__main__.BlackBoxTests) ... ok
+test_roll_param_error2 (__main__.BlackBoxTests) ... ok
+test_addMacro_collision (__main__.WhiteBoxTests) ... ok
+test_addMacro_no_collision (__main__.WhiteBoxTests) ... ok
+test_callMacro_with_item (__main__.WhiteBoxTests) ... ok
+test_callMacro_without_item (__main__.WhiteBoxTests) ... ok
+test_delMacro_no_item (__main__.WhiteBoxTests) ... ok
+test_delMacro_with_item (__main__.WhiteBoxTests) ... ok
+test_deleteMacroFile (__main__.WhiteBoxTests) ... ok
+test_viewMacros (__main__.WhiteBoxTests) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.112s
+
+OK

@@ -1,0 +1,234 @@
+Final Testing Plan - Initiative Tracker Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3E - Final Design
+    Primary Author: Dana Teves
+    Slip Days: 0
+
+----------------------------------------------------------------------------------------
+SPECIFICATIONS TO COVER
+----------------------------------------------------------------------------------------
+- able to add a character to the initiative order (join)
+- able to begin combat, which prints a representation of initiative order (begin)
+- able to end combat, which clears the database (end)
+- able to retrieve the details of next player in initiative order (next)
+- able to retrieve the details of previous player in initiative order (prev)
+- able to increment and decrement round based on "next" or "prev" (inc_round, dec_round)
+- format will be acceptable for parsing
+
+The plan for testing is to use a seperate class where running main will immediately
+verify all test cases, and return which tests are broken.
+
+For all testing purposes, we will be using Python unittest framework, as it is
+straightforward with desired funtionality.
+----------------------------------------------------------------------------------------
+
+Testing: join(username, name, initiative)
+    Testing Case 1: Assert that the character is added to trackerInfo by checking that,
+                    after join(username, name, initiative) is called, len(trackerInfo)
+                    has increased by 1.
+    Justification: Ensures that when users wish to add their character to the initiative
+                   order, it reflects correctly in trackerInfo and in the initiative
+                   order object stored by the bot interface.
+    Special Set-Up: We need to create a list of usernames, names, and initiative values
+                    to use as inputs.
+    Generation: When join(username, name, initiative) is called.
+    Correctness: We are expecting that the length of each of trackerInfo will increase by
+                 one each time a new character joins the initiative order.
+    Clean-Up: trackerInfo.clear(); currentPlayer = 0; rounds = 0
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert that the username, name, and initiative value of the character
+                    being added match.
+    Justification: Ensures that the usernames, names, and inits are all linked properly
+                   across lists, and will show up correctly when displayed for the user.
+    Special Set-Up: We need to create a list of usernames, names, and initiative values
+                    to use as inputs.
+    Generation: When join(username, name, inititative) is called.
+    Correctness: We are expecting that when join(username, name, initiative) is called,
+                 trackerInfo[currentPlayer] should hold [username, name, initiative]
+                 matching the character just added.
+    Clean-Up: trackerInfo.clear(); currentPlayer = 0; rounds = 0
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 3: Assert that initiative is an integer.
+    Justification: Ensures that database can be properly sorted.
+    Special Set-Up: N/A
+    Generation: When join(username, name, initiative) is called.
+    Correctness: We are expecting that init is an integer. If not, we return an error
+                 message.
+    Clean-Up: N/A
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: begin()
+    Testing Case 1: Assert that when trackerInfo has less than two combatants, an error
+                    message is returned.
+    Justification: A user shouldn't be able to begin combat if there are less than two
+                   characters currently engaged in combat. If trackerInfo is empty, this
+                   means that there are no active characters in combat. If trackerInfo has
+                   one combatant, that character is lacking an adversary.
+    Special Set-Up: We need to ensure trackerInfo starts this test empty, with one
+                    combatant, and with two or more combatants.
+    Generation: When begin() is called before users call join(username, name, initiative)
+                through the bot interface via "!join name init".
+    Correctness: We are expecting that if the database has less than two characters, an
+                 error message is returned. Otherwise, begin() as normal.
+    Clean-Up: trackerInfo.clear(); currentPlayer = 0; rounds = 0
+
+----------------------------------------------------------------------------------------
+
+# Also testing printTracker()
+    Testing Case 2: Assert that the full list of characters engaged in combat is returned
+                    when begin() is called.
+    Justification: Ensures that users can see the full initiative order, and prepare for
+                   their turn.
+    Special Set-Up: We need to create a list of usernames, names, and initiative values
+                    to use as inputs.
+    Generation: When begin() is called through the bot interface via "!begin".
+    Correctness: We are expecting that all the characters in the list used for set-up are
+                 returned.
+    Clean-Up: trackerInfo.clear(); currentPlayer = 0; rounds = 0
+
+----------------------------------------------------------------------------------------
+
+# Also testing printTracker()
+    Testing Case 3: Assert that the characters are in the correct sorted order when they
+                    are printed.
+    Justification: Ensures that data is being correctly retrieved or stored in trackerInfo
+                   so that the initiative tracker is complete.
+    Special Set-Up: We need to create a list of usernames, names, and initiative values
+                    to use as inputs.
+    Generation: When begin() is called through the bot interface via "!begin".
+    Correctness: We are expecting that the characters in the list used for set-up are
+                 returned from highest to lowest initiative value.
+    Clean-Up: trackerInfo.clear(); currentPlayer = 0; rounds = 0
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: end()
+    Testing Case 1: Assert that trackerInfo is cleared when end() is called.
+    Justification: Ensures that trackerInfo is clear for the next session of combat, to clear
+                   the board for new characters with new initiatives.
+    Special Set-Up: trackerInfo needs to be filled with data.
+    Generation: At the end of combat, when a user wants to end the combat session. Or, prior
+                to joining a new combat encounter if a user has forgotten whether or not
+                they had already previously ended combat for the last session. (For this
+                reason, it is acceptable to end() when trackerInfo is empty.
+    Correctness: We are expecting that trackerInfo is clear of data.
+    Clean-Up: N/A
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: next()
+    Testing Case 1: Assert that currentPlayer is increased by 1 if index isn't
+                    len(trackerInfo) - 1.
+    Justification: The index should increment when someone finishes their turn in combat.
+    Special Set-Up: trackerInfo should have at least two characters.
+    Generation: When a player finishes their turn and uses next() at the end of a round
+                and they aren't at the end of initiative.
+    Correctness: We are expecting that when the currentPlayer, or index, is anywhere
+                 before the last person in initiative order, or database length - 1, the
+                 currentPlayer is increased by 1.
+    Clean-Up: trackerInfo.clear(); currentPlayer = 0; rounds = 0
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert that currentPlayer is reset to 0 if index is len(trackerInfo)
+                    - 1 when next() is called.
+    Justification: The index should loop around to the top of the initiative order once
+                   the last person in the list takes their turn.
+    Special Set-Up: trackerInfo should have at least two characters.
+    Generation: When a player finishes their turn and uses next() at the end of a round
+                and they are at the end of initiative.
+    Correctness: We are expecting that when currentPlayer is at len(trackerInfo) - 1, it
+                 gets reset to 0.
+    Clean-Up: trackerInfo.clear(); currentPlayer = 0; rounds = 0
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 3: Assert that an error is sent if begin() hasn't been called yet.
+    Justification: If combat hasn't begun, you shouldn't be able to go to the next
+                   combatant.
+    Special Set-Up: trackerInfo should have at least two characters.
+    Generation: When a player finishes their turn and uses next() before initiative has
+                begun.
+    Correctness: We are expecting that when rounds = 0, an error is sent.
+    Clean-Up: end()
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: prev()
+    Testing Case 1: Assert that currentPlayer is decreased by 1 if index isn't 0.
+    Justification: The index should decrement when someone retracts or revisits their
+                   turn in combat.
+    Special Set-Up: trackerInfo should have at least two characters.
+    Generation: When a player revisits their turn and uses prev() and they are not at
+                the beginning of initiative.
+    Correctness: We are expecting that when the currentPlayer, or index, is anywhere
+                 after the first person in initiative order, or 0, the currentPlayer is
+                 decreased by 1.
+    Clean-Up: trackerInfo.clear(); currentPlayer = 0; rounds = 0
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 2: Assert that currentPlayer is reset to len(trackerInfo) - 1 if index is
+                    0 when prev() is called.
+    Justification: The index should loop back to the bottom of initiative order if they
+                   rewind the combat order.
+    Special Set-Up: trackerInfo should have at least two characters.
+    Generation: When a player revisits their turn and uses prev() and they are at
+                the beginning of initiative.
+    Correctness: We are expecting that when currentPlayer is at 0, it gets reset to
+                 database length - 1.
+    Clean-Up: end()
+
+----------------------------------------------------------------------------------------
+
+    Testing Case 3: Assert that an error is sent if begin() hasn't been called yet.
+    Justification: If combat hasn't begun, you shouldn't be able to go to the previous
+                   combatant.
+    Special Set-Up: trackerInfo should have at least two characters.
+    Generation: When a player revisits their turn and uses prev() before initiative has
+                begun.
+    Correctness: We are expecting that when rounds = 0, an error is sent.
+    Clean-Up: end()
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: inc_round() via next()
+    Testing Case 1: Assert that the round has been incremented by 1.
+    Justification: Ensures that round is updated correctly when next() is called.
+    Special Set-Up: next() working correctly; the database needs to be filled with at
+                    least two characters, and next() needs to be looped until the current
+                    player is back to index 0.
+    Generation: When all players have taken their turn.
+    Correctness: We are expecting that when all characters have been prompted and have
+                 completed their turns, the round will increase by 1.
+    Clean-Up: end()
+
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+Testing: dec_round() via prev()
+    Testing Case 1: Assert that the round has been decremented by 1.
+    Justification: Ensures that round is updated correctly when prev() is called.
+    Special Set-Up: prev() working correctly; the database needs to be filled with at
+                    least two characters, and prev() needs to be looped until the current
+                    player is back to index database length - 1.
+    Generation: When a turn needs to be revisited, for example if a user clicked next on
+                accident.
+    Correctness: We are expecting that if the current index is 0 and prev() is called, the
+                 round will decrease by 1.
+    Clean-Up: end()
+   
+----------------------------------------------------------------------------------------
+    

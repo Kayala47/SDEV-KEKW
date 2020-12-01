@@ -1,0 +1,20 @@
+test_begin_1 (__main__.initTracker_Tests) ... ok
+test_begin_2 (__main__.initTracker_Tests) ... ok
+test_dec (__main__.initTracker_Tests) ... ok    
+test_end (__main__.initTracker_Tests) ... ok    
+test_inc (__main__.initTracker_Tests) ... ok    
+test_join_1 (__main__.initTracker_Tests) ... ok 
+test_join_2 (__main__.initTracker_Tests) ... ok 
+test_join_3 (__main__.initTracker_Tests) ... ok
+test_next_1 (__main__.initTracker_Tests) ... ok
+test_next_2 (__main__.initTracker_Tests) ... ok
+test_next_3 (__main__.initTracker_Tests) ... ok
+test_prev_1 (__main__.initTracker_Tests) ... ok
+test_prev_2 (__main__.initTracker_Tests) ... ok
+test_prev_3 (__main__.initTracker_Tests) ... ok
+test_sort (__main__.initTracker_Tests) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.015s
+
+OK
