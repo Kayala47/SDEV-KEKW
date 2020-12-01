@@ -1,0 +1,237 @@
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 4: Specifications Final 
+    Primary Author: Swamik
+    Slip Days: 0
+
+------------------------------------------------CHANGES MADE SINCE PART 3E------------------------------------------------
+- Add macro: 
+    - Due to how we are receiving the inputs from discord, we cannot check for each individual inputs as we do not 
+      know which input the user was trying to make. So we now just have one error that says that the user does not 
+      have all of the correct inputs. 
+- Join: 
+    - same as AddMacro, we cannot be certain of what filed the users were missing so we will just have one error. 
+    - Now the function takes in the initive roll instead of a modifier for the roll 
+- Search: 
+    - Misunderstanding of the integration. The user can call search with much more than just 2 key words, as such 
+      there is a change of inputs and outputs. The user needs to have an input of at least 2, rather than a max of 
+      2 inputs. As such, we are now passing a whole list of keywords to search rather than just two keywords. 
+-Initive Tracker new functions 
+    - We are no longer adding an emoji listeing function to the begin function. Now there will be seperate commands 
+      that the user can use to progress the initive tracker.(Next and previous) These functions got added. 
+    - We also added a new function called show which will just show the current initivie tracker 
+- Added a new functions for the macros: showMacros and deleteMacros 
+- Code structure: 
+    - We are now using bot on command rather than on message. This means that the bot is no longer looking at every 
+      message, rather it gets activated if the user only places the commands that is defined in the bot interface 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+This specification is for the module that we as a team decided to call the "Discord API Module."
+
+The purpose of this module is to handle the user inputs and to act as the user interface. As such, the purpose of 
+most of the functions in this module will be getting the user input ready for calls to other modules, and how to 
+handle invalid inputs. The functions described are public methods and the only way for users to interact with out bot. 
+
+Note: All of the functions below listen to user input using discord's built in methods. The primary listening mechanism 
+will be the bot.on('message', ...). What this built in function does is listen to all of the messages written by all 
+of the users in the text channel. Then if the message starts with the chosen prefix, it will know that it is a command. Then 
+depending on what the command is it will do a different function. 
+
+Basic code structure: 
+@bot.command()
+async def command(ctx, args):
+    # logic done to the args passed on by the user 
+    result = call to the appropriate function from the appropriate module 
+    await ctx.send(result or error message )
+
+// Now we describe the functions available for the users to call 
+
+Function help: 
+inputs: none 
+output: message to text channel 
+logic:  if cmd == help prefixed by their chosen prefix (ex: !help): 
+            return a message to the text channel with basic information about how to use the bot funcitons 
+error handling: 
+comments: complexity is low as we are returning the message 
+
+Function setprefix: 
+inputs: [new prefix]
+output: none 
+Purpose/logic: if cmd == setprefix:
+            if set prefix is followed by a space and a symbol that exists in a predefined dictionary 
+                change the var labeled prefix to that new symbol       
+error handling: if the user enters a symbol that is not part of the predefined list, do not change the 
+                 prefix and return a message to the channel with the list of possible symbols that they can 
+                 change the prefix to 
+Comments: We want the users to be able to change the prefix, but only to a predefined list. This is so that they 
+          cannot change the prefix to something like 'a' which would make the program confused. 
+
+
+Function multiroll: 
+inputs: [number of dice]d[sides of dice] + [modifier] [fudge roll if aplicable]
+output: imbedded message on the discord channel 
+Purpose/logic: This function is to allow the users to roll a dice of a given number of sides. This function in this module will not be the 
+    one to actually roll the dice itself, but insted call the roll function from the rolling module. We will take the result from the call to the 
+    rolling module and return it to the user in the discord chat. In the cases where the user inputs a fudge roll, we will recognize that the user is 
+    attempting to make a fudge roll and will pass the fudge roll as another input to the multiroll function in the rolling module. The way we will get 
+    the users inputs will be using the split function that python has for strings. The split will be used to get all of the different inputs and 
+    there will be if statements that will check to see if the user did input all of the things that needs to be inputted to call the multiroll function. 
+error handling: if the users do not enter the dice rolls in the correct format, we will try to find out where the user did not input correctly and 
+    point it out to the user so they have specific instructions on how to fix their error. 
+comments: Rolling is going to be the most used function and so providing the users with nice error messages will make sure that the user understands 
+    how to use the most used command correctly. 
+
+Function rollAdv: 
+inputs: string 
+output: imbedded message on the discord channel 
+Purpose/logic: This function is for the the users to call a simple 20 sided dice roll with or without advantage. The inputs should just be a string, either true 
+    or false. The function in this module will not do that test, as that is part of the rolling module's scope. The testing done in this module will be to 
+    see if the user actually did input something after the rollAdv command. We are just making sure that there is something inputed, and if there is, we will 
+    call the rollAdv function in the rolling module. 
+error handeling: if the users do not input things correctly, we will send an error message teaching the user how to use the function and what format it should 
+    be in. 
+comments: 
+
+
+Function manual roll: 
+inputs: [number of dice]d[sides of dice] + [modifier] [roll result]
+output: imbedded message on discord text channel 
+Purpose/logic: This function is to allow users to use their own home dice if they want to use those and not the roll function that we have created. LIke the 
+    multiroll function we will use the python spliting function to split the message into seperate parts and test to see that the users have inputted 
+    everything necessary for the function. We are requireing this method to have all the same inputs as the multiroll so that the other users can see 
+    the manual rolls in the same format as the other rolls. 
+error handling: if the users do not enter the dice rolls in the correct format, we are going to return an error message. For example, if they have "2d " with nothing 
+    for the side of dice we will return an error message saying that they are missing the sides of die input. 
+comments: we wanted to return a nice error message so that the users get used to the format that they should be using for rolling and to ensure that 
+    all of the rolls look consistent weather it be manual or the bot rolls. 
+
+Function addMacro: 
+inputs die, q, mod, name 
+output: inbedded message on discord text channel 
+Purpose/logic: This is a fucntion so that users can add macros to make their RPG gaming experience better. This funciton like the others in this module 
+    is not actully inplimenting this funciton, we are simply making sure that all the necessary parameters are inputted by the user and then calling 
+    this function from the rolling module. We will split the message sent by the user to the chat and get the inputs that way. Then we will pass the 
+    inputs from the parsing to the funcion in the rolling module. 
+error handling: If the users do not have all the params or if they do not use the program correctly, we will send a nice error message telling the user 
+    how to use the addMacro function and what inputs the module is supposed to take in. 
+comments: We do want to return a good error message here as we do not expect users to use this function as frequently as the rolling module so sending a message 
+    with instructions is reasonable. 
+
+Function delMacro: 
+inputs name 
+output: inbedded message on discord text channel 
+Purpose/logic: This is a fucntion so that users can remove the macros they had previously added to make their RPG gaming experience better. 
+    This funciton like the others in this module is not actully inplimenting this funciton, we are simply making sure that all the necessary parameters are inputted by the user and then calling 
+    this function from the rolling module. We will split the message sent by the user to the chat and get the inputs that way. THen we will pass the 
+    inputs from the parsing to the funcion in the rolling module. This should only have a name as the input. 
+error handling: If the users do not have all the params or if they do not use the program correctly, we will send a nice error message telling the user 
+    what component they are missing and how to correctly input the necessary parameters. For example if the name field is empty, we will return a message 
+    saying that we need a input for the name. 
+comments: 
+
+Function callMacro: 
+inputs name 
+output: inbedded message on discord text channel 
+Purpose/logic: This is a fucntion so that users can call the macros they had previously added to make their RPG gaming experience better. 
+    This funciton like the others in this module is not actully inplimenting this funciton, we are simply making sure that all the necessary parameters are inputted 
+    by the user and then calling this function from the rolling module. We will split the message sent by the user to the chat and get the inputs that way. Then we will pass the 
+    inputs from the parsing to the funcion in the rolling module. This should only have a name as the input. 
+error handling: If the users do not have all the params or if they do not use the program correctly, we will send a nice error message telling the user 
+    what component they are missing and how to correctly input the necessary parameters. For example if the name field is empty, we will return a message 
+    saying that we need a input for the name. 
+comments: 
+
+Function showMacros: 
+inputs: none
+output: inbedded message on the discord text channel 
+Purpose/ logic: This is a funciton so that the users can view all of the macros that they have saved to make their RPG gaming experience better. 
+                This funciton like the others in this module is not actully inplimenting this funciton, we are simply calling this function from the rolling module. We will split the message sent by the user to the chat and get the inputs that way. Then we will pass the 
+                Since there are no inputs, we have to do no parsing. We are just returing the call to the show macro function. 
+error handling: The function just calls the showMacro function from the rolling module. We do not have any error cases, and all the error handeling will be done 
+                on the rolling module side. 
+comments: 
+
+Function deleteMacros: 
+inputs: none
+output: inbedded message on the discord text channel 
+Purpose/ logic: This is a funciton so that the users can delete the file that contains all of the macros that they had stored in their RPG game. 
+                This funciton like the others in this module is not actully inplimenting this funciton, we are simply calling this function from the rolling module. We will split the message sent by the user to the chat and get the inputs that way. Then we will pass the 
+                Since there are no inputs, we have to do no parsing. We are just returing the call to the delete macro function. 
+error handling: The function just calls the deleteMacro function from the rolling module. We do not have any error cases, and all the error handeling will be done 
+                on the rolling module side. 
+comments: 
+
+Function join: 
+inputs: [username] [name] [initiative roll]
+output: none 
+Purpose/ logic: This is a function that should allow the users to keep track of their order during battle. The bot interface will have a 
+    reference to initive tracker object. This function will call the fucntion on the reference to the object that we have in the bot interface. 
+    Before calling the join method, we will have checks to make sure that the users have inputted all the necessary things. This will also be 
+    done with the split function on the message from the user. If there are not enough params passed, we will pass error message telling the user 
+    what param they are missing and how to structure the message. 
+error handling: If the users do use the join fucntion, this is done only once per person per session so if the users do 
+        have an error in their inputs, we will return an imbedded message with instructions on how to use it. 
+comments: We do want to return a message here as we do not expect users to use join frequently so sending a message 
+          with instructions is reasonable. 
+
+
+Function init begin: 
+inputs: none 
+outputs: imbedded message on discord text channel
+Purpose/ logic: This is a function to begin the initive tracker. Like the join function, we will be calling this function on the initive tracker object 
+    that we have a reference to in this file. There are no inputs for this function so we will just call the begin function. 
+error handling: this function will call all the methods defined in another module, we are just calling it on the object that we have a reference to in our file. ALl error handeling will 
+    be done in the other module. 
+comments: If the user reacts with an emoji we do not have a functionaly for, the program will do nothing. Only certain 
+        emojis will cause an action to occur. 
+
+Function end: 
+inputs: none 
+outputs: none 
+Purpose/ logic: This is a function to end the initive tracker. Like the begin function, we will be calling this function on the initive tracker object 
+    that we have a reference to in this file. There are no inputs for this function so we will just call the end function. 
+error handling: this function will call all the methods defined in another module, we are just calling it on the object that we have a reference to in our file. ALl error handeling will 
+    be done in the other module. 
+comments: 
+
+Function next: 
+inputs: none 
+output: imbedded message on discord text channel
+Purpose/logic: The user will just call next to make the initive tracker move up by one turn. We are not taking in an input, we are just 
+               making the call on the initive tracker object that we have instantiated in the bot interface module. 
+error handeling: this function will call all the methods defined in another module, we are just calling it on the object that we have a reference to in our file. ALl error handeling will 
+    be done in the other module. 
+comments: 
+
+Function previous: 
+inputs: none 
+output: imbedded message on discord text channel
+Purpose/logic: The user will just call previous to make the initive tracker move back by one turn. We are not taking in an input, we are just 
+               making the call on the initive tracker object that we have instantiated in the bot interface module. 
+error handeling: this function will call all the methods defined in another module, we are just calling it on the object that we have a reference to in our file. ALl error handeling will 
+    be done in the other module. 
+comments: 
+
+Function show: 
+inputs: none 
+output: imbedded message on discord text channel
+Purpose/logic: The user will just call show to show the current initive tracker  We are not taking in an input, we are just 
+               making the call on the initive tracker object that we have instantiated in the bot interface module. 
+error handeling: this function will call all the methods defined in another module, we are just calling it on the object that we have a 
+                 reference to in our file. ALl error handeling will be done in the other module. 
+comments: 
+
+Function search: 
+inputs: [spell/background/feat/class/race/monster/item] [keywords]
+output: imbedded message on discord text channel 
+logic: if cmd == search: 
+            split the input by ' ' to get the key words and what they are searching 
+            return the call to the search function from the call module as imbedded message 
+error handling: if the users do not enter the input in the correct format, return a small message on how to use the 
+                 search function. We will only send an error if they do not have at least two keywords inputed 
+comments: This function just returns what we get from the search API so if nothing is found, it will most-likely just return a 
+          empty message. If that is the case, we can put a check for that and return a message saying "nothing found". That logic 
+          will be handled in the search module not here 
+
