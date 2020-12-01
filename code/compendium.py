@@ -46,6 +46,29 @@ def noScreenshotError() -> str:
 # ------------------------------------------------------------
 
 
+def getTitle(url: str) -> str:
+    '''
+    Checks the specified URL and (using Requests and Beautiful Soup), 
+    determines whether this page is valid. 
+    Inputs:
+        url | the url to be validated 
+    Output: 
+        str | the text of this page's title
+    '''
+
+    page = requests.get(url)
+
+    soup = BeautifulSoup(page.content, 'html.parser')  # tanslates results
+
+    # finds the correct div
+    results = soup.body.find('div', attrs={'class': 'page-title'})
+
+    # inside of the div, this span contains the title
+    title = results.find('span').text
+
+    return title
+
+
 def editDistance(str1, str2):
     return editDistanceHelper(str1, str2, len(str1), len(str2))
 
@@ -92,4 +115,4 @@ def editDistanceHelper(str1, str2, m, n) -> int:
 
 
 if __name__ == '__main__':
-    isValid("http://dnd5e.wikidot.com/feat:great-weapon-maste")
+    getTitle("http://dnd5e.wikidot.com/feat:great-weapon-maste")
