@@ -2,7 +2,7 @@ Final Component Design Specification - Initiative Tracker Module
 
 Team: Discord Dragons
     Members: Dana, Kevin, Max, Swamik
-    Project: 3E - Final Design
+    Project: 4A - Final Design
     Primary Author: Dana
     Slip Days: 0
 
