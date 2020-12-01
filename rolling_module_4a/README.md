@@ -9,7 +9,7 @@ simply run rolling_tester.py in the same directory
 as rolling.py in your python interpreter.   
 
 USING COMPONENT:   
-Normally, methods will be called by the bot in bot.py and bot_interface.py.    
+Normally, methods will be called by the bot in bot_interface.py.    
 However, if you want to test individual components, in main(), add    
 any of the following user-facing methods to be executed and printed:    
 
