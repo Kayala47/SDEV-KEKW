@@ -3,6 +3,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 import requests
 from bs4 import BeautifulSoup
+import numpy as np
 
 
 # Component Implementation - Compendium Search
@@ -46,6 +47,46 @@ def noScreenshotError() -> str:
 # ------------------------------------------------------------
 
 
+POSSIBLE_KEYWORDS = ["class", "feat", "background", "spell"]
+
+
+def router(kwd: str, srch: str) -> str:
+    '''
+    Routes the search to the correct url based on the keyword. Applies
+    editDistance in case there was a close typo.
+    Inputs:
+        kwd | keyword for the search, used to route to correct url. 
+        srch | the rest of the url parameters. Words are split by a 
+            hyphen 
+    Output: 
+        str | the resultant URL
+    '''
+
+    # they all start with this
+    base_url = "http://dnd5e.wikidot.com/"
+
+    # no switch statements in Python :/
+    fixd_typo = False
+    while(not fixd_typo):
+        if kwd == "race":
+            return base_url + srch
+        elif kwd == "spell":
+            return base_url + "spell:" + srch
+        elif kwd == "background":
+            return base_url + "background:" + srch
+        elif kwd == "feat":
+            return base_url + "feat:" + srch
+        elif kwd == "class":
+            return base_url + srch
+        else:
+            # if none of them fit, we try to fix it /ONCE/
+            if not fixd_typo:
+                kwd = editHelper(kwd, POSSIBLE_KEYWORDS)
+                fixd_typo = True
+            else:
+                return None
+
+
 def getTitle(url: str) -> str:
     '''
     Checks the specified URL and (using Requests and Beautiful Soup), 
@@ -67,6 +108,33 @@ def getTitle(url: str) -> str:
     title = results.find('span').text
 
     return title
+
+
+def editHelper(kwd: str, possibilies: list) -> str:
+    '''
+    Compares kwd to the list of possible str's, returning
+    one of those is the str is within 3 edits of that word and
+    if that word has the least edit distance. 
+
+    Inputs:
+        kwd | the keyword, probably containing a typo
+        possibilities | list of possible strings
+    Output: 
+        str | the keyword corrected for typos
+    '''
+
+    min = np.inf
+    ret = possibilies[0]
+    for p in possibilies:
+        dist = editDistance(kwd, p)
+        if dist < min:
+            ret = p
+            min = dist
+
+    if min <= 3:
+        return p
+    else:
+        return None
 
 
 def editDistance(str1, str2):
@@ -115,4 +183,4 @@ def editDistanceHelper(str1, str2, m, n) -> int:
 
 
 if __name__ == '__main__':
-    getTitle("http://dnd5e.wikidot.com/feat:great-weapon-maste")
+    print(router("spell", "magic-missile"))

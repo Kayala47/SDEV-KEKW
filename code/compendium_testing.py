@@ -23,8 +23,8 @@ class BlackBoxTesting(unittest.TestCase):
         self.searches = ["class barbarian", "race dragonborn",
                          "feat great weapon master", "spell magic missile"]
 
-    def tearDown(self):
-        os.remove("screenshot.png")
+    # def tearDown(self):
+    #     os.remove("screenshot.png")
 
     def test_time(self):
         arr = random.choice(self.searches)
@@ -125,7 +125,7 @@ class WhiteBoxTesting(unittest.TestCase):
         good_params = ["spell", "magic-missile"]
 
         self.assertEqual(router(
-            good_params[0], good_params[1]), None)
+            good_params[0], good_params[1]), "http://dnd5e.wikidot.com/spell:magic-missile")
 
 
 if __name__ == '__main__':
