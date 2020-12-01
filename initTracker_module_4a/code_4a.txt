@@ -15,9 +15,11 @@ most common features.
 FILE LINKS:
 
 Final Component SPECIFICATIONS:
+https://github.com/Kayala47/SDEV-KEKW/blob/master/initTracker_module_4a/init_tracker_spec_4a.txt
 
 
 Final Component DESIGN:
+https://github.com/Kayala47/SDEV-KEKW/blob/master/initTracker_module_4a/init_tracker_design_4a.txt
 
 
 Final Component README:
