@@ -31,32 +31,32 @@ class BlackBoxTesting(unittest.TestCase):
 
         start = timeit.timeit()
 
-        compendium.search(kwd)
+        search(random.choice(searches).split(" "))
 
         stop = timeit.time()
 
         self.assertTrue(stop - start < 0.20)
 
     def test_stepDist(self):
-        self.assertEqual(stepDist("class", "cass"), 1)
-        self.assertEqual(stepDist("race", "race"), 0)
-        self.assertEqual(stepDist("sppelll", "spell"), 2)
+        self.assertEqual(editDistance("class", "cass"), 1)
+        self.assertEqual(editDistance("race", "race"), 0)
+        self.assertEqual(editDistance("sppelll", "spell"), 2)
 
     def test_api_search(self):
         phrases = "class barbarian".split(" ")
 
         self.assertEqual(requests.get(
-            "https://www.dnd5eapi.co/api/classes/barbarian").text, compendium.api_search(phrases))
+            "https://www.dnd5eapi.co/api/classes/barbarian").text, api_search(phrases))
 
     def test_get_title(self):
         URL = "http://dnd5e.wikidot.com/gnome"
 
-        self.assertEqual(compendium.get_title(URL), "Gnome")
+        self.assertEqual(getTitle(URL), "Gnome")
 
     def test_search(self):
         first_shot = get_date_taken("screenshot.png")
 
-        compendium.search(random.choice(self.searches).split(" "))
+        search(random.choice(self.searches).split(" "))
 
         second_shot = get_date_taken("screenshot.png")
 
@@ -67,14 +67,14 @@ class BlackBoxTesting(unittest.TestCase):
 
         big_diff = ["difference", "magic-missile"]
 
-        self.assertEqual(compendium.search(
+        self.assertEqual(search(
             big_diff), "Woah! Our sending spell failed. " + big_diff[0] + " isn't recognized.")
 
     def test_invalid_key_small_difference(self):
 
         small_diff = ["classs", "magic-missile"]
 
-        self.assertEqual(compendium.search(
+        self.assertEqual(search(
             small_diff, ["class", "magic-missile"]))
 
 # -------------------------------------
@@ -90,41 +90,41 @@ class WhiteBoxTesting(unittest.TestCase):
     def test_strip_html(self):
         string_with_html = "<div class='main-content-wrap col-md-9'> <div class = 'main-content'> <div class='page-title page-header'> <span> Gnome </span> </div> </div> </div>"
 
-        self.assertEqual(compendium.strip_html(string_with_html), "Gnome")
+        self.assertEqual(strip_html(string_with_html), "Gnome")
 
     def test_wrong_page_actually(self):
         bad_URL = "http://dnd5e.wikidot.com/gnomz"
 
-        self.assertFalse(compendium.is_valid_url(
+        self.assertFalse(is_valid_url(
             bad_URL))
 
     def test_wrong_page_not(self):
         good_URL = "http://dnd5e.wikidot.com/gnome"
 
-        self.assertTrue(compendium.is_valid_url(good_URL))
+        self.assertTrue(is_valid_url(good_URL))
 
     def test_editHelper_bigDiff(self):
         word = "class"
         possibilities = ["lkajfd.sjfljfdlskj", "lskjdfsljfdl"]
 
-        self.assertEqual(compendium.editHelper(word, possibilities), None)
+        self.assertEqual(editHelper(word, possibilities), None)
 
     def test_editHelper_smallDiff(self):
         word = "class"
         possibilities = ["sldkjfsaldfjll", "class"]
 
-        self.assertEqual(compendium.editHelper(
+        self.assertEqual(editHelper(
             word, possibilities), possibilities[1])
 
     def test_router_bad_url(self):
         bad_params = ["lkjsdfs", "magic-missile"]
 
-        self.assertEqual(compendium.router(bad_params[0], bad_params[1]), None)
+        self.assertEqual(router(bad_params[0], bad_params[1]), None)
 
     def test_router_good_url(self):
         good_params = ["spell", "magic-missile"]
 
-        self.assertEqual(compendium.router(
+        self.assertEqual(router(
             good_params[0], good_params[1]), None)
 
 
