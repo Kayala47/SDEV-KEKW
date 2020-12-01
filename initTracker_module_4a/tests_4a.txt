@@ -21,6 +21,7 @@ Final Component README:
 https://github.com/Kayala47/SDEV-KEKW/blob/master/initTracker_module_4a/README.md
 
 Final Component TEST PLAN and REQUIREMENTS:
+https://github.com/Kayala47/SDEV-KEKW/blob/master/initTracker_module_4a/init_tracker_test_4a.txt
 
 
 Final Component TEST CODE:
