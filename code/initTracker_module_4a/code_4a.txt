@@ -1,0 +1,28 @@
+FINAL CODE - Initiative Tracker Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 4A: Final Code
+    Primary Author: Dana
+    Slip Days: 0
+
+The code and design for this module is intended to provide initiative tracking
+functionality for players and organizers using our program. Features such as
+joining initiative, beginning initiative, moving to the next and previous person
+in initiative, showing the current combat order, and ending initiative are the
+most common features.
+
+FILE LINKS:
+
+Final Component SPECIFICATIONS:
+
+
+Final Component DESIGN:
+
+
+Final Component README:
+
+
+Final Component SOURCE CODE:
+https://github.com/Kayala47/SDEV-KEKW/blob/master/code/initTracker.py
+
