@@ -201,11 +201,11 @@ def search(args):
 # Helper functions for the parsing of user inputs for roll and manual roll 
 
 """
-get side die is getting the input of a string in the first position after spliting on "d" 
-As such there are 3 different cases can be passed as an input to this, where y refers to the side die 
-Case 1: [y]
-Case 2: [y+]
-Case 3: [y-]
+Get side die gets called with an input of the user turned into a string 
+We do spliting in different cases in order to get the side die 
+The side die should always come after the d if the dice roll is in the format xdy. 
+In the cases of the user putting a modifier, the roll will be in format xdy + m. 
+    The y will be sandwitched between the +/- and d. we do the spliting accordingly 
 """
 def getSideDie(data):
     if not("+" in data or "-" in data): 

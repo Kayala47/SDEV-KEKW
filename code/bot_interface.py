@@ -10,16 +10,6 @@ import re
 from initTracker import *
 import rolling
 
-"""
-Chnages that need to be made: 
-the addMacro cannot check for each individual inputs as we do not know which input the user was trying to make. SO we now just have one error that 
-says that the user does not have all of the correct inputs. same for the join, we cannot be certain of what filed the users were missing so we will 
-just have one error. Same for search, we cannot tell which key word is missing. 
-We decided to remove the emoji listener as calling the next and other things were easier 
-Need to change the testing file from 3e 
-Search is not just taking 2 keywords, can be multiple, we are returning an array of strings 
-"""
-
 TOKEN = ""
 client = discord.Client()
 
@@ -47,7 +37,7 @@ async def helpMe(ctx):
     await ctx.send("SOME MESSAGE TO HELP: maybe a link to github")
 
 """
-the command that takes care most roling functions including multiroll, standard roll, and fudgerolling 
+The command that takes care most roling functions including multiroll, standard roll, and fudgerolling 
 Standard roll takes in no inputs and calls the rolling funciton with no inputs 
 Multiroll takes in the inputs xdy + modifier. the modifier is optional 
 Fudgeroll takes in xdy + modifier fudgeroll. all are necessary for a fudge roll 
@@ -118,7 +108,6 @@ async def rollAdv(ctx, arg):
     # note we are not checking the validity of the person's input here: the checks for the input is done in the rolling module. 
     # I just have to check that the user passed a input with roll adv 
     else: 
-        # Delete once debugging is complete.
         await ctx.send("Called rollAdv with input: " + arg)
         # Sending results.
         await ctx.send(f'{ctx.message.author.mention} ' + rolling.rollAdv(arg))
@@ -127,8 +116,6 @@ async def rollAdv(ctx, arg):
 """
 The function that takes care of manual rolls. we want to make sure that the format for manual rolls is the same as the one for normal rolls. 
 As such, we will have almost all the similar checks as the ones used in roll 
-
-This function needs to get fixed
 """
 @bot.command()
 async def mroll(ctx, *arg):
@@ -197,6 +184,7 @@ async def mroll(ctx, *arg):
 async def addMacro(ctx, *args):
     arguments = " ".join(args)
     inputs = arguments.split(" ")
+    # if the user did not put enough inputs, send an error message 
     if len(inputs) < 4: 
         await ctx.send("You are missing all of the inputs needed for the addMacro function.")
         await ctx.send("Make sure that your inputs are in the form: die q mod name. Refer to helpMe command for more information.")
@@ -206,15 +194,15 @@ async def addMacro(ctx, *args):
         # Sending results.
         print(" ".join(args[3:]))
         await ctx.send(f'{ctx.message.author.mention} ' + rolling.addMacro(args[0], args[1], args[2], " ".join(args[3:])))
-        # Delete once debugging is complete.
 
 """
-The method needed to delete a macro. The input is just a name. As such we will only look at the first argument return ed 
+The method needed to delete a macro. The input is just a name. 
+The output is what is returned by the delMacro function 
 """
 @bot.command()
 async def delMacro(ctx, *arg):
     argument = " ".join(arg)
-
+    # need to have the name of the macro user wants to delete 
     if argument == "": 
         await ctx.send("To delete a macro, you must input the name of the macro you wish to delete.")
         return  
@@ -222,11 +210,15 @@ async def delMacro(ctx, *arg):
         await ctx.send("Attempting to delete the macro with the name: " + argument)
         # Sending results.
         await ctx.send(f'{ctx.message.author.mention} ' + rolling.delMacro(argument))
-        
+
+"""
+The method needed to call a macro. The input is just a name. 
+The output is what is returned by the callMacro function 
+"""     
 @bot.command()
 async def callMacro(ctx, *arg):
     argument = " ".join(arg)
-
+    # cannot call a macro with no name 
     if argument == "": 
         await ctx.send("To call a macro, you must input the name of the macro you wish to call.")
         return  
@@ -236,16 +228,28 @@ async def callMacro(ctx, *arg):
         # Sending results.
         await ctx.send(f'{ctx.message.author.mention} ' + rolling.callMacro(argument))
 
+"""
+A method used to view the macros the users have stored in the csv file 
+No inputs. The output is what is sent by the viewMacro function in the rolling module 
+"""
 @bot.command()
 async def viewMacros(ctx):
     await ctx.send(rolling.viewMacros())
 
+"""
+Method used to delete the file that stores the macros that the users have created. 
+"""
 @bot.command()
 async def deleteMacros(ctx):
     await ctx.send(rolling.deleteMacroFile())
 
+"""
+Method used to call the initive tracker join function 
+Inputs need to be the name and the initive roll 
+"""
 @bot.command()
 async def join(ctx, *arg):
+    # missing the necessary arguments to join 
     if len(arg) < 2:
         await ctx.send("To join initiative, the input must be in the form: [name] [initiative roll].")
     else:
@@ -256,34 +260,58 @@ async def join(ctx, *arg):
         msg = tracker.join(username, name, initRoll)
         await ctx.send(username.mention + " " + msg)
 
+"""
+Method used to start the initive tracker 
+Takes no inputs 
+"""
 @bot.command()
 async def begin(ctx):
     msg = tracker.begin()
     username = tracker.trackerInfo[tracker.currentPlayer][0]
     await ctx.send(username.mention + "\n" + msg)
 
+"""
+Method used to end the initive tracker 
+Takes no inputs 
+"""
 @bot.command()
 async def end(ctx):
     msg = tracker.end()
     await ctx.send(msg)
 
+"""
+Method used to call next on the initive tracker 
+Takes no inputs 
+"""
 @bot.command()
 async def next(ctx):
     msg = tracker.next()
     username = tracker.trackerInfo[tracker.currentPlayer][0]
     await ctx.send(username.mention + "\n" + msg)
 
+"""
+Method used to call previous on the initive tracker 
+Takes no inputs 
+"""
 @bot.command()
 async def prev(ctx):
     msg = tracker.prev()
     username = tracker.trackerInfo[tracker.currentPlayer][0]
     await ctx.send(username.mention + "\n" + msg)
 
+"""
+Method used to show initive tracker 
+Takes no inputs 
+"""
 @bot.command()
 async def show(ctx):
     msg = tracker.printTracker()
     await ctx.send(msg)
 
+"""
+Method used to search  
+Takes in an input of at least two keywords. Returns the result of the search into the chat 
+"""
 @bot.command()
 async def search(ctx, *args):
     arguments = " ".join(args)
@@ -300,23 +328,26 @@ async def search(ctx, *args):
 # Helper functions for the parsing of user inputs for roll and manual roll 
 
 """
-get side die is getting the input of a string in the first position after spliting on "d" 
-As such there are 3 different cases can be passed as an input to this, where y refers to the side die 
-Case 1: [y]
-Case 2: [y+]
-Case 3: [y-]
+Get side die gets called with an input of the user turned into a string 
+We do spliting in different cases in order to get the side die 
+The side die should always come after the d if the dice roll is in the format xdy. 
+In the cases of the user putting a modifier, the roll will be in format xdy + m. 
+    The y will be sandwitched between the +/- and d. we do the spliting accordingly 
 """
 def getSideDie(data):
+    # if the user did not put a modifier 
     if not("+" in data or "-" in data): 
         params = data.split("d")
         sideDie = params[1].strip()
         return sideDie
+    # positive modifier
     if "+" in data:
         params = data.split("d")
         params = params[1].strip()
         params = params.split("+")
         sideDie = params[0].strip()
         return sideDie
+    # negative modifier 
     if "-" in data:
         params = data.split("d")
         params = params[1].strip()
@@ -328,7 +359,7 @@ def getSideDie(data):
 we are getting passed the whole data string as the input to this funciton 
 Case 1: If there is no + or - in string, there is no modifier so default to +0 
 Case 2: There is a modifier and there is a fudgeRoll: call the getModifierWithFudge funciton 
-Case 3: There is a modifier but no fudgeRoll: split on either + or - and return the item in the first position 
+Case 3: There is a modifier but no fudgeRoll: split on either + or - and return the item in the first position without the spaces 
 """
 def getModifier(data, hasFudgeRoll): 
     if not("+" in data or "-" in data):
