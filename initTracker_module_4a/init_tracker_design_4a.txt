@@ -1,0 +1,140 @@
+Final Component Design - Initiative Tracker Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3E - Final Design
+    Primary Author: Dana
+    Slip Days: 0
+
+-------------------------------------------------------------------------------
+PURPOSE
+-------------------------------------------------------------------------------
+The purpose of this module is to cover the initiative
+tracking requirements for common TTRPG games. The bot will
+be able to use this module to add characters to the initiative
+tracker with either a physically-rolled initiative or a
+bot-rolled initiative, display the initiative order to the
+text channel, keep track of rounds and the current turn, and
+end combat by clearing the initiative tracker. This module
+will be a class; the Bot Interface module will store an
+instance of an initiative tracker, allowing persistent storage
+of the tracker information.
+-------------------------------------------------------------------------------
+class InitTracker:
+	# Stores character information in [username, name, initiative] format.
+	trackerInfo = []
+	# Stores index of current player.
+	currentPlayer = 0
+	# Stores current round.
+	rounds = 0
+
+	# This function is in charge of adding a character
+	# into the initiative order.
+	def join(username, name, initiative):
+		for data in trackerInfo:
+			if name == data[1]:
+				# Combatant already exists.
+				throw error
+		
+		if rounds != 0:
+			# Initiative already started.
+			throw error
+		else:
+			try:
+				int(initiative)
+			except:
+				# Initiative must be int interpretable.
+				throw error
+
+			# Combatant is new, and initiative hasn't begun.
+			trackerInfo.append([username, name, initiative])
+
+	# This function marks the start of combat.
+	def begin():
+		if rounds != 0:
+			# Combat has begun.
+			throw error
+		elif len(trackerInfo) < 2:
+			# Needs at least two combatants.
+			throw error
+		else:
+			rounds = 1
+			currentPlayer = 0
+			return printTracker()
+
+	# This function marks the end of combat.
+	def end()
+		trackerInfo.clear()
+		currentPlayer = 0
+		rounds = 0
+		if len(trackerInfo) != 0:
+			throw error
+
+	# This function moves to the next player in initiative.
+	def next():
+		if rounds == 0:
+			# Combat not begun.
+			throw error
+		elif currentPlayer + 1 == len(trackerInfo):
+			currentPlayer = 0
+			inc_round()
+		else:
+			currentPlayer++
+
+			printTracker()
+
+	# This function moves to the next player in initiative.
+	def prev():
+		if rounds == 0:
+			# Combat not begun.
+			throw error
+		elif currentPlayer == 0 and rounds == 1:
+			# Can't go back; at beginning of combat.
+			throw error
+		elif currentPlayer - 1 == -1:
+			currentPlayer = len(trackerInfo) - 1
+			dec_round()
+		else:
+			currentplayer--
+
+			printTracker()
+
+	# This function is called when the round needs to be increased.
+	def inc_round():
+		round++
+
+	# This function is called when the round needs to be decreased.
+	def dec_round():
+		if round - 1 == 0:
+			# Can't go back; at beginning of combat.
+			rounds = 1
+		else:
+			round--
+
+	# This function sorts trackerInfo by initiative value.
+	def sortTracker():
+		# The key determines which value it is sorted by; index 2
+		# holds the initiative values. The reverse boolean makes
+		# it in descending order, rather than ascending.
+		trackerInfo = sorted(trackerInfo, key = lambda x:x[2],
+		    reverse = True)
+
+	# This function is called when a representation of the initiative
+	# order needs to be sent to the Discord server.
+	def printTracker():
+		if trackerInfo == []:
+			# Empty.
+			throw error
+		else:
+			sortTracker()
+
+		index = 0
+		for data in trackerInfo:
+			index++
+			# Output is of the form "initiative: name"
+			if index == currentPlayer:
+				# make output bold
+			else:
+				# output normally
+		return complete output
+		

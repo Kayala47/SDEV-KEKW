@@ -1,0 +1,136 @@
+Final Component Design Specification - Initiative Tracker Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3E - Final Design
+    Primary Author: Dana
+    Slip Days: 0
+
+--------------------------------------------------------------
+PURPOSE
+--------------------------------------------------------------
+The purpose of this module is to cover the initiative
+tracking requirements for common TTRPG games. The bot will
+be able to use this module to add characters to the initiative
+tracker with either a physically-rolled initiative or a
+bot-rolled initiative, display the initiative order to the
+text channel, keep track of rounds and the current turn, and
+end combat by clearing the initiative tracker. This module
+will be a class; the Bot Interface module will store an
+instance of an initiative tracker, allowing persistent storage
+of the tracker information.
+--------------------------------------------------------------
+CLASS ATTRIBUTES
+--------------------------------------------------------------
+trackerInfo
+    A three-dimensional array arranged so trackerInfo[i][0]
+    holds the usernames, trackerInfo[i][1] holds the character
+    names, and trackerInfo[i][2] holds the initiative values.
+    (Given i is some non-negative integer.)
+
+currentPlayer
+    An integer representing the index in trackerInfo that
+    holds the current player's information. This is updated
+    each time next() is called.
+
+rounds
+    An integer representing the number of combat rounds. This
+    is updated when currentPlayer loops around trackerInfo,
+    so that currentPlayer is once again 0.
+--------------------------------------------------------------
+FUNCTIONS
+--------------------------------------------------------------
+join(username, name, initiative)
+    Possible Returns: none
+    Inputs: username - string
+            name - string
+            initiative - int
+    Logic: Append [username, name, init] to trackerInfo.
+    Error Handling: Throws an error if initiative is non-int,
+                    name already exists in the trackerInfo, or
+                    if round != 0.
+    Comments: This function is in charge of adding a character
+              into the initiative order. The Dungeon Master
+              can also add creatures in this way. It cannot be
+              called once combat has begun via begin().
+
+begin()
+    Possible Returns: trackerInfo[currentPlayer]
+    Inputs: none
+    Logic: Sets round = 1, currentPlayer = 0, sorts
+           trackerInfo by initiative value in descending
+           order via sortTracker(), and calls printTracker().
+           The current player information is returned to
+           prompt the user via the bot interface.
+    Error Handling: Throws an error if the database has less
+                    than two entries in trackerInfo, or if
+                    begin has already been called.
+    Comments: This function marks the start of combat. Once
+              it has been called, characters can no longer
+              join combat.
+
+end()
+    Possible Returns: none
+    Inputs: none
+    Logic: Clear trackerInfo and sets currentPlayer = 0, and
+           rounds = 0.
+    Error Handling: Throws an error if trackerInfo isn't
+                    empty after attempting to clear it.
+    Comments: This should be called at the end of combat.
+
+next()
+    Possible Returns: trackerInfo[currentPlayer]
+    Inputs: none
+    Logic: If currentPlayer + 1 is an out of bounds index
+           for trackerInfo, then currentPlayer = 0 and
+           inc_round() is called. Otherwise, currentPlayer++.
+           The details of the current player are returned. The
+           printTracker() function is called.
+    Error Handling: Throws an error if rounds == 0.
+
+prev()
+    Possible Returns: trackerInfo[currentPlayer]
+    Inputs: none
+    Logic: If currentPlayer - 1 is an out of bounds index
+           for trackerInfo, then currentPlayer is set to
+           len(trackerInfo) - 1. Otherwise, currentPlayer--.
+           The details of the current player are returned, The
+           printTracker() function is called.
+    Error Handling: Throws an error if rounds == 0.
+
+inc_round()
+    Possible Returns: none
+    Inputs: none
+    Logic: Increments rounds by 1.
+    Error Handling: N/A
+
+dec_round()
+    Possible Returns: none
+    Inputs: none
+    Logic: Decrements rounds by 1, unless doing so would
+           result in rounds < 1.
+    Error Handling: Throws error if rounds - 1 = 0.
+
+sortTracker()
+    Possible Returns: none
+    Inputs: none
+    Logic: Sorts trackerInfo by initiative value from highest
+           to lowest.
+    Error Handling: N/A
+
+printTracker()
+    Possible Returns: none
+    Inputs: none
+    Logic: Sends a message to the Discord server with a list
+           representation of the initiative order, with the
+           current character in bold.
+
+           ------------------
+           Current Round: 2
+           ------------------
+           20: Max
+           17: Swam
+           7: Dana
+           1: Kevin
+
+    Error Handling: Throws error if trackerInfo is empty.

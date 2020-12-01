@@ -73,6 +73,7 @@ class InitTracker:
             return "At least two combatants required!"
         else:
             self.rounds = 1
+            self.currentPlayer = 0
 
             return self.printTracker()
     
@@ -86,6 +87,9 @@ class InitTracker:
         # Reset currentPlayer and rounds.
         self.currentPlayer = 0
         self.rounds = 0
+
+        if len(trackerInfo) != 0:
+            return "Unable to clear initiative tracker."
 
         return "Initiative tracker cleared!"
 
