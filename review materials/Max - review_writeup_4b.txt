@@ -62,4 +62,3 @@ Decisions:
 - Basic user roll with no params should always call multiRoll with no params
 - !join result parsing will be done by interface
 - For now, calls to rolling module with be with rolling.*() (subject to change)
-- RollAdv() will be passed string representation of boolean values, not actual bools
