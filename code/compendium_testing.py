@@ -4,7 +4,7 @@ import random
 import requests
 from PIL import Image
 import os
-# from compendium import *
+from compendium import *
 
 # for use in testing
 
@@ -68,7 +68,7 @@ class BlackBoxTesting(unittest.TestCase):
         big_diff = ["difference", "magic-missile"]
 
         self.assertEqual(compendium.search(
-            big_diff), "Woah! Our sending spell failed. That keyword isn't recognized.")
+            big_diff), "Woah! Our sending spell failed. " + big_diff[0] + " isn't recognized.")
 
     def test_invalid_key_small_difference(self):
 
@@ -102,6 +102,30 @@ class WhiteBoxTesting(unittest.TestCase):
         good_URL = "http://dnd5e.wikidot.com/gnome"
 
         self.assertTrue(compendium.is_valid_url(good_URL))
+
+    def test_editHelper_bigDiff(self):
+        word = "class"
+        possibilities = ["lkajfd.sjfljfdlskj", "lskjdfsljfdl"]
+
+        self.assertEqual(compendium.editHelper(word, possibilities), None)
+
+    def test_editHelper_smallDiff(self):
+        word = "class"
+        possibilities = ["sldkjfsaldfjll", "class"]
+
+        self.assertEqual(compendium.editHelper(
+            word, possibilities), possibilities[1])
+
+    def test_router_bad_url(self):
+        bad_params = ["lkjsdfs", "magic-missile"]
+
+        self.assertEqual(compendium.router(bad_params[0], bad_params[1]), None)
+
+    def test_router_good_url(self):
+        good_params = ["spell", "magic-missile"]
+
+        self.assertEqual(compendium.router(
+            good_params[0], good_params[1]), None)
 
 
 if __name__ == '__main__':
