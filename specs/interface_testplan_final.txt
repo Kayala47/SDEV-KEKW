@@ -1,0 +1,560 @@
+Testing Plan - Bot Interface Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 4: Component Design Final 
+    Primary Author: Swamik Lamichhane
+    Slip Days: 0
+
+Note: The primary funcitons of this module is to ensure that the bot is both reading  
+the commands of the user and then is parsing the message correctly so that the calls to 
+the modules are with the correct inputs. If I were to rely on the implimentations of the 
+other modules to test my module, it would not be ideal as I cannot test my module in 
+isolation. As such, I decided to make my own test version dummy command execution 
+commands that would marely record the params that were passed and compare the recorded 
+function and and params with those that should have been passed given the input string. 
+
+To do testing for this process, and to make it slightly more autonomous, a new section of code 
+will either be added to the orginal DnD bot or a new seperate testing bot will be made so that we can 
+send messages to the chat channel. In the testing module, instead of calling the functions from the 
+other modules, I will call a dummy test function within my own module that just records all of the inputs that was 
+passed to that function. The correctness criteria will then be that the dummy function in my module 
+is getting the correct inputs based on the user's input. Essentially we need to ensure that the functions in my 
+module are correctly parsing the user's input string and giving each function the correct inputs based 
+on the user's input string. 
+
+The way to make this fully autonomous is to use the pytest feature of assert. For each funciton in the module, 
+I can assert that the inputs for each of the functions are correctly parsed by comapring what the actual parsing 
+is supposed to get vs. what the function actually got. 
+For Example: assert roll(("2d20", "+5")) == [2,20,+5] 
+In this case, the dummy roll testing function is storing all the inputs as a list in a certain order, and I can check that it is correct. 
+
+------------------------------------------------CHANGES FROM 3E-----------------------------------------------------------------------
+The reason that i am using tuples is that when we pull user message from discord, it gives it to us in the form of tuples of strings. 
+To emulate that, we will be giving the commands that actually listen to user input, inputs in the form of tuples. Previously, I had thought 
+that the inputs would be strings, which is not the case. 
+
+During the implimentation of the roll funciton, there were multiple helper functions needed to make the parsing look cleaner rather than if 
+we had included all of the parsing in one funcion. As such, we will have to add the testing for those helper functions: getSideDie, 
+getModifier, getModifierWithFudge, hasFudge, getFudgeValue. These funcitons are called within the roll functions and are given the 
+inputs as strings becasue in the begining of the roll funcion, we convert the tuple input into strings. 
+
+For all of the initive tracker functions, begin(), end(), next(), previous(), show(), we did not have tests for them as they were just doing an 
+action to the initive tracker object, and not any user parsing, we will now just add simple tests to these functinos to make sure that 
+they were called. 
+
+In the previous implimentaion for Join and addMacro, I had believed that we could get the specific params that the user was missing, but 
+because of how discord is handing data, there is no way to check which specific data that the user is missing. As such, we will slightly 
+change the function to look at the amount of inputs the user gave and how many are missing. For example if addMacro needs 4 inputs, 
+we will have a diff error if they inputed 3 inputs vs 2 inputs. 
+
+The specifications for search has changed slightly, I had misunderstood that the serach would take in just two key words, but I was 
+later told that it can take multiple keywords as inputs. As such, the function should now return a list of all the keywords that the user 
+inputed rather than just two key words. This means that there is a change to the testing of search. 
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Index of functions to be tested: help, multiroll, rollAdv, mRoll, addMacro, delMacro, callMacro, join, begin, end, search  
+
+BLACK BOX TESTING
+
+Testing: help() //no inputs 
+
+    Testing Case 1: Assert that the message returned by the help function is the correct message that we have wrote for the 
+                    help function. Since there is no parsing done here, it will be a simple assertion that two strings are the 
+                    same. 
+    Justification: Ensures that when users use the help feature, they are getting the correct string returned to them. 
+    Special Set Up: N/A 
+    Generation: When help() is called 
+    Correctness: The string returned matches the string that we originally wrote for the help function. 
+    Clean Up: None 
+
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: multiroll(die, q, mod, fudge) 
+Note: The function of the multiroll function in this module is to just insure that the users are passing the correct amount of inputs, 
+we are not actually checking the valididty of the inputs, as that is handeled by the rolling module. Meaning to our function call  
+of !multiroll HidBye should record the inputs as ["Hi", "Bye"], we do not ensure that the inputs are ints as the rolling module handels that. 
+
+    Testing Case 1: Calling the multiroll function with no inputs. If the user calls the roll with no inputs, the function should just 
+                    call the roll function with no inputs. 
+    Justification: Ensures that when users use the roll feature no inputs, the bot still understands to call the multiroll function. 
+    Special Set Up: N/A 
+    Generation: multiroll is called 
+    Correctness: The list of inputs returned from the dummy function that records the inputs matches [] (an empty list). We will do a simple 
+                 assertion that [] == to the call to the dummy roll funciton. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 2: Calling the multiroll function with 2 inputs: the side of die and the number of die. If the user calls the roll with 
+                    the input of xdy, the call to the roll function should record that the inputs are x and y. 
+    Justification: Ensures that when users use the roll feature in the form xdy with no modifier, the bot still understands to call the 
+                   multiroll function with the given inputs. 
+    Special Set Up: N/A 
+    Generation: When multiroll is called 
+    Correctness: The list of inputs returned from the dummy function that records the inputs matches ["x", "y"]. We will do a simple 
+                 assertion that ["x", "y"] == to the call to the dummy roll funciton. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 3: Calling the multiroll function with 3 inputs: the side of die, the number of die, and modifier. If the user calls the 
+                    roll with the input of xdy + m, the call to the roll function should record that the inputs are x,y, and m. 
+    Justification: Ensures that when users use the roll feature in the form xdy + m, the bot still understands to call the 
+                   multiroll function with the given inputs. 
+    Special Set Up: N/A 
+    Generation: When multiroll is called 
+    Correctness: The list of inputs returned from the dummy function that records the inputs matches ["x", "y", "m"]. We will do a simple 
+                 assertion that ["x", "y", "m"] == to the call to the dummy roll funciton. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 4: Calling the multiroll function with 4 inputs: the side of die, the number of die, modifier, and the fudge roll. If the 
+                    user calls the roll with the input of xdy + m f, the call to the roll function should record that the inputs are x,y,m, 
+                    and f. We want the users to have all the inputs for the fudge roll to look similar to a multiroll because we do not want the 
+                    other players to know that the user is doing a fudge roll. 
+    Justification: Ensures that when users use the roll feature in the form xdy + m f, the bot still understands to call the 
+                   multiroll function with the given inputs. 
+    Special Set Up: N/A 
+    Generation: When multiroll is called 
+    Correctness: The list of inputs returned from the dummy function that records the inputs matches ["x", "y", "m", "f"]. We will do a simple 
+                 assertion that [["x", "y", "m", "f"] == to the call to the dummy roll funciton. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: rollAdv (string)
+
+    Testing Case 1: Calling the rollAdv function with no inputs. This should cause an error Assert that the message returned by the rollAdv 
+                    function is the correct message that we have wrote for the rollAdv function. Since there is no parsing done here, 
+                    it will be a simple assertion that two strings are the same. 
+    Justification: Ensures that when users use the rollAdv feature, an error is shown if they have no inputs. 
+    Special Set Up: N/A 
+    Generation: When rollAdv is called 
+    Correctness: The string returned matches the string that we originally wrote for the rollAdv function. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 2: Calling the rollAdv function with an input m. The function should accept this and parse the message sent correctly. We 
+                    need to make sure that the function records that the input is "m". 
+    Justification: Ensures that when users use the rollAdv feature with an input m, it makes a call to the rollAdv funciton. 
+    Special Set Up: N/A 
+    Generation: When rollAdv is called 
+    Correctness: The list of inputs returned from the dummy function that records the inputs matches ["m"]. We will do a simple 
+                 assertion that ["m"] == to the call to the dummy advRoll funciton. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: manualRoll(die, q, mod, rollResult) 
+
+    Testing Case 1: Calling the manualRoll function with no inputs. If the user calls the roll with no inputs, the function should send 
+                    an error message. 
+        Justification: Ensures that when users use the manualroll feature no inputs, the bot still understands that it is a call to the 
+                       multiroll function, but realizes that it is an error. 
+        Special Set Up: N/A 
+        Generation: manualRoll is called 
+        Correctness: The string returned matches the string that we originally wrote for the error message in the manual roll function. 
+        Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 2: Calling the manualRoll function with with 4 inputs: the side of die, the number of die, modifier, and the rollResult. 
+                    If the user calls the roll with the input of xdy + m r, the call to the manualroll function should record that the inputs 
+                    are x,y,m, and r. We want the users to have all the inputs for the manual roll to look similar to a multiroll. 
+            Justification: Ensures that when users use the manualroll feature with the correct amount of inputs, the bot  understands 
+                        that it is a call to the manualroll function. 
+            Special Set Up: N/A 
+            Generation: manualRoll is called 
+            Correctness: The list of inputs returned from the dummy function that records the inputs matches ["x", "y", "m", "r"]. We will do 
+                         a simple assertion that ["x", "y", "m", "r"] == to the call to the dummy roll funciton. 
+            Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: addMacro(die, q, mod, name) 
+
+    Testing Case 1: Calling the addMacro function with no inputs. If the user calls the roll with no inputs, the function should send 
+                    an error message. 
+        Justification: Ensures that when users use the manualroll feature no inputs, the bot still understands that it is a call to the 
+                       addMacro function, but realizes that it is an error. 
+        Special Set Up: N/A 
+        Generation: addMacro is called 
+        Correctness: The string returned matches the string that we originally wrote for the error message in the addMacro function. 
+        Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 2: Calling the addMacro function with with 4 inputs: die, q, mod, name. If the user calls the addMacro with the input 
+                    of die q mod name, the call to the addMacro function should record that the inputs are die, q, mod, and name. 
+            Justification: Ensures that when users use the addMacfo feature with the correct amount of inputs, the bot  understands 
+                           that it is a call to the manualroll function. 
+            Special Set Up: N/A 
+            Generation: addMacro is called 
+            Correctness: The list of inputs returned from the dummy function that records the inputs matches ["die", "q", "mod", "name"]. We 
+                         will do a simple assertion that ["die", "q", "mod", "name"] == to the call to the dummy roll funciton. 
+            Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: delMacro (name)
+
+    Testing Case 1: Calling the delMacro function with no inputs. This should cause an error. Assert that the message returned by the delMacro 
+                    function is the correct message that we have wrote for the delMacro function. Since there is no parsing done here, 
+                    it will be a simple assertion that two strings are the same. 
+    Justification: Ensures that when users use the delMacro feature, an error is shown if they have no inputs. 
+    Special Set Up: N/A 
+    Generation: When delMacro is called 
+    Correctness: The string returned matches the string that we originally wrote for the delMacro function. 
+    Clean Up: None 
+
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 2: Calling the delMacro function with an input name. The function should accept this and parse the message sent correctly. We 
+                    need to make sure that the function records that the input is "name". 
+    Justification: Ensures that when users use the delMacro feature with an input name, it makes a call to the delMacro funciton. 
+    Special Set Up: N/A 
+    Generation: When delMacro is called 
+    Correctness: The list of inputs returned from the dummy function that records the inputs matches ["name"]. We will do a simple 
+                 assertion that ["name"] == to the call to the dummy delMacro funciton. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: callMacro (name)
+
+    Testing Case 1: Calling the callMacro function with no inputs. This should cause an error. Assert that the message returned by the callMacro 
+                    function is the correct message that we have wrote for the callMacro function. Since there is no parsing done here, 
+                    it will be a simple assertion that two strings are the same. 
+    Justification: Ensures that when users use the callMacro feature, an error is shown if they have no inputs. 
+    Special Set Up: N/A 
+    Generation: When callMacro is called 
+    Correctness: The string returned matches the string that we originally wrote for the callMacro function. 
+    Clean Up: None 
+
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 2: Calling the callMacro function with an input name. The function should accept this and parse the message sent correctly. We 
+                    need to make sure that the function records that the input is "name". 
+    Justification: Ensures that when users use the callMacro feature with an input name, it makes a call to the callMacro funciton. 
+    Special Set Up: N/A 
+    Generation: When callMacro is called 
+    Correctness: The list of inputs returned from the dummy function that records the inputs matches ["name"]. We will do a simple 
+                 assertion that ["name"] == to the call to the dummy callMacro funciton. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: join (username, name, init)
+// note we are getting the username of the user directly from discord, we can grab the username from the message that the user sent. 
+    as such, the two inputs that we need are just name and init from the user 
+
+    Testing Case 1: Calling the join function with no inputs. This should cause an error. Assert that the message returned by the join 
+                    function is the correct message that we have wrote for the join function. Since there is no parsing done here, 
+                    it will be a simple assertion that two strings are the same. 
+    Justification: Ensures that when users use the join feature, an error is shown if they have no inputs. 
+    Special Set Up: N/A 
+    Generation: When join is called 
+    Correctness: The string returned matches the string that we originally wrote for the join function. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 2: Calling the join function with inputs name and init. The function should accept this and parse the message sent correctly. We 
+                    need to make sure that the function records that the inputs are "name" and "init". 
+    Justification: Ensures that when users use the join feature with inputs name and init, it makes a call to the join funciton. 
+    Special Set Up: N/A 
+    Generation: When join is called 
+    Correctness: The list of inputs returned from the dummy function that records the inputs matches ["name", "init"]. We will do a simple 
+                 assertion that ["name", "init"] == to the call to the dummy join funciton. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: begin ()
+
+    Testing Case 1: Calling the begin function with no inputs. This should just return a message saying that the begin function was called. 
+    Justification: Ensures that when users use the begin feature, we are actually getting a call to that function. 
+    Special Set Up: N/A 
+    Generation: When begin is called 
+    Correctness: The string returned matches the string that we originally wrote for the join function. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: end ()
+
+    Testing Case 1: Calling the end function with no inputs. This should just return a message saying that the end function was called. 
+    Justification: Ensures that when users use the end feature, we are actually getting a call to that function. 
+    Special Set Up: N/A 
+    Generation: When end is called 
+    Correctness: The string returned matches the string that we originally wrote for the join function. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: next ()
+
+    Testing Case 1: Calling the next function with no inputs. This should just return a message saying that the next function was called. 
+    Justification: Ensures that when users use the next feature, we are actually getting a call to that function. 
+    Special Set Up: N/A 
+    Generation: When next is called 
+    Correctness: The string returned matches the string that we originally wrote for the join function. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: previous ()
+
+    Testing Case 1: Calling the previous function with no inputs. This should just return a message saying that the previous function was called. 
+    Justification: Ensures that when users use the previous feature, we are actually getting a call to that function. 
+    Special Set Up: N/A 
+    Generation: When previous is called 
+    Correctness: The string returned matches the string that we originally wrote for the join function. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: show ()
+
+    Testing Case 1: Calling the show function with no inputs. This should just return a message saying that the show function was called. 
+    Justification: Ensures that when users use the show feature, we are actually getting a call to that function. 
+    Special Set Up: N/A 
+    Generation: When show is called 
+    Correctness: The string returned matches the string that we originally wrote for the join function. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------  
+Testing: search (searchWords)
+
+    Testing Case 1: Calling the search function with no inputs. This should cause an error. Assert that the message returned by the search 
+                    function is the correct message that we have wrote for the search function. Since there is no parsing done here, 
+                    it will be a simple assertion that two strings are the same. 
+    Justification: Ensures that when users use the search feature, an error is shown if they have no inputs. 
+    Special Set Up: N/A 
+    Generation: When search is called 
+    Correctness: The string returned matches the string that we originally wrote for the join function. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 2: Calling the search function with inputs searchWord1 and searchWord2. The function should accept this and parse the 
+                    message sent correctly. We need to make sure that the function records that the inputs are "searchWord1" and "searchWord2". 
+    Justification: Ensures that when users use the search feature with inputs searchWord1 and searchWord2, it makes a call to the search funciton. 
+    Special Set Up: N/A 
+    Generation: When search is called 
+    Correctness: The list of inputs returned from the dummy function that records the inputs matches ["searchWord1", "searchWord2"]. We will do a simple 
+                 assertion that ["searchWord1", "searchWord2"] == to the call to the dummy search funciton. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 3: Calling the search function with inputs of more than 2 words [searchwords]. The function should accept this and parse the 
+                    message sent correctly. We need to make sure that the function records that the inputs  ["searchWord1", "searchWord2", ......]. 
+    Justification: Ensures that when users use the search feature with inputs [searchwords], it makes a call to the search funciton. 
+    Special Set Up: N/A 
+    Generation: When search is called 
+    Correctness: The list of inputs returned from the dummy function that records the inputs matches ["searchWord1", "searchWord2", ..... ]. We will do a simple 
+                 assertion that ["searchWord1", "searchWord2", ..... ] == to the call to the dummy search funciton. 
+    Clean Up: None 
+
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+
+WHITE BOX TESTS 
+
+The mojority of the white box testing in this module will be for testing for errors in the user inputs. The logic in my design is structured 
+so that after I parse the user's inputs, I have a series of checks to see which specific param that the user is missing so that I can give a 
+more specific error message. 
+
+Testing: multiroll(die, q, mod, fudge) 
+
+    Testing Case 1: Calling the multiroll function with necessary inputs missing. Meaning the two essential things needed for multiroll are 
+                    x and y if the roll is in the form xdy. If the user inputs a x but not a y, it is a seperate error than if the user inputs 
+                    a y and not an x. We have conditional statements in place to check for both cases, and in the two different cases we have different 
+                    error messages. 
+    Justification: Ensures that when users use the multiroll feature with missing key inputs, the bot still understands which specific error it is and returns 
+                   the correct error message. 
+    Special Set Up: N/A 
+    Generation: multiroll is called 
+    Correctness: The error message returned matches the error message it was supposed to send. Meaning if I am missing the x parameter, it will send an 
+                 error message saying that I am missing the x param, not an error message saying that I am missing the y param. This is a simple assertion that 
+                 the two strings are matching. 
+    Clean Up: None 
+
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: manualRoll(die, q, mod, rollResult) 
+
+    Testing Case 1: Calling the manualRoll function with necessary inputs missing. The 4 essential inputs needed for manualRoll are 
+                    x,y,m,r if the roll is in the form xdy + m r. For manual rolls the user needs to have all 4 inputs. If the user inputs a 
+                    x but not y,m,r, there will be a seperate error than if the user inputs a y and not an x. We have conditional statements in 
+                    place to check for the different cases. For each case there is a specific error message in place. We need to check that all of 
+                    the conditions will get passed and we get the right errorrs. 
+    Justification: Ensures that when users use the manualRoll feature with missing key inputs, the bot still understands which specific error it is and returns 
+                   the correct error message. 
+    Special Set Up: N/A 
+    Generation: manualRoll is called 
+    Correctness: The error message returned matches the error message it was supposed to send. Meaning if I am missing the x parameter, it will send an 
+                 error message saying that I am missing the x param, not an error message saying that I am missing the y param. This is a simple assertion that 
+                 the two strings are matching. 
+    Clean Up: None 
+
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: addMacro(die, q, mod, name) 
+
+    Testing Case 1: Calling the addMacro function with necessary inputs missing. The 4 essential inputs needed for addMacro are 
+                    d,q,m,n if the call is in the form addMacro die q mod name. For addMacro the user needs to have all 4 inputs. If the user inputs a 
+                    d but not q,m,n, there will be a seperate error than if the user inputs a q and not an d. We have conditional statements in 
+                    place to check for the different cases. For each case there is a specific error message in place. We need to check that all of 
+                    the conditions will get passed and we get the right errorrs. 
+    Justification: Ensures that when users use the addMacro feature with missing key inputs, the bot still understands which specific error it is and returns 
+                   the correct error message. 
+    Special Set Up: N/A 
+    Generation: addMacro is called 
+    Correctness: The error message returned matches the error message it was supposed to send. Meaning if I am missing the x parameter, it will send an 
+                 error message saying that I am missing the q param, not an error message saying that I am missing the d param. This is a simple assertion that 
+                 the two strings are matching. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: join(username, name, init) 
+
+    Testing Case 1: Calling the join function with necessary inputs missing. The 3 essential inputs needed for join are 
+                    u,n,i if the call is in the form join username name init. For join the user needs to have all 3 inputs. If the user inputs a 
+                    u but not n,i, there will be a seperate error than if the user inputs a i and not an u. We have conditional statements in 
+                    place to check for the different cases. For each case there is a specific error message in place. We need to check that all of 
+                    the conditions will get passed and we get the right errorrs. 
+    Justification: Ensures that when users use the join feature with missing key inputs, the bot still understands which specific error it is and returns 
+                   the correct error message. 
+    Special Set Up: N/A 
+    Generation: join is called 
+    Correctness: The error message returned matches the error message it was supposed to send. Meaning if I am missing the u parameter, it will send an 
+                 error message saying that I am missing the i param, not an error message saying that I am missing the d param. This is a simple assertion that 
+                 the two strings are matching. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: getSideDie(string) 
+
+    Testing Case 1: We will call the getSideDie with an inputs of "xdy" with the different spacings avalable. This is supposed to hit the first if 
+                    statement and should return y as the result everytime. 
+    Justification: Ensures that when the getSideDie feature get called with no modifiers, the function still understands how to parse the string correctly 
+                   and returns the correct side die. 
+    Special Set Up: N/A 
+    Generation: getSideDie is called 
+    Correctness: The side die, if given input of xdy should return y. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+ Testing Case 2: We will call the getSideDie with an inputs of "xdy+m" with the different spacings avalable. This is supposed to hit the second if 
+                    statement and should return y as the result everytime. 
+    Justification: Ensures that when the getSideDie feature get called with positive modifiers, the function still understands how to parse the string correctly 
+                   and returns the correct side die. 
+    Special Set Up: N/A 
+    Generation: getSideDie is called 
+    Correctness: The side die, if given input of xdy+m should return y. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+ Testing Case 3: We will call the getSideDie with an inputs of "xdy-m" with the different spacings avalable. This is supposed to hit the third if 
+                    statement and should return y as the result everytime. 
+    Justification: Ensures that when the getSideDie feature get called with negative modifiers, the function still understands how to parse the string correctly 
+                   and returns the correct side die. 
+    Special Set Up: N/A 
+    Generation: getSideDie is called 
+    Correctness: The side die, if given input of xdy-m should return y. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: getModifier(string, hasFudgeRoll(bool)) 
+#Note: We are hard coding the bool to be negative as this function finds the modifier in the cases where there is no fudgeRoll. We have a 
+       seperate function to check the modifier when there is a fudge roll 
+
+    Testing Case 1: We will call the getModifier with an inputs of "xdy" with the different spacings avalable. This is supposed to hit the first if 
+                    statement and should return +0 as the result everytime. 
+    Justification: Ensures that when the getModifier feature get called with no modifiers, the function still understands how to parse the string correctly 
+                   and returns the correct modifier. 
+    Special Set Up: N/A 
+    Generation: getModifier is called 
+    Correctness: The modifier, if given input of xdy should return +0. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+ Testing Case 2: We will call the getModifier with an inputs of "xdy+m" with the different spacings avalable. This is supposed to hit the second if 
+                    statement and should return +m as the result everytime. 
+    Justification: Ensures that when the getModifier feature get called with positive modifiers, the function still understands how to parse the string correctly 
+                   and returns the correct modifier. 
+    Special Set Up: N/A 
+    Generation: getModifier is called 
+    Correctness: The modifier, if given input of xdy+m should return +m. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+ Testing Case 3: We will call the getModifier with an inputs of "xdy-m" with the different spacings avalable. This is supposed to hit the third if 
+                    statement and should return -m as the result everytime. 
+    Justification: Ensures that when the getModifier feature get called with negative modifiers, the function still understands how to parse the string correctly 
+                   and returns the correct modifier. 
+    Special Set Up: N/A 
+    Generation: getModifier is called 
+    Correctness: The modifier, if given input of xdy-m should return -m. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: getModifierWithFudge(string) 
+# Note this function is only called when there is a fudgeroll. There can only be a fudge roll if the user inputs a modifier 
+
+    Testing Case 1: We will call the getModifierWithFudge with an inputs of "xdy+m f" with the different spacings avalable. This is supposed to hit the first if 
+                    statement and should return m as the result everytime. 
+    Justification: Ensures that when the getModifierWithFudge feature get called with positive modifiers, the function still understands how to parse the string correctly 
+                   and returns the correct modifier. 
+    Special Set Up: N/A 
+    Generation: getModifierWithFudge is called 
+    Correctness: The fudgeRoll, if given input of "xdy+m f" should return +m. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+  Testing Case 2: We will call the getModifierWithFudge with an inputs of "xdy-m f" with the different spacings avalable. This is supposed to hit the second if 
+                    statement and should return f as the result everytime. 
+    Justification: Ensures that when the getModifierWithFudge feature get called with negative modifiers, the function still understands how to parse the string correctly 
+                   and returns the correct modifier. 
+    Special Set Up: N/A 
+    Generation: getModifierWithFudge is called 
+    Correctness: The fudgeRoll, if given input of "xdy-m f" should return -m. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: hasFudge(string) 
+
+    Testing Case 1: We will call the hasFudge with an inputs of "xdy" with the different spacings avalable. This is supposed to hit the first if 
+                    statement and should return false as the result everytime. 
+    Justification: Ensures that when the hasFudge feature get called with no modifiers, the function still understands how to parse the string correctly 
+                   and returns the false. 
+    Special Set Up: N/A 
+    Generation: hasFudge is called 
+    Correctness: The hasFudge, if given input of xdy should return false. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+    Testing Case 2: We will call the hasFudge with an inputs of "xdy+m" or "xdy-m" with the different spacings avalable. This is supposed to hit the second/ third if 
+                    statement and should return false as the result everytime. 
+    Justification: Ensures that when the hasFudge feature get called with positive or negative modifiers, the function still understands how to parse the string correctly 
+                   and returns false
+    Special Set Up: N/A 
+    Generation: hasFudge is called 
+    Correctness: The hasFudge, if given input of xdy+m or xdy-m should return false. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+  Testing Case 3: We will call the hasFudge with an inputs of "xdy+m f" or "xdy-m f" with the different spacings avalable. This is supposed to hit the second/ third if 
+                    statement and should return true as the result everytime. 
+    Justification: Ensures that when the hasFudge feature get called with a fudgeRoll, the function still understands how to parse the string correctly 
+                   and returns true. 
+    Special Set Up: N/A 
+    Generation: hasFudge is called 
+    Correctness: The fudgeRoll, if given input of "xdy+m f" or "xdy-m f" should return true. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: getFudgeValue(string) 
+# Note this function is only called when there is a fudgeroll, which is previouly checked by the hasFudge function 
+
+    Testing Case 1: We will call the getFudgeValue with an inputs of "xdy+m f" with the different spacings avalable. This is supposed to hit the first if 
+                    statement and should return f as the result everytime. 
+    Justification: Ensures that when the getFudgeValue feature get called with positive modifiers, the function still understands how to parse the string correctly 
+                   and returns the correct fudgeRoll. 
+    Special Set Up: N/A 
+    Generation: getFudgeValue is called 
+    Correctness: The fudgeRoll, if given input of xdy+m f should return f. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+  Testing Case 2: We will call the getFudgeValue with an inputs of "xdy-m f" with the different spacings avalable. This is supposed to hit the second if 
+                    statement and should return f as the result everytime. 
+    Justification: Ensures that when the getFudgeValue feature get called with negative modifiers, the function still understands how to parse the string correctly 
+                   and returns the correct fudgeRoll. 
+    Special Set Up: N/A 
+    Generation: getFudgeValue is called 
+    Correctness: The fudgeRoll, if given input of xdy-m f should return f. 
+    Clean Up: None 
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: search(searchWord1, searchWord2) 
+
+    Testing Case 1: Calling the search function with necessary inputs missing. The 2 essential inputs needed for search are 
+                    searchWord1 and searchWord2. For search the user needs to have both inputs. If the user inputs a 
+                    searchWord1 but not searchWord2, there will be a seperate error than if the user inputs searchWord2 and not an searchWord1. 
+                    We have conditional statements in place to check for the different cases. For each case there is a specific error message in place. 
+                    We need to check that all of the conditions will get passed and we get the right errorrs. 
+    Justification: Ensures that when users use the search feature with missing key inputs, the bot still understands which specific error it is and returns 
+                   the correct error message. 
+    Special Set Up: N/A 
+    Generation: search is called 
+    Correctness: The error message returned matches the error message it was supposed to send. Meaning if I am missing the u parameter, it will send an 
+                 error message saying that I am missing the i param, not an error message saying that I am missing the d param. This is a simple assertion that 
+                 the two strings are matching. 
+    Clean Up: None 
