@@ -17,7 +17,11 @@ SPECIFICATIONS TO COVER
 - able to increment and decrement round based on "next" or "prev" (inc_round, dec_round)
 - format will be acceptable for parsing
 
-Using pyunit to test.
+The plan for testing is to use a seperate class where running main will immediately
+verify all test cases, and return which tests are broken.
+
+For all testing purposes, we will be using Python unittest framework, as it is
+straightforward with desired funtionality.
 ----------------------------------------------------------------------------------------
 
 Testing: join(username, name, initiative)
