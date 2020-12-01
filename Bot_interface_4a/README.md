@@ -22,7 +22,7 @@ and also invite it to a server where it can perform actions.
 To invite to a specific server in your discord, paste this link into your web browser: 
 https://discord.com/api/oauth2/authorize?client_id=759194112640811028&permissions=1476917360&scope=bot
     
-SETUP FOR USING    TESTING_NTERFACE_FUNCTIONS:
+SETUP FOR USING    TESTING_INTERFACE_FUNCTIONS:
 
 This was the file I had used for testing. This file contains all of the same functions as the bot_interface.py file but instead of sending 
 messages to a server, the functions in this module just return either a string or an array, which we used for testing purposes. 
