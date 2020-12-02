@@ -9,8 +9,9 @@ import string
 import re
 from initTracker import *
 import rolling
+# import compendium
 
-TOKEN = ""
+TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.fiBtEZuY4kcs8oiCj7KM7r4mqaM"
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
@@ -101,7 +102,7 @@ async def roll(ctx, *arg):
 Rolling adv takes in one input: a bool: a true or a false statement 
 """
 @bot.command()
-async def rollAdv(ctx, arg):
+async def rollAdv(ctx, arg = ""):
     if arg == "":
         await ctx.send("You need a input for this command. Please input a bool as an input for this function. A true or false statement. Refer to helpMe command for more information :).")
         return
