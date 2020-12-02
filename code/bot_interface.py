@@ -15,7 +15,7 @@ TOKEN = ""
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
-bot = commands.Bot(command_prefix='!', description=description)
+bot = commands.Bot(command_prefix='!', description=description, help_command= None)
 
 #making the initiative tracker object 
 tracker = InitTracker()
@@ -32,10 +32,12 @@ async def hello(ctx):
     await ctx.send("Hey " f"{username.mention}, lets play some D&D!")
 
 @bot.command()
-async def helpMe(ctx):
-    msg = "Thank you for using our D&D bot!"
-    msg2 = "Please refer to this git hub"
-    await ctx.send("SOME MESSAGE TO HELP: maybe a link to github")
+async def help(ctx):
+    msg = "Thank you for using our D&D bot! "
+    msg2 = "Please refer to this git hub "
+    msg3 = "https://github.com/Kayala47/SDEV-KEKW/blob/master/code/helpMe.txt"
+    await ctx.send(msg + msg2)
+    await ctx.send(msg3)
 
 """
 The command that takes care most roling functions including multiroll, standard roll, and fudgerolling 
