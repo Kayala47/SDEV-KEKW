@@ -26,7 +26,7 @@ ROLLING AND MACROS
 !viewMacros
     Displays all stored macros 
 
-!deleteMacroFile
+!deleteMacros
     Removes file holding macros. Use when starting a new game.
 
 -------------------
@@ -37,7 +37,7 @@ INITIATIVE TRACKING
     Adds new combatant's information into tracker. This includes username, name, and initiative roll.
 
 !begin
-    Begins initiative and prints current initiative order.
+    Begins initiative and prints current initiative order. At least 2 characters must be added.
 
 !end
     Ends initiative and clears all stored tracker information.
