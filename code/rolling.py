@@ -67,14 +67,14 @@ def roll(num: int = 20) -> int:
     res = random.randint(1,num)
     return res
 
-def rollAdv(adv: str = True) -> str:
+def rollAdv(adv: str = 'True') -> str:
     ''' Returns a random integer between 1 and 20 determined by adv.
         Inputs: adv : bool indicating advantage or disadvantage
         Outputs: better or worse of two rolls depending on adv '''
-    if not isinstance(adv, bool):
+    if adv not in ['True', 'true', 'False', 'false']:
         return inputError([adv])
     roll1, roll2 = roll(), roll()
-    if adv: # True indicates advantage, False indicates disadvantage
+    if adv in ['True', 'true']: # True indicates advantage, False indicates disadvantage
         res = 'rolled %s and %s for %s!' %(roll1, roll2, max(roll1,roll2))
     else:
         res = 'rolled %s and %s for %s!' %(roll1, roll2, min(roll1,roll2))

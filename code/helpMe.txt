@@ -1,5 +1,37 @@
+------------------
+ROLLING AND MACROS
+------------------
+
 !roll [x]d[y]+/-[m]
     Rolls x multisided dice with modifier
+
+!mroll [x]d[y]+/-[m] [manual input]
+    Allows the user to manually specify a roll
+
+!rollAdv
+    Rolls two die and picks the larger
+
+!rollDisadv 
+    Rolls two die and picks the smaller
+
+!addMacro [x] [y] [m] [name]
+    Adds a macro with name 'name' and specs [x]d[y]+[m]
+
+!delMacro [name]
+    Removes macro with name 'name'
+
+!callMacro [name]
+    Uses a stored item with name 'name'
+
+!viewMacros
+    Displays all stored macros 
+
+!deleteMacroFile
+    Removes file holding macros. Use when starting a new game.
+
+-------------------
+INITIATIVE TRACKING
+-------------------
 
 !join [n] [i]
     Adds new combatant's information into tracker. This includes username, name, and initiative roll.
