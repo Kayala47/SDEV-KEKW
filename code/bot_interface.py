@@ -9,9 +9,9 @@ import string
 import re
 from initTracker import *
 import rolling
-# import compendium
+import compendium
 
-TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.U26XE7GSWVRY-yJgbBydOccifEI"
+TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.1EXl28WqRRbUZmwCTxbJm-qcftE"
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
