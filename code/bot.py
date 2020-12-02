@@ -6,7 +6,7 @@ import random
 import string
 import re
 
-TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.s-WVF5ohZ3Z8tpo0VBGMeOTD09Y"
+TOKEN = ""
 client = discord.Client()
 
 @client.event
