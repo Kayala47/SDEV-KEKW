@@ -88,9 +88,6 @@ class InitTracker:
         self.currentPlayer = 0
         self.rounds = 0
 
-        if len(trackerInfo) != 0:
-            return "Unable to clear initiative tracker."
-
         return "Initiative tracker cleared!"
 
     def next(self):
