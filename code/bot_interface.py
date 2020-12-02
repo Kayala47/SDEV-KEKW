@@ -11,7 +11,7 @@ from initTracker import *
 import rolling
 import compendium
 
-TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.1EXl28WqRRbUZmwCTxbJm-qcftE"
+TOKEN = ""
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
@@ -327,7 +327,7 @@ async def search(ctx, *args):
         return  
     else: 
         await ctx.send("Processing your search request")
-        await ctx.send(inputs)
+        await ctx.send(compendium.search(inputs))
         return 
 
 # Helper functions for the parsing of user inputs for roll and manual roll 
