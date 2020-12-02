@@ -53,16 +53,16 @@ def roll(arg):
     # returning the value 
     return(results)
 """
-Rolling adv takes in one input: a bool: a true or a false statement 
+Rolling adv takes no inputs.
 """
-def rollAdv(arg):
-    if arg == "":
-        return "You need a input for this command. Please input a bool as an input for this function. A true or false statement. Refer to helpMe command for more information :)"
-    # note we are not checking the validity of the person's input here: the checks for the input is done in the rolling module. 
-    # I just have to check that the user passed a input with roll adv 
-    else: 
-        return "Called rollAdv with input: " + arg
+def rollAdv():
+    return "Called rollAdv."
 
+"""
+Rolling disadv takes no inputs.
+"""
+def rollDisadv():
+    return "Called rollDisadv."
 # """
 # The function that takes care of manual rolls. we want to make sure that the format for manual rolls is the same as the one for normal rolls. 
 # As such, we will have almost all the similar checks as the ones used in roll 
