@@ -47,14 +47,14 @@ class BlackBoxTests(unittest.TestCase):
     # Tests rolling with advantage correctly chooses best option.
     # Checks whether the identified result is actually the best from the result message.
     def test_rollAdv_True(self):
-        roll = rollAdv('True')[:-1]
+        roll = rollAdv()[:-1]
         roll = roll.split()
         self.assertEqual(int(roll[5]), max(int(roll[1]), int(roll[3])))
    
     # Tests rolling with disadvantage correctly chooses worst option.
     # Checks whether the identified result is actually the best from the result message.
     def test_rollAdv_False(self):
-        roll = rollAdv('False')[:-1]
+        roll = rollAdv(False)[:-1]
         roll = roll.split()
         self.assertEqual(int(roll[5]), min(int(roll[1]), int(roll[3])))
 
