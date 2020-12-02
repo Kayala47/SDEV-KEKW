@@ -9,7 +9,7 @@ import string
 import re
 from initTracker import *
 import rolling
-# import compendium
+import compendium
 
 TOKEN = ""
 client = discord.Client()
@@ -323,8 +323,7 @@ async def search(ctx, *args):
         return  
     else: 
         await ctx.send("Processing your search request")
-        await ctx.send(inputs)
-        return 
+        await ctx.send(compendium.search(inputs))
 
 # Helper functions for the parsing of user inputs for roll and manual roll 
 
