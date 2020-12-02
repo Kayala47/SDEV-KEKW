@@ -11,7 +11,7 @@ from initTracker import *
 import rolling
 # import compendium
 
-TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.fiBtEZuY4kcs8oiCj7KM7r4mqaM"
+TOKEN = ""
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''

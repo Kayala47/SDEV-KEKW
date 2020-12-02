@@ -49,6 +49,48 @@ def noScreenshotError() -> str:
 
 POSSIBLE_KEYWORDS = ["class", "feat", "background", "spell"]
 
+def search(params: list) -> (bool, str):
+    '''
+    Searches the wiki for relevant results and takes a screenshot
+    if successful.
+    Inputs:
+        params[0] | the keyword for the search. One of: "class", 
+            "feat", "spell", "background"
+        params[1:] | all other strings passed in are an individual 
+            search parameter. Ex: [..., "magic", "missile"]
+
+    Outputs:
+        bool | True if a webpage was found and screenshot taken. 
+            False if any errors occured.
+        str | the message the bot will send. 
+    '''
+
+    # let's unpack the array we're given
+    kwd = params[0]
+    search = "-".join(params[1:])
+
+    retString = ""  # we'll add some messages to this later
+
+    # first check if the keyword is valid
+    url = router(kwd, search)
+
+    if not url:
+        return (False, invalidKeyError(kwd))
+
+    # now we check if the rest of the search is good, by just
+    # making sure it finds a working webpage
+    title = getTitle(url)
+
+    if title == "The page does not (yet) exist.":
+        return (False, wrongPageError(search))
+    else:
+        retString += title + ": \n"
+
+    if not screenshot(url):
+        return (False, noScreenshotError())
+
+    return (True, retString)
+
 
 def screenshot(url: str) -> bool:
     '''

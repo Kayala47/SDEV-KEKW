@@ -16,6 +16,9 @@ and also invite it to a server where it can perform actions.
     - pip install -U discord.py
 - The token field in the python file is empty, you will have to pull that from the discord bot developer website and paste that in place of the empty ""
     - Tokens are unique for each bot, if you want to see the bot in action in the discord channel, make sure you have the correct token for the bot 
+- Download the Chrome Driver from https://chromedriver.chromium.org/downloads. Add the folder containing the .exe file to your PATH
+- Make sure you have Selenium installed.
+    - pip install selenium
 - After you have followed those steps, you can run the bot interface function as you would normally run a 
     python program 
 
