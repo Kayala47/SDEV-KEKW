@@ -13,6 +13,7 @@ test_mRoll_fourInputs (interface_tester.BlackBoxTests) ... ok
 test_next (interface_tester.BlackBoxTests) ... ok
 test_prev (interface_tester.BlackBoxTests) ... ok
 test_rollAdv (interface_tester.BlackBoxTests) ... ok
+test_rollDisadv (interface_tester.BlackBoxTests) ... ok
 test_roll_fourInputs (interface_tester.BlackBoxTests) ... ok
 test_roll_noInputs (interface_tester.BlackBoxTests) ... ok
 test_roll_threeInputs (interface_tester.BlackBoxTests) ... ok
@@ -32,6 +33,6 @@ test_multiroll (interface_tester.WhiteBoxTests) ... ok
 test_search (interface_tester.WhiteBoxTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 29 tests in 0.003s
+Ran 30 tests in 0.002s
 
 OK
