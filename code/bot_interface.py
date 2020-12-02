@@ -9,7 +9,7 @@ import string
 import re
 from initTracker import *
 import rolling
-import compendium
+# import compendium
 
 TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.U26XE7GSWVRY-yJgbBydOccifEI"
 client = discord.Client()
@@ -99,20 +99,24 @@ async def roll(ctx, *arg):
 
           
 """
-Rolling adv takes in one input: a bool: a true or a false statement 
+Rolling adv takes no inputs.
 """
 @bot.command()
-async def rollAdv(ctx, arg = ""):
-    if arg == "":
-        await ctx.send("You need a input for this command. Please input a bool as an input for this function. A true or false statement. Refer to helpMe command for more information :).")
-        return
-    # note we are not checking the validity of the person's input here: the checks for the input is done in the rolling module. 
-    # I just have to check that the user passed a input with roll adv 
-    else: 
-        await ctx.send("Called rollAdv with input: " + arg)
-        # Sending results.
-        await ctx.send(f'{ctx.message.author.mention} ' + rolling.rollAdv(arg))
-        return 
+async def rollAdv(ctx):
+    await ctx.send("Called rollAdv.")
+    # Sending results.
+    await ctx.send(f'{ctx.message.author.mention} ' + rolling.rollAdv(True))
+    return 
+
+"""
+Rolling disadv takes no inputs.
+"""
+@bot.command()
+async def rollDisadv(ctx):
+    await ctx.send("Called rollDisadv.")
+    # Sending results.
+    await ctx.send(f'{ctx.message.author.mention} ' + rolling.rollAdv(False))
+    return 
 
 """
 The function that takes care of manual rolls. we want to make sure that the format for manual rolls is the same as the one for normal rolls. 
@@ -323,7 +327,8 @@ async def search(ctx, *args):
         return  
     else: 
         await ctx.send("Processing your search request")
-        await ctx.send(compendium.search(inputs))
+        await ctx.send(inputs)
+        return 
 
 # Helper functions for the parsing of user inputs for roll and manual roll 
 
