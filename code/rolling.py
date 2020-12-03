@@ -107,6 +107,8 @@ def multiroll(die: int = 20, q: int = 1, mod: int = 0, fudge: int = 0) -> str:
         res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, sum(rolls) + mod)
     elif fudge > (q*die + mod):
         res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, (q*die + mod))
+    elif fudge < 1 + mod:
+        res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, 1 + mod)
     else:
         res = 'rolled %s d %s + (%s) for %s!' %(q, die, mod, fudge)
     return res    
@@ -135,6 +137,8 @@ def manualRoll(die: int = 20, q: int = 1, mod: int = 0, roll: int = 0) -> str:
         return negativeError()
     if roll > q*die+mod:
         res = 'manual input too large by %s, please ensure the roll is possible.'  %(roll - q*die+mod)
+    elif roll < 1 + mod:
+        res = 'manual input too small by %s, please ensure the roll is possible.'  %((1+mod) - roll)
     else:
         res = 'manually rolled %s d %s + (%s) for %s!' %(q, die, mod, roll)
     return res
