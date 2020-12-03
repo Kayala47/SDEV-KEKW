@@ -49,6 +49,7 @@ def noScreenshotError() -> str:
 
 POSSIBLE_KEYWORDS = ["class", "feat", "background", "spell"]
 
+
 def search(params: list) -> (bool, str):
     '''
     Searches the wiki for relevant results and takes a screenshot
@@ -104,7 +105,7 @@ def screenshot(url: str) -> bool:
     '''
     try:
         # these can be adjusted to take a good screenshot
-        options = webdriver.ChromeOptions()
+        options = webdriver.ChromeOptions(executable_path='./selenium')
         options.headless = True  # wont' open a browser window to do this
 
         # this is what will scrape the web
@@ -116,7 +117,7 @@ def screenshot(url: str) -> bool:
         def S(X): return driver.execute_script(
             'return document.body.parentNode.scroll'+X)
         # that tells us the size of our img
-        driver.set_window_size(S('Width') * .8, min( S('Height') * .80, 700))
+        driver.set_window_size(S('Width') * .8, min(S('Height') * .80, 700))
         #S('Height') * .88
 
         # takes screenshot and saves as "screenshot.png"
@@ -146,7 +147,6 @@ def router(kwd: str, srch: str, first_rnd: bool) -> str:
     base_url = "http://dnd5e.wikidot.com/"
 
     # no switch statements in Python :/
-    
 
     if kwd == "race":
         return base_url + srch
@@ -164,10 +164,8 @@ def router(kwd: str, srch: str, first_rnd: bool) -> str:
             kwd = editHelper(kwd, POSSIBLE_KEYWORDS)
             return router(kwd, srch, False)
             # fixd_typo = True
-        else: 
+        else:
             return None
-
-    
 
 
 def getTitle(url: str) -> str:
@@ -210,11 +208,10 @@ def editHelper(kwd: str, possibilies: list) -> str:
     ret = possibilies[0]
     for p in possibilies:
         dist = editDistance(kwd, p)
-    
+
         if dist < min:
             ret = p
             min = dist
-
 
     if min <= 3 and ret[0] == kwd[0]:
         return ret
@@ -223,7 +220,6 @@ def editHelper(kwd: str, possibilies: list) -> str:
 
 
 def editDistance(s1, s2):
-    
     '''
     Compares two strings to see how many steps there are to turn 
     str1 into str2
@@ -252,7 +248,8 @@ def editDistance(s1, s2):
             if c1 == c2:
                 distances_.append(distances[i1])
             else:
-                distances_.append(1 + min((distances[i1], distances[i1 + 1], distances_[-1])))
+                distances_.append(
+                    1 + min((distances[i1], distances[i1 + 1], distances_[-1])))
         distances = distances_
     return distances[-1]
 
