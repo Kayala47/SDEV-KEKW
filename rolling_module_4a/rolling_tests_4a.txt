@@ -173,11 +173,11 @@ Testing: multiroll(die ?= 20, q ?= 1, mod ?= 0, fudge ?= 0)
 
 ----------------------------------------------------------------------------------------
 
-    Testing Case 5: Assert that multiroll() successfully lowers roll result to
-                    highest possible roll when fudge is too large.
+    Testing Case 5: Assert that multiroll() successfully changes roll result to
+                    possible roll when fudge is too large or  small.
     Justification: Maintains DM discretion and doesn't betray the user.
     Special Set-Up: None
-    Generation: When multiroll() is called where fudge > q*die + mod.
+    Generation: When multiroll() is called where 1 + mod > fudge > q*die + mod.
     Correctness: Roll result should be the maximum rollable value.
     Clean-Up: None
 
@@ -197,7 +197,7 @@ Testing: manualRoll(q, die, mod, roll)
     Testing Case 2: Assert that manualRoll() successfully informs user of impossible roll.
     Justification: Ensure player did not make a mistake.
     Special Set-Up: None
-    Generation: When manualRoll() is called where fudge > q*die + mod.
+    Generation: When manualRoll() is called where 1 + mod > fudge > q*die + mod.
     Correctness: Tell user how far off the result was.
     Clean-Up: None
 
