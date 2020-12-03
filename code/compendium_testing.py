@@ -58,14 +58,6 @@ class BlackBoxTesting(unittest.TestCase):
 
         self.assertEqual(getTitle(URL), "Gnome")
 
-    def test_search(self):
-        first_shot = get_date_taken("screenshot.png")
-
-        search(random.choice(self.searches).split(" "))
-
-        second_shot = get_date_taken("screenshot.png")
-
-        self.assertNotEqual(first_shot, second_shot)  # a new picture was taken
 
     def test_invalid_key_huge_difference(self):
         # if stepDist > 3, should not be accepted
