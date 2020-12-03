@@ -12,7 +12,7 @@ import rolling
 import compendium
 
 
-TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.AMemJBZZg5ajsx1Qd4_lwUtmxRM"
+TOKEN = ""
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
@@ -329,7 +329,7 @@ async def search(ctx, *args):
         await ctx.send("Make sure that you are inputing two key words to search. Refer to helpMe command for more information.")
         return  
     else: 
-        await ctx.send("Processing your search request")
+        await ctx.send("Processing your search request....")
 
         (working, message) = compendium.search(inputs)
 
