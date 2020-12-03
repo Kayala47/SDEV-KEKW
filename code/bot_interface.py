@@ -12,7 +12,7 @@ import rolling
 import compendium
 
 
-TOKEN = ""
+TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.oq7nDQsbqdTCio-AiI18IU3vSqs"
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''

@@ -70,7 +70,7 @@ class BlackBoxTesting(unittest.TestCase):
 
     def test_invalid_key_small_difference(self):
 
-        small_diff = ["classs", "magic-missile"]
+        small_diff = ["spelll", "magic-missile"]
         (working, resp) = search(small_diff)
 
         self.assertEqual(working, True)
@@ -99,24 +99,28 @@ class WhiteBoxTesting(unittest.TestCase):
         self.assertEqual(editHelper(word, self.POSSIBLE_KEYWORDS), None)
 
     def test_editHelper_smallDiff(self):
-        word = "class"
+        word = "spelll"
 
-        self.assertEqual(editHelper(word, self.POSSIBLE_KEYWORDS), self.POSSIBLE_KEYWORDS[0])
+        self.assertEqual(editHelper(word, self.POSSIBLE_KEYWORDS), self.POSSIBLE_KEYWORDS[3])
 
     def test_router_bad_url(self):
         bad_params = ["lkjsdfs", "magic-missile"]
 
-        self.assertEqual(router(bad_params[0], bad_params[1]), None)
+        self.assertEqual(router(bad_params[0], bad_params[1], True), None)
 
     def test_router_good_url(self):
         good_params = ["spell", "magic-missile"]
 
         self.assertEqual(router(
-            good_params[0], good_params[1]), "http://dnd5e.wikidot.com/spell:magic-missile")
+            good_params[0], good_params[1], True), "http://dnd5e.wikidot.com/spell:magic-missile")
 
 
 if __name__ == '__main__':
-    print(editDistance("class", "classss"))
+    print(search(["spelll", "magic", "missile"]))
+    print("distance = " + str(editDistance("spelll", "spell")))
+    POSSIBLE_KEYWORDS = ["class", "feat", "background", "spell"]
+    print("eH result = " + str(editHelper("spelll", POSSIBLE_KEYWORDS)))
+
     unittest.main()
 
     

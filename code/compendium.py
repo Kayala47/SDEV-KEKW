@@ -72,7 +72,7 @@ def search(params: list) -> (bool, str):
     retString = ""  # we'll add some messages to this later
 
     # first check if the keyword is valid
-    url = router(kwd, search)
+    url = router(kwd, search, True)
 
     if not url:
         return (False, invalidKeyError(kwd))
@@ -130,7 +130,7 @@ def screenshot(url: str) -> bool:
         return False
 
 
-def router(kwd: str, srch: str) -> str:
+def router(kwd: str, srch: str, first_rnd: bool) -> str:
     '''
     Routes the search to the correct url based on the keyword. Applies
     editDistance in case there was a close typo.
@@ -146,25 +146,28 @@ def router(kwd: str, srch: str) -> str:
     base_url = "http://dnd5e.wikidot.com/"
 
     # no switch statements in Python :/
-    fixd_typo = False
-    while(not fixd_typo):
-        if kwd == "race":
-            return base_url + srch
-        elif kwd == "spell":
-            return base_url + "spell:" + srch
-        elif kwd == "background":
-            return base_url + "background:" + srch
-        elif kwd == "feat":
-            return base_url + "feat:" + srch
-        elif kwd == "class":
-            return base_url + srch
-        else:
-            # if none of them fit, we try to fix it /ONCE/
-            if not fixd_typo:
-                kwd = editHelper(kwd, POSSIBLE_KEYWORDS)
-                fixd_typo = True
-            else:
-                return None
+    
+
+    if kwd == "race":
+        return base_url + srch
+    elif kwd == "spell":
+        return base_url + "spell:" + srch
+    elif kwd == "background":
+        return base_url + "background:" + srch
+    elif kwd == "feat":
+        return base_url + "feat:" + srch
+    elif kwd == "class":
+        return base_url + srch
+    else:
+        # if none of them fit, we try to fix it /ONCE/
+        if first_rnd:
+            kwd = editHelper(kwd, POSSIBLE_KEYWORDS)
+            return router(kwd, srch, False)
+            # fixd_typo = True
+        else: 
+            return None
+
+    
 
 
 def getTitle(url: str) -> str:
@@ -207,8 +210,7 @@ def editHelper(kwd: str, possibilies: list) -> str:
     ret = possibilies[0]
     for p in possibilies:
         dist = editDistance(kwd, p)
-        print(dist)
-        
+    
         if dist < min:
             ret = p
             min = dist
@@ -235,6 +237,10 @@ def editDistance(s1, s2):
             substitutions needed to make str1 into str2 or 
             vice versa
     '''
+    if not s1:
+        return 1000
+    elif not s2:
+        return 1000
 
     if len(s1) > len(s2):
         s1, s2 = s2, s1
