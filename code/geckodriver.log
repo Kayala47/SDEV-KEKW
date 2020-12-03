@@ -1,8 +1,81 @@
-1606826784715	geckodriver	INFO	Listening on 127.0.0.1:63651
-1606826911861	geckodriver	INFO	Listening on 127.0.0.1:63697
-1606826995536	geckodriver	INFO	Listening on 127.0.0.1:63725
-1606827258177	geckodriver	INFO	Listening on 127.0.0.1:63763
-1606827469765	geckodriver	INFO	Listening on 127.0.0.1:63797
-1606827488032	geckodriver	INFO	Listening on 127.0.0.1:63808
-1606827506061	geckodriver	INFO	Listening on 127.0.0.1:63819
-1606827614286	geckodriver	INFO	Listening on 127.0.0.1:63849
+1606644720843	geckodriver	INFO	Listening on 127.0.0.1:53461
+1606644721737	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/9m/t00m1yns331cz531m2g2n2r80000gq/T/rust_mozprofileBh9Cjd"
+1606644723827	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1606644723827	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1606644723827	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1606644723829	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+JavaScript error: undefined, line 14: Error: An unexpected error occurred
+JavaScript error: moz-extension://3f2f803c-0b05-ef45-ad5b-cf16d89bb6cf/lib/picture_in_picture_overrides.js, line 15: Error: Incorrect argument types for pictureInPictureParent.setOverrides.
+JavaScript error: resource:///modules/sessionstore/SessionStore.jsm, line 1325: uncaught exception: 2147746065
+1606644726096	Marionette	INFO	Listening on port 53472
+1606644726155	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606644789270	Marionette	INFO	Stopped listening on port 53472
+1606652779534	geckodriver	INFO	Listening on 127.0.0.1:54505
+1606652779548	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/9m/t00m1yns331cz531m2g2n2r80000gq/T/rust_mozprofileuXpFQu"
+*** You are running in headless mode.
+1606652780239	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1606652780239	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1606652780239	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1606652780239	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+JavaScript error: undefined, line 14: Error: An unexpected error occurred
+JavaScript error: moz-extension://7b0bfedd-4921-2d4d-890c-efb3bad9bf77/lib/picture_in_picture_overrides.js, line 15: Error: Incorrect argument types for pictureInPictureParent.setOverrides.
+JavaScript error: resource:///modules/sessionstore/SessionStore.jsm, line 1325: uncaught exception: 2147746065
+1606652782571	Marionette	INFO	Listening on port 54510
+1606652782638	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606652785039	Marionette	INFO	Stopped listening on port 54510
+1606652857131	geckodriver	INFO	Listening on 127.0.0.1:54594
+1606652857142	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/9m/t00m1yns331cz531m2g2n2r80000gq/T/rust_mozprofilelaIjK1"
+*** You are running in headless mode.
+1606652857721	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1606652857721	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1606652857722	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1606652857722	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+JavaScript error: undefined, line 14: Error: An unexpected error occurred
+JavaScript error: moz-extension://2b114f8a-d43e-b842-ac9e-2ccfaf96ddc0/lib/picture_in_picture_overrides.js, line 15: Error: Incorrect argument types for pictureInPictureParent.setOverrides.
+JavaScript error: resource:///modules/sessionstore/SessionStore.jsm, line 1325: uncaught exception: 2147746065
+1606652859926	Marionette	INFO	Listening on port 54599
+1606652860022	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://s.nitropay.com/ads-143.js, line 1: ReferenceError: NitroPayCCPA is not defined
+1606652862601	Marionette	INFO	Stopped listening on port 54599
+1606652926912	geckodriver	INFO	Listening on 127.0.0.1:54692
+1606652926925	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/9m/t00m1yns331cz531m2g2n2r80000gq/T/rust_mozprofile4bKy4B"
+*** You are running in headless mode.
+1606652927480	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1606652927480	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1606652927480	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1606652927481	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+JavaScript error: undefined, line 14: Error: An unexpected error occurred
+JavaScript error: moz-extension://7f156acb-4e91-0c43-90df-4121b9169411/lib/picture_in_picture_overrides.js, line 15: Error: Incorrect argument types for pictureInPictureParent.setOverrides.
+JavaScript error: resource:///modules/sessionstore/SessionStore.jsm, line 1325: uncaught exception: 2147746065
+1606652929624	Marionette	INFO	Listening on port 54697
+1606652929685	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://s.nitropay.com/ads-143.js, line 1: ReferenceError: NitroPayCCPA is not defined
+1606652932635	Marionette	INFO	Stopped listening on port 54697
+1606827153224	geckodriver	INFO	Listening on 127.0.0.1:59024
+1606827153250	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/9m/t00m1yns331cz531m2g2n2r80000gq/T/rust_mozprofileDZ8nh9"
+*** You are running in headless mode.
+1606827154135	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1606827154136	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1606827154136	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1606827154136	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+JavaScript error: undefined, line 14: Error: An unexpected error occurred
+JavaScript error: moz-extension://53b20c16-e70e-5044-8648-4d303e06e3ac/lib/picture_in_picture_overrides.js, line 15: Error: Incorrect argument types for pictureInPictureParent.setOverrides.
+JavaScript error: resource:///modules/sessionstore/SessionStore.jsm, line 1325: uncaught exception: 2147746065
+1606827155985	Marionette	INFO	Listening on port 59029
+1606827156079	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://s.nitropay.com/ads-143.js, line 1: ReferenceError: NitroPayCCPA is not defined
+1606827159966	Marionette	INFO	Stopped listening on port 59029
+1606827192877	geckodriver	INFO	Listening on 127.0.0.1:59113
+1606827192887	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/9m/t00m1yns331cz531m2g2n2r80000gq/T/rust_mozprofileTfWvTg"
+*** You are running in headless mode.
+1606827193297	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1606827193297	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1606827193297	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1606827193297	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+JavaScript error: undefined, line 14: Error: An unexpected error occurred
+JavaScript error: moz-extension://3d8948f8-43fd-974c-8c14-4fa541e8d85b/lib/picture_in_picture_overrides.js, line 15: Error: Incorrect argument types for pictureInPictureParent.setOverrides.
+JavaScript error: resource:///modules/sessionstore/SessionStore.jsm, line 1325: uncaught exception: 2147746065
+1606827194794	Marionette	INFO	Listening on port 59118
+1606827194832	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://s.nitropay.com/ads-143.js, line 1: ReferenceError: NitroPayCCPA is not defined
+1606827198025	Marionette	INFO	Stopped listening on port 59118

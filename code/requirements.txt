@@ -1,0 +1,6 @@
+selenium
+requests
+webdriver-manager
+bs4
+numpy
+discord==1.0.1
