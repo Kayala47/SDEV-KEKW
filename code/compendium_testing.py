@@ -31,7 +31,7 @@ class BlackBoxTesting(unittest.TestCase):
 
         start = timeit.timeit()
 
-        search(random.choice(searches).split(" "))
+        search(random.choice(self.searches).split(" "))
 
         stop = timeit.time()
 
@@ -42,11 +42,12 @@ class BlackBoxTesting(unittest.TestCase):
         self.assertEqual(editDistance("race", "race"), 0)
         self.assertEqual(editDistance("sppelll", "spell"), 2)
 
-    def test_api_search(self):
-        phrases = "class barbarian".split(" ")
+    # no longer needed
+    # def test_api_search(self):
+    #     phrases = "class barbarian".split(" ")
 
-        self.assertEqual(requests.get(
-            "https://www.dnd5eapi.co/api/classes/barbarian").text, api_search(phrases))
+    #     self.assertEqual(requests.get(
+    #         "https://www.dnd5eapi.co/api/classes/barbarian").text, api_search(phrases))
 
     def test_get_title(self):
         URL = "http://dnd5e.wikidot.com/gnome"
@@ -66,16 +67,17 @@ class BlackBoxTesting(unittest.TestCase):
         # if stepDist > 3, should not be accepted
 
         big_diff = ["difference", "magic-missile"]
+        (working, resp) = search(big_diff)
 
-        self.assertEqual(search(
-            big_diff), "Woah! Our sending spell failed. " + big_diff[0] + " isn't recognized.")
+        self.assertEqual(resp , "Woah! Our sending spell failed. " + big_diff[0] + " isn't recognized.")
+        
 
     def test_invalid_key_small_difference(self):
 
         small_diff = ["classs", "magic-missile"]
+        (working, resp) = search(small_diff)
 
-        self.assertEqual(search(
-            small_diff, ["class", "magic-missile"]))
+        self.assertEqual(working, True)
 
 # -------------------------------------
 #   WHITE BOX TESTING
@@ -86,35 +88,24 @@ class WhiteBoxTesting(unittest.TestCase):
 
     def setUp(self):
         self.img_path = "screenshot.png"
+        self.POSSIBLE_KEYWORDS = ["class", "feat", "background", "spell"]
 
-    def test_strip_html(self):
-        string_with_html = "<div class='main-content-wrap col-md-9'> <div class = 'main-content'> <div class='page-title page-header'> <span> Gnome </span> </div> </div> </div>"
+    # no longer needed
+    # def test_strip_html(self):
+    #     string_with_html = "<div class='main-content-wrap col-md-9'> <div class = 'main-content'> <div class='page-title page-header'> <span> Gnome </span> </div> </div> </div>"
 
-        self.assertEqual(strip_html(string_with_html), "Gnome")
+    #     self.assertEqual(strip_html(string_with_html), "Gnome")
 
-    def test_wrong_page_actually(self):
-        bad_URL = "http://dnd5e.wikidot.com/gnomz"
-
-        self.assertEqual(router(
-            bad_URL, "badparams"), None)
-
-    def test_wrong_page_not(self):
-        good_URL = "http://dnd5e.wikidot.com/gnome"
-
-        self.assertNotEqual(router(good_URL, "goodparams"), None)
 
     def test_editHelper_bigDiff(self):
-        word = "class"
-        possibilities = ["lkajfd.sjfljfdlskj", "lskjdfsljfdl"]
+        word = "dsfdfdsfsdlkj;j"
 
-        self.assertEqual(editHelper(word, possibilities), None)
+        self.assertEqual(editHelper(word, self.POSSIBLE_KEYWORDS), None)
 
     def test_editHelper_smallDiff(self):
         word = "class"
-        possibilities = ["sldkjfsaldfjll", "class"]
 
-        self.assertEqual(editHelper(
-            word, possibilities), possibilities[1])
+        self.assertEqual(editHelper(word, self.POSSIBLE_KEYWORDS), self.POSSIBLE_KEYWORDS[0])
 
     def test_router_bad_url(self):
         bad_params = ["lkjsdfs", "magic-missile"]
@@ -129,6 +120,8 @@ class WhiteBoxTesting(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    # unittest.main()
-    screenshot("http://dnd5e.wikidot.com/spell:magic-missile")
+    print(editDistance("class", "classss"))
+    unittest.main()
+
+    
 

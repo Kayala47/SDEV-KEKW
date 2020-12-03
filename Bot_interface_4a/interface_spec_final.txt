@@ -22,6 +22,8 @@ Team: Discord Dragons
       that the user can use to progress the initive tracker.(Next and previous) These functions got added. 
     - We also added a new function called show which will just show the current initivie tracker 
 - Added a new functions for the macros: showMacros and deleteMacros 
+- rollAdv no longer takes in an input, it is going to be a call with no inputs 
+    - Insted of passing in a true or false for rollAdv, we added another function called rollDisadv 
 - Code structure: 
     - We are now using bot on command rather than on message. This means that the bot is no longer looking at every 
       message, rather it gets activated if the user only places the commands that is defined in the bot interface 
@@ -84,14 +86,19 @@ comments: Rolling is going to be the most used function and so providing the use
     how to use the most used command correctly. 
 
 Function rollAdv: 
-inputs: string 
+inputs: none 
 output: imbedded message on the discord channel 
-Purpose/logic: This function is for the the users to call a simple 20 sided dice roll with or without advantage. The inputs should just be a string, either true 
-    or false. The function in this module will not do that test, as that is part of the rolling module's scope. The testing done in this module will be to 
-    see if the user actually did input something after the rollAdv command. We are just making sure that there is something inputed, and if there is, we will 
-    call the rollAdv function in the rolling module. 
-error handeling: if the users do not input things correctly, we will send an error message teaching the user how to use the function and what format it should 
-    be in. 
+Purpose/logic: This function is for the the users to call a simple 20 sided dice roll with advantage. There are no inputs. Because 
+                there are no inputs, we are not looking at what the user types after the rollAdv command. 
+error handeling: none in the bot interface 
+comments: 
+
+Function rollDisadv: 
+inputs: none 
+output: imbedded message on the discord channel 
+Purpose/logic: This function is for the the users to call a simple 20 sided dice roll with disadvantage. There are no inputs. Because 
+                there are no inputs, we are not looking at what the user types after the rollDisadv command. 
+error handeling: none in the bot interface 
 comments: 
 
 

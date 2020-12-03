@@ -11,11 +11,15 @@ from initTracker import *
 import rolling
 import compendium
 
+<<<<<<< HEAD
 TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.OEliwfPSzrzKhi0LzH0bmLDdN2c"
+=======
+TOKEN = "NzU5MTk0MTEyNjQwODExMDI4.X258nQ.xiE53bQOp2hukbODBGY4cmJwVnk"
+>>>>>>> 7c2a69b79b4cd4de85e29c9c1fd99fb4225e5253
 client = discord.Client()
 
 description = '''D&D Bot to Meet Your Needs'''
-bot = commands.Bot(command_prefix='!', description=description)
+bot = commands.Bot(command_prefix='!', description=description, help_command= None)
 
 #making the initiative tracker object 
 tracker = InitTracker()
@@ -32,10 +36,12 @@ async def hello(ctx):
     await ctx.send("Hey " f"{username.mention}, lets play some D&D!")
 
 @bot.command()
-async def helpMe(ctx):
-    msg = "Thank you for using our D&D bot!"
-    msg2 = "Please refer to this git hub"
-    await ctx.send("SOME MESSAGE TO HELP: maybe a link to github")
+async def help(ctx):
+    msg = "Thank you for using our D&D bot! "
+    msg2 = "Please refer to this git hub "
+    msg3 = "https://github.com/Kayala47/SDEV-KEKW/blob/master/code/helpMe.txt"
+    await ctx.send(msg + msg2)
+    await ctx.send(msg3)
 
 """
 The command that takes care most roling functions including multiroll, standard roll, and fudgerolling 
@@ -99,20 +105,24 @@ async def roll(ctx, *arg):
 
           
 """
-Rolling adv takes in one input: a bool: a true or a false statement 
+Rolling adv takes no inputs.
 """
 @bot.command()
-async def rollAdv(ctx, arg = ""):
-    if arg == "":
-        await ctx.send("You need a input for this command. Please input a bool as an input for this function. A true or false statement. Refer to helpMe command for more information :).")
-        return
-    # note we are not checking the validity of the person's input here: the checks for the input is done in the rolling module. 
-    # I just have to check that the user passed a input with roll adv 
-    else: 
-        await ctx.send("Called rollAdv with input: " + arg)
-        # Sending results.
-        await ctx.send(f'{ctx.message.author.mention} ' + rolling.rollAdv(arg))
-        return 
+async def rollAdv(ctx):
+    await ctx.send("Called rollAdv.")
+    # Sending results.
+    await ctx.send(f'{ctx.message.author.mention} ' + rolling.rollAdv(True))
+    return 
+
+"""
+Rolling disadv takes no inputs.
+"""
+@bot.command()
+async def rollDisadv(ctx):
+    await ctx.send("Called rollDisadv.")
+    # Sending results.
+    await ctx.send(f'{ctx.message.author.mention} ' + rolling.rollAdv(False))
+    return 
 
 """
 The function that takes care of manual rolls. we want to make sure that the format for manual rolls is the same as the one for normal rolls. 
@@ -323,13 +333,17 @@ async def search(ctx, *args):
         return  
     else: 
         await ctx.send("Processing your search request")
+
         (working, message) = compendium.search(inputs)
 
         if working:
             await ctx.send(message.split("\\n")[0])
             await ctx.send(file=discord.File('./screenshot.png'))
             await ctx.send(message.split("\\n")[1])
+        else:
+            await ctx.send(message)
         
+
 
 # Helper functions for the parsing of user inputs for roll and manual roll 
 

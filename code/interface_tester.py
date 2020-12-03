@@ -84,13 +84,12 @@ class BlackBoxTests(unittest.TestCase):
         self.assertEqual(mRoll(("x", "d", "y", "-", "m", "f")), result2)
 
     def test_rollAdv(self):
-        # the rollAdv takes in one input. If the user does not input anything we will send an error and if they do pass in an argument, we 
-        # need to correctly parse it and return the input that they gave the user 
-        errorResult = "You need a input for this command. Please input a bool as an input for this function. A true or false statement. Refer to helpMe command for more information :)"
-        self.assertEqual(rollAdv(""), errorResult)
-        # with the input "arg"
-        msg = "Called rollAdv with input: arg"
-        self.assertEqual(rollAdv("arg"), msg)
+        msg = "Called rollAdv."
+        self.assertEqual(rollAdv(), msg)
+    
+    def test_rollDisadv(self):
+        msg = "Called rollDisadv."
+        self.assertEqual(rollDisadv(), msg)
 
     def test_addMacro(self):
         msg1 = "You are missing some inputs needed for the addMacro function."

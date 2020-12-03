@@ -207,21 +207,21 @@ def editHelper(kwd: str, possibilies: list) -> str:
     ret = possibilies[0]
     for p in possibilies:
         dist = editDistance(kwd, p)
+        print(dist)
+        
         if dist < min:
             ret = p
             min = dist
 
-    if min <= 3:
-        return p
+
+    if min <= 3 and ret[0] == kwd[0]:
+        return ret
     else:
         return None
 
 
-def editDistance(str1, str2):
-    return editDistanceHelper(str1, str2, len(str1), len(str2))
-
-
-def editDistanceHelper(str1, str2, m, n) -> int:
+def editDistance(s1, s2):
+    
     '''
     Compares two strings to see how many steps there are to turn 
     str1 into str2
@@ -236,30 +236,19 @@ def editDistanceHelper(str1, str2, m, n) -> int:
             vice versa
     '''
 
-    # If first string is empty, the only option is to
-    # insert all characters of second string into first
-    if m == 0:
-        return n
+    if len(s1) > len(s2):
+        s1, s2 = s2, s1
 
-    # If second string is empty, the only option is to
-    # remove all characters of first string
-    if n == 0:
-        return m
-
-    # If last characters of two strings are same, nothing
-    # much to do. Ignore last characters and get count for
-    # remaining strings.
-    if str1[m-1] == str2[n-1]:
-        return editDistanceHelper(str1, str2, m-1, n-1)
-
-    # If last characters are not same, consider all three
-    # operations on last character of first string, recursively
-    # compute minimum cost for all three operations and take
-    # minimum of three values.
-    return 1 + min(editDistanceHelper(str1, str2, m, n-1),    # Insert
-                   editDistanceHelper(str1, str2, m-1, n),    # Remove
-                   editDistanceHelper(str1, str2, m-1, n-1)    # Replace
-                   )
+    distances = range(len(s1) + 1)
+    for i2, c2 in enumerate(s2):
+        distances_ = [i2+1]
+        for i1, c1 in enumerate(s1):
+            if c1 == c2:
+                distances_.append(distances[i1])
+            else:
+                distances_.append(1 + min((distances[i1], distances[i1 + 1], distances_[-1])))
+        distances = distances_
+    return distances[-1]
 
 
 if __name__ == '__main__':

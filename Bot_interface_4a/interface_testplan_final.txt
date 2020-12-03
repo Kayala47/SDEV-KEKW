@@ -39,6 +39,10 @@ we had included all of the parsing in one funcion. As such, we will have to add 
 getModifier, getModifierWithFudge, hasFudge, getFudgeValue. These funcitons are called within the roll functions and are given the 
 inputs as strings becasue in the begining of the roll funcion, we convert the tuple input into strings. 
 
+The rollAdv function originally took in a string of either "True" or "False", but now we have changed it to take in no inputs. We did this 
+becasue we chose to add another funciton called rollDisadv which would take care of the false case of the original rollAdv. The changed functions
+have no inputs and require no parsing so there are only blackbox tests that can be done. 
+
 For all of the initive tracker functions, begin(), end(), next(), previous(), show(), we did not have tests for them as they were just doing an 
 action to the initive tracker object, and not any user parsing, we will now just add simple tests to these functinos to make sure that 
 they were called. 
@@ -117,24 +121,25 @@ of !multiroll HidBye should record the inputs as ["Hi", "Bye"], we do not ensure
     Clean Up: None 
 ----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------
-Testing: rollAdv (string)
+Testing: rollAdv ()
 
-    Testing Case 1: Calling the rollAdv function with no inputs. This should cause an error Assert that the message returned by the rollAdv 
-                    function is the correct message that we have wrote for the rollAdv function. Since there is no parsing done here, 
-                    it will be a simple assertion that two strings are the same. 
-    Justification: Ensures that when users use the rollAdv feature, an error is shown if they have no inputs. 
+    Testing Case 1: Calling the rollAdv function with no inputs. This should call the rollAdv function and return a string 
+                    saying that the rollAdv function was called. 
+    Justification: Ensures that when users use the rollAdv feature, it correctly understands the call. 
     Special Set Up: N/A 
     Generation: When rollAdv is called 
     Correctness: The string returned matches the string that we originally wrote for the rollAdv function. 
     Clean Up: None 
 ----------------------------------------------------------------------------------------------------------------------------------------
-    Testing Case 2: Calling the rollAdv function with an input m. The function should accept this and parse the message sent correctly. We 
-                    need to make sure that the function records that the input is "m". 
-    Justification: Ensures that when users use the rollAdv feature with an input m, it makes a call to the rollAdv funciton. 
+----------------------------------------------------------------------------------------------------------------------------------------
+Testing: rollDisadv ()
+
+    Testing Case 1: Calling the rollDisadv function with no inputs. This should call the rollDisadv function and return a string 
+                    saying that the rollDisadv function was called. 
+    Justification: Ensures that when users use the rollDisadv feature, it correctly understands the call. 
     Special Set Up: N/A 
-    Generation: When rollAdv is called 
-    Correctness: The list of inputs returned from the dummy function that records the inputs matches ["m"]. We will do a simple 
-                 assertion that ["m"] == to the call to the dummy advRoll funciton. 
+    Generation: When rollDisadv is called 
+    Correctness: The string returned matches the string that we originally wrote for the rollDisadv function. 
     Clean Up: None 
 ----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------

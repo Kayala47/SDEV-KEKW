@@ -35,6 +35,8 @@ depending on what the command is it will do a different functon.
       that the user can use to progress the initive tracker.(Next and previous) These functions got added. 
     - We also added a new function called show which will just show the current initivie tracker 
 - Added a new functions for the macros: showMacros and deleteMacros 
+- rollAdv no longer takes in an input, it is going to be a call with no inputs 
+    - Insted of passing in a true or false for rollAdv, we added another function called rollDisadv
 - Code structure: 
     - We are now using bot on command rather than on message. This means that the bot is no longer looking at every 
       message, rather it gets activated if the user only places the commands that is defined in the bot interface 
@@ -90,16 +92,17 @@ async def command(ctx, args):
                     return result as imbedded message to the chat 
 
     // advantage roll 
-    // inputs for advantage roll should be either a true or a false 
+    // inputs for advantage roll are none 
     if cmd == rollAdv:
-        input = message.split(" ")[1]
-        if input == "": 
-            return a message saying that the inputs of rollAdv need to be in the format rollAdv with either true or false 
-        else: 
-            // note I am not checking if the user inputs a true or false, just checking that it has an input 
-            // rolling module coder was adiment that he will handle the input checks in his own function 
+            # note there are no inputs 
+            result = call to the rollAdv function in rolling module
+            return result as a message to chat 
 
-            result = call to the rollAdv function in rolling module with input 
+    // disadvantage roll 
+    // inputs for advantage roll are none 
+    if cmd == rollDisadv:
+            # note there are no inputs 
+            result = call to the rollDisadv function in rolling module 
             return result as a message to chat 
 
     // manual roll 
