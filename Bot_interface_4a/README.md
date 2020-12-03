@@ -27,7 +27,8 @@ and also invite it to a server where it can perform actions.
 	
     - pip install numpy
 	
-    - Alternatively we should have a requirements.txt file that you can call using pip install -r requirements.txt 
+    - Alternatively we should have a requirements.txt file that you can call using pip install -r requirements.txt after entering the directory holding the 	
+      requrements.txt file.
     
 - The token field in the python file is empty, you will have to pull that from the discord bot developer website and paste that in place of the empty ""
     - Tokens are unique for each bot, if you want to see the bot in action in the discord channel, make sure you have the correct token for the bot 
