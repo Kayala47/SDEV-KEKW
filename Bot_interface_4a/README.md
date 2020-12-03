@@ -12,14 +12,22 @@ This is the main file that is used to make the bot online on discord. If you fol
 and also invite it to a server where it can perform actions. 
 
 -Ensure that bot_interface.py, rolling.py, initTracker.py and compendium.py are all in the direcotry 
+
 -Before trying to run bot_interface.py, make sure that you have to download some packages: 
+
     - pip install -U discord.py
+	
     - pip intall selenium 
+	
     - pip install webdriver-manager
+	
     - pip install requests
+	
     - pip install bs4
+	
     - pip install numpy
-    - ALternatively we should have a requirements.txt file that you can call using pip install -r requirements.txt 
+	
+    - Alternatively we should have a requirements.txt file that you can call using pip install -r requirements.txt 
     
 - The token field in the python file is empty, you will have to pull that from the discord bot developer website and paste that in place of the empty ""
     - Tokens are unique for each bot, if you want to see the bot in action in the discord channel, make sure you have the correct token for the bot 
