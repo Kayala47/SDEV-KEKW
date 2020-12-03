@@ -334,9 +334,9 @@ async def search(ctx, *args):
         (working, message) = compendium.search(inputs)
 
         if working:
-            await ctx.send(message.split("\\n")[0])
+            await ctx.send(message.split("\n")[0])
             await ctx.send(file=discord.File('./screenshot.png'))
-            await ctx.send(message.split("\\n")[1])
+            await ctx.send(message.split("\n")[1])
         else:
             await ctx.send(message)
         
