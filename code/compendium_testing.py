@@ -95,13 +95,13 @@ class WhiteBoxTesting(unittest.TestCase):
     def test_wrong_page_actually(self):
         bad_URL = "http://dnd5e.wikidot.com/gnomz"
 
-        self.assertFalse(is_valid_url(
-            bad_URL))
+        self.assertEqual(router(
+            bad_URL, "badparams"), None)
 
     def test_wrong_page_not(self):
         good_URL = "http://dnd5e.wikidot.com/gnome"
 
-        self.assertTrue(is_valid_url(good_URL))
+        self.assertNotEqual(router(good_URL, "goodparams"), None)
 
     def test_editHelper_bigDiff(self):
         word = "class"
@@ -129,4 +129,6 @@ class WhiteBoxTesting(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    # unittest.main()
+    screenshot("http://dnd5e.wikidot.com/spell:magic-missile")
+

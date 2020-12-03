@@ -89,6 +89,8 @@ def search(params: list) -> (bool, str):
     if not screenshot(url):
         return (False, noScreenshotError())
 
+    retString += url
+
     return (True, retString)
 
 
@@ -114,7 +116,8 @@ def screenshot(url: str) -> bool:
         def S(X): return driver.execute_script(
             'return document.body.parentNode.scroll'+X)
         # that tells us the size of our img
-        driver.set_window_size(S('Width') * .8, S('Height') * .88)
+        driver.set_window_size(S('Width') * .8, min( S('Height') * .80, 700))
+        #S('Height') * .88
 
         # takes screenshot and saves as "screenshot.png"
         driver.find_element_by_tag_name('body').screenshot('screenshot.png')
