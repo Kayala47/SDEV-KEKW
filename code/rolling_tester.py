@@ -129,7 +129,16 @@ class BlackBoxTests(unittest.TestCase):
         self.assertEqual(int(roll[3]), 100)
         self.assertEqual(int(roll[5][1:-1]), 0)
         self.assertEqual(int(roll[-1]), 100)
-        
+
+    # Ensure multiroll raises fudged roll to the minimum possible roll if too small.
+    # Checks output message to ensure result was effectively modded.
+    def test_multiRoll_fudge_too_small(self):
+        roll = multiroll(100, 1, 0, -100)[:-1].split()
+        self.assertEqual(int(roll[1]), 1)
+        self.assertEqual(int(roll[3]), 100)
+        self.assertEqual(int(roll[5][1:-1]), 0)
+        self.assertEqual(int(roll[-1]), 1)
+
     # Tests that manual roll successfully overwrites roll output.
     # Verifies components of output align with desired quantities.
     def test_manualRoll_combined_params(self):
@@ -154,7 +163,14 @@ class BlackBoxTests(unittest.TestCase):
         message = \
         'manual input too large by 1, please ensure the roll is possible.'
         self.assertEqual(manualRoll(1,1,0,2), message)
-        
+
+    # Ensure manual roll is identified if too small.
+    # Checks output message to ensure result was effectively modded.
+    def test_manualRoll_input_too_large(self):
+        message = \
+        'manual input too small by 1, please ensure the roll is possible.'
+        self.assertEqual(manualRoll(1,1,0,0), message)
+
     # Ensure incorrectly formatted macros cannot be added
     # Compares each possible argument error with the correct corresponding error message.
     def test_addMacro_param_error(self):
