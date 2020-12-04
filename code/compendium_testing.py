@@ -37,7 +37,6 @@ class BlackBoxTesting(unittest.TestCase):
         stop = time.perf_counter()
 
         diff = stop - start
-        print("time = " + str(diff))
 
         self.assertTrue(stop - start < 20)
 
@@ -45,13 +44,6 @@ class BlackBoxTesting(unittest.TestCase):
         self.assertEqual(editDistance("class", "cass"), 1)
         self.assertEqual(editDistance("race", "race"), 0)
         self.assertEqual(editDistance("sppelll", "spell"), 2)
-
-    # no longer needed
-    # def test_api_search(self):
-    #     phrases = "class barbarian".split(" ")
-
-    #     self.assertEqual(requests.get(
-    #         "https://www.dnd5eapi.co/api/classes/barbarian").text, api_search(phrases))
 
     def test_get_title(self):
         URL = "http://dnd5e.wikidot.com/gnome"
@@ -86,12 +78,6 @@ class WhiteBoxTesting(unittest.TestCase):
         self.img_path = "screenshot.png"
         self.POSSIBLE_KEYWORDS = ["class", "feat", "background", "spell"]
 
-    # no longer needed
-    # def test_strip_html(self):
-    #     string_with_html = "<div class='main-content-wrap col-md-9'> <div class = 'main-content'> <div class='page-title page-header'> <span> Gnome </span> </div> </div> </div>"
-
-    #     self.assertEqual(strip_html(string_with_html), "Gnome")
-
 
     def test_editHelper_bigDiff(self):
         word = "dsfdfdsfsd"
@@ -116,10 +102,6 @@ class WhiteBoxTesting(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    print(search(["spelll", "magic", "missile"]))
-    print("distance = " + str(editDistance("spelll", "spell")))
-    POSSIBLE_KEYWORDS = ["class", "feat", "background", "spell"]
-    print("eH result = " + str(editHelper("spelll", POSSIBLE_KEYWORDS)))
 
     unittest.main()
 

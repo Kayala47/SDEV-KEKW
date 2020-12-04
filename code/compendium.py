@@ -104,33 +104,33 @@ def screenshot(url: str) -> bool:
     Output: 
         bool | True if screenshot taken, False if not
     '''
-    # try:
-    # these can be adjusted to take a good screenshot
-    options = webdriver.ChromeOptions()
-    # driver = webdriver.Chrome(ChromeDriverManager().install())
-    options.headless = True  # wont' open a browser window to do this
+    try:
+        # these can be adjusted to take a good screenshot
+        options = webdriver.ChromeOptions()
+        # driver = webdriver.Chrome(ChromeDriverManager().install())
+        options.headless = True  # wont' open a browser window to do this
 
-    # this is what will scrape the web
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        # this is what will scrape the web
+        driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
-    driver.get(url)  # opens the page
+        driver.get(url)  # opens the page
 
-    # quick function to grab the scroll values for height and width
-    def S(X): return driver.execute_script(
-        'return document.body.parentNode.scroll'+X)
-    # that tells us the size of our img
-    driver.set_window_size(S('Width') * .8, min(S('Height') * .80, 700))
-    #S('Height') * .88
+        # quick function to grab the scroll values for height and width
+        def S(X): return driver.execute_script(
+            'return document.body.parentNode.scroll'+X)
+        # that tells us the size of our img
+        driver.set_window_size(S('Width') * .8, min(S('Height') * .80, 700))
+        #S('Height') * .88
 
-    # takes screenshot and saves as "screenshot.png"
-    driver.find_element_by_tag_name('body').screenshot('screenshot.png')
-    # driver.get_screenshot_as_file("screenshot.png")
+        # takes screenshot and saves as "screenshot.png"
+        driver.find_element_by_tag_name('body').screenshot('screenshot.png')
+        # driver.get_screenshot_as_file("screenshot.png")
 
-    driver.quit()  # closes the page
+        driver.quit()  # closes the page
 
-    return True
-    # except:
-    #     return False
+        return True
+    except:   
+        return False
 
 
 def router(kwd: str, srch: str, first_rnd: bool) -> str:
