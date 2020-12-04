@@ -1,0 +1,203 @@
+Component Design Specification - Compendium Lookup
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3E: Specifications 
+    Primary Author: Kevin
+    Slip Days: 0
+
+PURPOSE:
+
+The purpose of this module is to allow our users to access a wider variety of 
+information about the game. They will be able to use this feature to look up 
+salient facts about the game rules and mechanics without having to pay for 
+the extra features. 
+
+We'll be making use of the fact that the Dungeons and Dragons community is 
+full of extremely prolific writers and content creators. There is a very 
+complete wiki at: http://dnd5e.wikidot.com/ that we can leverage. It is full
+of all the published rules and even lots of user-created content. 
+
+
+-------------------------------------------------------------------------------------------
+                            CHANGES SINCE 3E   
+ADDED
+    - screenshot
+        due to the implementation of the nice-to-have feature, we needed a funciton that would 
+        actually take a screenshot of the webpage we scraped. This does so by opening up a Chrome
+        tab in Selenium
+
+CHANGED
+    - search 
+        - to decrease the workload on the bot interface itself, I had my teammates simply pass the 
+        full list of inputs to the search function, where I have it split and parse them 
+
+    - search/subsearch -> search/router
+        - because we are mostly focusing on screenshots, we no longer needed each individual subsearch 
+        to do formatting in a different way. What we did still need was a way to properly format the 
+        url for each type of search, which we repurposed the helper function to do. It has been renamed
+        to router for accessibility. The part of this function that was used to scrape the title has since 
+        been moved to another function, getTitle
+
+    subsearch/stripHTML -> getTitle
+        - as above, we now only need a function to get the title of the page. This also functions as a way
+        to make sure that the page we're scraping exists. 
+
+    editDistance 
+        - I needed a better algorithm for this, so I found and implemented a DP version. Also made some helper 
+        functions so that I wouldn't have to change how the tests ran.
+
+
+REMOVED
+    - classSearch, featSearch, etc
+        - these functions were simplified into router and getTitle, so they were no longer needed
+
+
+-------------------------------------------------------------------------------------------
+
+PUBLIC METHODS:
+
+Function search(String[] input)
+    
+    inputs: An array of strings, in the following order:
+        - input[0] = one of "class", "spell", "race" "background", "feat"
+        any strings other those (or very similar variants) that will cause a failure *
+        - input[1:] = the series of words describing the ruleset searched by the user.
+        These inputs should be merged to form one string that will be used for the URL
+        of the page containing the necessary information.
+
+    purpose: this function will call the relevant child function (detailed in the Private
+    Methods section). The purpose of this separation is to create a facade for the Discord
+    bot to use, which will allow users to learn fewer commands. 
+    
+    output: the result of the screenshot and helper function calls. If successful, the response
+    will be a tuple containing True and the title of the page plus the url. If unsuccessful, 
+    will return False and the specific error message (this was suggested by code review).
+
+    logic: this function will attempt to scrape the webpage. They have a specific 404 page with the 
+    title "this page does not (yet) exist". If it doesn't get that, we know it is a valid page 
+    and we open up a browser to take a picture, which it will return. Otherwise, there are a 
+    variety of error messages it can respond with, depending on what it thinks went wrong.
+
+    example usage: a user attempting to search for the "Magic Missile" spell will type "!search
+    spell magic missile". This function will first make sure that input[0] is valid, else run step 
+    distance on it to see if it could be a misspelling of any of the valid inputs. If it is either 
+    the exact spelling or within three letters of a valid input, attempt to take a screenshot as 
+    described above. If successful, it will cause the bot to return a message like:
+
+    "
+    Magic Missile
+    ---------------
+    |   IMAGE      | 
+    ---------------
+    http://dnd5e.wikidot.com/spell:magic-missile"
+
+    If unsuccessful, will return:
+    "Whoops, that page misty-stepped away. Try again?" or similar error, depending on what it thinks
+    caused it. 
+
+
+  
+
+PRIVATE METHODS:
+
+Function editDifference(String a, String b)
+    inputs: two strings, which will be compared based on the step distance formula. 
+    A description of the formula can be found here: https://www.geeksforgeeks.org/edit-distance-dp-5/
+
+    purpose: this is a life improvement addition for our users. It should be able to account for small 
+    misspellings in the main function.
+
+    output: an integer value for the number of deletions, additions, or substitutions that must take place
+    to turn input a into input b, or vice versa. It will return the minimum necessary number of any such operations.
+
+    example usage: When given a = "spelll" and b = "spell", this function will evaluate the changes
+    needed to turn the longer of the two (a) into the shorter (b). In this case, we require exactly
+    one deletion, the third "l" in a. Therefore, the function will return 1. 
+
+Function router(kwd: str, srch: str, first_rnd: bool) -> str
+
+    inputs: two strings, kwd and search. Plus a boolean, first_rnd
+
+    purpose: this will assign the correct url for the search if both of the strings are valid,
+    else call editHelper and itself again to try to fix small typos with the keyword.
+
+    example usage: given the keyword "classs" and search params "magic-missile", it will first 
+    run editHelper to get the correct keyword, "class", then call itself again (but only recurse once)
+    in order to spit out the url: base_url + kwd + ":" + srch  
+
+Function getTitle(url: string)
+
+    inputs: a string containign the full url to be searched
+    
+    purpose: will grab the title at that url, using Requests and Beautiful Soup. This serves both 
+    as a way to give that information to our users and to check whether the screenshot we will be 
+    taking will produce any reasonable information. 
+
+    example usage: the title at "http://dnd5e.wikidot.com/gnomes" will be "this page does not (yet) exist"
+    because that is an invalid search. Whereas at "http://dnd5e.wikidot.com/gnome", the title will be "Gnome".
+    Both results are valuable to us, and it provides a helpful litmus test against incorrect searches. 
+
+Function screenshot(url: string)
+
+    inputs: a string containing the url to be snapshotted
+
+    purpose: provides the screenshot of the specified url, allows our users a preview of the page when they ask for
+    information. Usually, this screenshot provides all the information we need, although this funciton also 
+    provides a link to the url in case they want more. 
+
+
+
+INSTANCE VARIABLES AND DATA STRUCTURES
+
+Valid Inputs 
+    We will retain a list of the valid inputs for search. This will be stored locally in an array of
+    strings, and will allow for iteration through them the step distance function in order to alleviate
+    misspellings.
+
+PACKAGES
+
+Requests: a python library to allow for web scraping via URL. We will be able to directly access a page
+        using this package
+
+Beautiful Soup: a python library that makes plain HTML more human readable, and allows for the extraction
+        of specific elements, such as headers and lists. This package also allows for searching of elements
+        by class and id.
+
+Imgkit: a python library that uses wkhtmltopdf infrastructure to convert a webpage into an image, using the URL. 
+        This will be useful for our "nice to have" feature of returning the image of the webpage instead of a 
+        string representation.
+
+
+ALGORITHMS
+
+Step Distance:
+    This algorithm will help us account for user error such as misspellings, by allowing us to turn simple misspellings
+    into the intended word. It measures the minimum number of additions, deletions, and substitutions of characters needed
+    to turn String a into an exact copy of String b.
+
+    Purpose: to allow for recovery from small spelling mistakes from our users, 
+    leading to more overall robustness of our application. 
+
+    A full description can be found here: https://www.geeksforgeeks.org/edit-distance-dp-5/
+
+PSEUDOCODE
+
+Web Scraping:
+    Each of the child search functions will use a variant of this techinque, with slight variations for the structure of information
+    in each page. Note that the specific identifiers needed will need to come from personal research into the page, since they may 
+    change from the time of this writing. 
+
+    #step 1: use the requests package to get a string representation of the html in the page
+    URL = "http://dnd5e.wikidot.com/" + search_type + ":" + search_params
+    page = request.get(URL)
+
+    #step 2: parse using Beautiful Soup
+    soup = BeautifulSoup(page.content, 'html.parser')
+    result1 = soup.find(id='spell-description') #this is just an example, you'll have to find the identifier yourself, based on the page
+    result2 = soup.find(id='casting-time')
+
+    final = result1 + '\n' + result2 #the line splits will be used by the main function to generate the embed
+
+    return final
+

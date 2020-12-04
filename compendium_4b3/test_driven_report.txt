@@ -1,0 +1,69 @@
+Component Design, Test Driven Development - Report
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 4B.3 - Report
+    Primary Author: Kevin
+    Slip Days: 0
+
+IMPLEMENTATION/TESTING ORDER
+    Implementation was based off the design and specifications laid out earlier, for step 3E. 
+    Tests were designed based off of those requirements. I realized I could do the screenshot
+    without too much more work, so the initial plan was to design the scraping from the ground up,
+    focusing on the helper functions first. Once the web scraping was done, I would then begin
+    working on getting the screenshots workign, with the intention that a successful scrape 
+    would result in a screenshot also being taken, if the scrape was deemed too complex (such
+    as for class tables).
+
+    However, during a break from coding, some tangential research revealed that it would actually
+    be much faster and cleaner to implement only the screenshot functionality, and I decided to
+    transition the code in that direction. That required reworking much of the testing suite, since 
+    I would need different functions than I originally thought, and represented a substantial 
+    amount of work. I do believe it was for the best, since this functionality is now so much 
+    more user-friendly. But I recognize that it meant I had to rewrite many of the tests as I was 
+    coding, essentially pausing my coding to go back and develop a new testing suite. 
+
+
+EFFICIENCY OF THE PROCESS
+    Overall, the process was efficient, and would have been much better had I not changed the specs 
+    halfway through. I did end up having to rewrite many of the tests, both because of the change 
+    in design and because some were badly written. I describe them as badly written because I was 
+    using the modules in an incorrect way, such as timeit(), which didn't actually return the time 
+    when called. I was actually looking for the time() function from Python's standard library.
+    Similar errors with getting exif data meant I had to rewrite other tests. Still, it was a really 
+    good learning experience and I learned some neat facts about the way those modules worked.
+
+    Many of the tests were useful, but many more weren't, especially after the change in implementation.
+    I had to remove about half the tests, and change others. 
+
+HOW IT HELPED
+    Knowing what sorts of tests I had to pass definitely helped with impelentation, as I had to think 
+    closely about how I wanted to implement each function. It also forced me to come up with a 
+    good plan for implementation before coding, which is really useful because I sometimes charge 
+    foolishly into the code. 
+
+    By designing the tests first, I was also forced to do lots of research before starting, which 
+    helped me avoid pitfalls like pursuing a path that would not work. Once I settled on a new 
+    implementation, I was not forced to change plans.
+
+BUGS NOT FOUND
+    Some of the bugs in my code were disguised as errors with my system. The one that springs to 
+    mind is using the webdriver with Selenium. Selenium docs say that you have to include the 
+    driver for whichever browser you use in your PATH environment variable or include the path 
+    to it in your call to initialize the driver. For some reason, including the path to the file 
+    never worked, but I found a library that would automatically install and manage the driver 
+    instead, so I could have that written into my code such that anyone making a clean build would 
+    not have to touch their PATH variable, nor download the driver themselves.  
+
+WHAT I WOULD DO DIFFERENTLY
+    I would definitely have settled upon a set specification before starting. I thought I had done so,
+    since we spent a large part of the semester designing the module. However, I got more ambitious
+    when I saw the screenshots could be implemented without too much more effort. In the long run, I 
+    think changing that spec was good, but for the sake of TDD, I recognize that it did force me to 
+    start messing with the tests in the middle of coding, instead of having them done beforehand. 
+
+    I would also take a closer look at the test themselves, as sometimes simple typos caused me to change 
+    them. For example, I was trying to call my functions by calling compendium.search, when only the name
+    of the function was needed. These were small details that I didn't know about Python, however,
+    so I don't expect they'll come up again. Still, I'll be on the lookout for similar errrors that might
+    come up due to lack of experience with the subject. 

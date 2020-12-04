@@ -1,0 +1,32 @@
+..F:\Anaconda\lib\subprocess.py:942: ResourceWarning: subprocess 10604 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+F:\Anaconda\lib\site-packages\webdriver_manager\utils.py:139: ResourceWarning: unclosed file <_io.TextIOWrapper name=3 encoding='cp1252'>
+  stdout = os.popen(cmd).read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ 
+[WDM] - Current google-chrome version is 87.0.4280
+[WDM] - Get LATEST driver version for 87.0.4280
+[WDM] - Driver [C:\Users\HP\.wdm\drivers\chromedriver\win32\87.0.4280.88\chromedriver.exe] found in cache
+
+DevTools listening on ws://127.0.0.1:57002/devtools/browser/45209a9c-4000-4e08-9706-ee37688411f2
+[1203/170146.877:INFO:CONSOLE(1)] "NitroAds: Loaded.  Version: 20201204-5c2e577, Geo: US CA Timeout: 1000.", source: https://s.nitropay.com/ads-143.js (1)
+[1203/170147.033:INFO:CONSOLE(1)] "Uncaught (in promise) h: OneSignal: This app ID does not match any existing app. Double check your app ID.", source: https://cdn.onesignal.com/sdks/OneSignalPageSDKES6.js?v=151105 (1)
+[1203/170147.036:INFO:CONSOLE(1)] "Uncaught ReferenceError: NitroPayCCPA is not defined", source: https://s.nitropay.com/ads-143.js (1)
+..F:\Anaconda\lib\subprocess.py:942: ResourceWarning: subprocess 11172 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ 
+[WDM] - Current google-chrome version is 87.0.4280
+[WDM] - Get LATEST driver version for 87.0.4280
+[WDM] - Driver [C:\Users\HP\.wdm\drivers\chromedriver\win32\87.0.4280.88\chromedriver.exe] found in cache
+
+DevTools listening on ws://127.0.0.1:57062/devtools/browser/30b0b0e0-12f0-4677-8373-561f63fbb23f
+[1203/170158.196:INFO:CONSOLE(1)] "NitroAds: Loaded.  Version: 20201204-5c2e577, Geo: US CA Timeout: 1000.", source: https://s.nitropay.com/ads-143.js (1)
+[1203/170158.362:INFO:CONSOLE(1)] "Uncaught (in promise) h: OneSignal: This app ID does not match any existing app. Double check your app ID.", source: https://cdn.onesignal.com/sdks/OneSignalPageSDKES6.js?v=151105 (1)
+[1203/170158.363:INFO:CONSOLE(1)] "Uncaught ReferenceError: NitroPayCCPA is not defined", source: https://s.nitropay.com/ads-143.js (1)
+.....
+----------------------------------------------------------------------
+Ran 9 tests in 22.822s
+
+OK

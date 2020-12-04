@@ -1,0 +1,148 @@
+Testing Plan - Compendium Module
+
+Team: Discord Dragons
+    Members: Dana, Kevin, Max, Swamik
+    Project: 3C: Component Design
+    Primary Author: Kevin Ayala
+    Slip Days: 1
+
+SPECIFICATIONS TO COVER:
+- users will receive results in <20 seconds
+- users can make up to 3 typos and still
+expect results
+- users will receive content identical to
+what is on the webpage
+- user should be able to submit potentially 
+100s of requests without issue
+- format will be acceptable for the bot
+(integration testing - will not be done here)
+
+-------------------------------------------------------------------------------------------
+                            CHANGES SINCE 3E   
+ADDED
+    - screenshot
+        due to the implementation of the nice-to-have feature, we needed a funciton that would 
+        actually take a screenshot of the webpage we scraped. This does so by opening up a Chrome
+        tab in Selenium
+
+CHANGED
+    - search 
+        - to decrease the workload on the bot interface itself, I had my teammates simply pass the 
+        full list of inputs to the search function, where I have it split and parse them 
+
+    - search/subsearch -> search/router
+        - because we are mostly focusing on screenshots, we no longer needed each individual subsearch 
+        to do formatting in a different way. What we did still need was a way to properly format the 
+        url for each type of search, which we repurposed the helper function to do. It has been renamed
+        to router for accessibility. The part of this function that was used to scrape the title has since 
+        been moved to another function, getTitle
+
+    subsearch/stripHTML -> getTitle
+        - as above, we now only need a function to get the title of the page. This also functions as a way
+        to make sure that the page we're scraping exists. 
+
+    editDistance 
+        - I needed a better algorithm for this, so I found and implemented a DP version. Also made some helper 
+        functions so that I wouldn't have to change how the tests ran.
+
+
+REMOVED
+    - classSearch, featSearch, etc
+        - these functions were simplified into router and getTitle, so they were no longer needed
+
+
+-------------------------------------------------------------------------------------------
+
+# -------------------------------------
+#   BLACK BOX TESTING
+# -------------------------------------
+
+class BlackBoxTesting(unittest.TestCase):
+
+    def setUp(self):
+        self.searches = ["class barbarian", "race dragonborn",
+                         "feat great weapon master", "spell magic missile"]
+
+    # def tearDown(self):
+    #     os.remove("screenshot.png")
+
+    def test_time(self):
+        arr = random.choice(self.searches)
+
+        start = time.perf_counter()
+
+        search(random.choice(self.searches).split(" "))
+
+        stop = time.perf_counter()
+
+        diff = stop - start
+        print("time = " + str(diff))
+
+        self.assertTrue(stop - start < 20)
+
+    def test_stepDist(self):
+        self.assertEqual(editDistance("class", "cass"), 1)
+        self.assertEqual(editDistance("race", "race"), 0)
+        self.assertEqual(editDistance("sppelll", "spell"), 2)
+
+    # no longer needed
+    # def test_api_search(self):
+    #     phrases = "class barbarian".split(" ")
+
+    #     self.assertEqual(requests.get(
+    #         "https://www.dnd5eapi.co/api/classes/barbarian").text, api_search(phrases))
+
+    def test_get_title(self):
+        URL = "http://dnd5e.wikidot.com/gnome"
+
+        self.assertEqual(getTitle(URL), "Gnome")
+
+
+    def test_invalid_key_huge_difference(self):
+        # if stepDist > 3, should not be accepted
+
+        big_diff = ["difference", "magic-missile"]
+        (working, resp) = search(big_diff)
+
+        self.assertEqual(resp , "Woah! Our sending spell failed. " + big_diff[0] + " isn't recognized.")
+        
+
+    def test_invalid_key_small_difference(self):
+
+        small_diff = ["spelll", "magic-missile"]
+        (working, resp) = search(small_diff)
+
+        self.assertEqual(working, True)
+
+# -------------------------------------
+#   WHITE BOX TESTING
+# -------------------------------------
+
+
+class WhiteBoxTesting(unittest.TestCase):
+
+    def setUp(self):
+        self.img_path = "screenshot.png"
+        self.POSSIBLE_KEYWORDS = ["class", "feat", "background", "spell"]
+
+
+    def test_editHelper_bigDiff(self):
+        word = "dsfdfdsfsd"
+
+        self.assertEqual(editHelper(word, self.POSSIBLE_KEYWORDS), None)
+
+    def test_editHelper_smallDiff(self):
+        word = "spelll"
+
+        self.assertEqual(editHelper(word, self.POSSIBLE_KEYWORDS), self.POSSIBLE_KEYWORDS[3])
+
+    def test_router_bad_url(self):
+        bad_params = ["lkjsdfs", "magic-missile"]
+
+        self.assertEqual(router(bad_params[0], bad_params[1], True), None)
+
+    def test_router_good_url(self):
+        good_params = ["spell", "magic-missile"]
+
+        self.assertEqual(router(
+            good_params[0], good_params[1], True), "http://dnd5e.wikidot.com/spell:magic-missile")
