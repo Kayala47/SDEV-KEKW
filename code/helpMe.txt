@@ -50,4 +50,10 @@ INITIATIVE TRACKING
 
 !show
     Prints current initiative order.
-    
+
+-------------------
+    COMPENDIUM
+-------------------
+!search [k] [s]
+    Searches wiki. k = keyword. "class", "spell", "feat", "background", "race" are supporteed.
+    s can be any number of words describing the page to be searched. Ex: "dragonborn" or "magic missile"

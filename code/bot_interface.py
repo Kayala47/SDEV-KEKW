@@ -329,14 +329,14 @@ async def search(ctx, *args):
         await ctx.send("Make sure that you are inputing two key words to search. Refer to helpMe command for more information.")
         return  
     else: 
-        await ctx.send("Processing your search request")
+        await ctx.send("Processing your search request....")
 
         (working, message) = compendium.search(inputs)
 
         if working:
-            await ctx.send(message.split("\\n")[0])
+            await ctx.send(message.split("\n")[0])
             await ctx.send(file=discord.File('./screenshot.png'))
-            await ctx.send(message.split("\\n")[1])
+            await ctx.send(message.split("\n")[1])
         else:
             await ctx.send(message)
         
